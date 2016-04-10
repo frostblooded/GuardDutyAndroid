@@ -7,6 +7,9 @@ import android.view.View;
 
 import net.mc21.connections.HTTPRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class CompanyLogIn extends AppCompatActivity {
 
     @Override
@@ -17,10 +20,19 @@ public class CompanyLogIn extends AppCompatActivity {
 
     public void onClick(View v) {
         Log.i(MainActivity.TAG, "Making request...");
-        String response = "";
 
-        byte[] data = "".getBytes();
-        response = HTTPRequest.sendAsync(data, "https://raw.githubusercontent.com/HristiyanZahariev/AttendanceCheck-RailsApp/master/config/boot.rb", HTTPRequest.RequestType.GET);
+        JSONObject json = new JSONObject();
+        try {
+            json.put("first_name", "Nikolay");
+            json.put("last_name", "Danailov");
+            json.put("password", "foobar");
+            json.put("password_confirmation", "foobar");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.i(MainActivity.TAG, "JSON put error: " + e.toString());
+        }
+
+        String response = HTTPRequest.sendAsync(json.toString(), HTTPRequest.SERVER_IP + "workers", HTTPRequest.RequestType.GET);
 
         Log.i(MainActivity.TAG, "Response: " + response);
     }

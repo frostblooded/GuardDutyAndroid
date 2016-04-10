@@ -13,14 +13,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HTTPRequest {
-    public static String SERVER_IP = "https://91.139.243.106:3000/";
+    public static String SERVER_IP = "http://91.139.243.106:3000/";
 
     public enum RequestType{
         GET,
         POST
     }
 
-    public static String sendAsync(final byte[] sentInfo, final String to, final RequestType requestType) {
+    public static String sendAsync(String data, final String to, final RequestType requestType) {
+        final byte[] sentInfo = data.getBytes();
         final StringBuilder response = new StringBuilder();
 
         Thread t = new Thread(new Runnable() {
