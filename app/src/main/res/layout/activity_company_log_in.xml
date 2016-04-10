@@ -39,5 +39,6 @@
         android:id="@+id/company_log_in_submit_button"
         android:layout_marginTop="150dp"
         android:layout_below="@+id/company_log_in_password_field"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="onClick" />
 </RelativeLayout>
