@@ -12,6 +12,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import us.monoid.web.JSONResource;
+import us.monoid.web.Resty;
+
 public class HTTPRequest {
     public static String SERVER_IP = "http://91.139.243.106:3000/";
 
@@ -23,15 +26,19 @@ public class HTTPRequest {
     public static String sendAsync(String data, final String to, final RequestType requestType) {
         final byte[] sentInfo = data.getBytes();
         final StringBuilder response = new StringBuilder();
+        final Resty r = new Resty();
 
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    String s = send(sentInfo, to, requestType);
-                    response.append(s);
+                    JSONResource res = r.json(to);
+                    response.append(res.get("name"));
                 } catch (IOException e) {
                     Log.i(MainActivity.TAG, "HTTP request error: " + e.toString());
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    Log.i(MainActivity.TAG, "Exception: " + e.toString());
                     e.printStackTrace();
                 }
             }
@@ -50,7 +57,7 @@ public class HTTPRequest {
 
     public static String send(byte[] sentInfo, String to, RequestType requestType) throws IOException {
         URL url;
-        HttpURLConnection connection = null;
+        HttpURLConnection connection;
 
         //Create connection
         url = new URL(to);

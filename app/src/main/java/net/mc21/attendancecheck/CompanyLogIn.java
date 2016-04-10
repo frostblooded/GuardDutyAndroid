@@ -10,6 +10,11 @@ import net.mc21.connections.HTTPRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
+import us.monoid.web.JSONResource;
+import us.monoid.web.Resty;
+
 public class CompanyLogIn extends AppCompatActivity {
 
     @Override
@@ -32,7 +37,7 @@ public class CompanyLogIn extends AppCompatActivity {
             Log.i(MainActivity.TAG, "JSON put error: " + e.toString());
         }
 
-        String response = HTTPRequest.sendAsync(json.toString(), HTTPRequest.SERVER_IP + "workers", HTTPRequest.RequestType.GET);
+        String response = HTTPRequest.sendAsync(json.toString(), "https://raw.githubusercontent.com/ljharb/json-file-plus/master/package.json", HTTPRequest.RequestType.GET);
 
         Log.i(MainActivity.TAG, "Response: " + response);
     }
