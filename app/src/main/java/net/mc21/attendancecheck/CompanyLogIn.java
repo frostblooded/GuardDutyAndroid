@@ -7,13 +7,8 @@ import android.view.View;
 
 import net.mc21.connections.HTTPRequest;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-
-import us.monoid.web.JSONResource;
-import us.monoid.web.Resty;
+import us.monoid.json.JSONException;
+import us.monoid.json.JSONObject;
 
 public class CompanyLogIn extends AppCompatActivity {
 
@@ -37,8 +32,7 @@ public class CompanyLogIn extends AppCompatActivity {
             Log.i(MainActivity.TAG, "JSON put error: " + e.toString());
         }
 
-        String response = HTTPRequest.sendAsync(json.toString(), "https://raw.githubusercontent.com/ljharb/json-file-plus/master/package.json", HTTPRequest.RequestType.GET);
-
+        JSONObject response = HTTPRequest.Get("http://91.139.243.106:3000/api/v1/mobile/workers?access_token=f112e56e4d5a2e450731811e64e2c4c2");
         Log.i(MainActivity.TAG, "Response: " + response);
     }
 }
