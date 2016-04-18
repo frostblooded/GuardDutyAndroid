@@ -32,7 +32,7 @@ public class CompanyLogIn extends AppCompatActivity {
             Log.i(MainActivity.TAG, "JSON put error: " + e.toString());
         }
 
-        JSONObject response = HTTPRequest.Get("http://91.139.243.106:3000/api/v1/mobile/workers?access_token=f112e56e4d5a2e450731811e64e2c4c2");
+        JSONObject response = HTTPRequest.GET("http://91.139.243.106:3000/api/v1/mobile/workers?access_token=f112e56e4d5a2e450731811e64e2c4c2");
         Log.i(MainActivity.TAG, "Response: " + response);
     }
 }

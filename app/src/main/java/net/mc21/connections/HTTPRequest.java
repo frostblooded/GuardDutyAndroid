@@ -13,7 +13,7 @@ public class HTTPRequest {
     public static String SERVER_IP = "http://91.139.243.106:3000/";
     private static JSONObject response;
 
-    public static JSONObject Get(final String from) {
+    public static JSONObject GET(final String from) {
         final Resty r = new Resty();
 
         Thread t = new Thread(new Runnable() {
