@@ -32,7 +32,7 @@ public class CompanyLogIn extends AppCompatActivity {
 
         String response = "";
 
-        response = HTTPRequest.sendAsync("http://91.139.243.106:3000/api/v1/mobile/login",
+        response = HTTPRequest.sendAsync(HTTPRequest.SERVER_IP + "api/v1/mobile/login",
                 json.toString(),
                 HTTPRequest.RequestType.POST);
 
@@ -49,7 +49,7 @@ public class CompanyLogIn extends AppCompatActivity {
 
         Log.i(MainActivity.TAG, "JSON: " + json.toString());
 
-        response = HTTPRequest.sendAsync("http://91.139.243.106:3000/api/v1/mobile/workers",
+        response = HTTPRequest.sendAsync(HTTPRequest.SERVER_IP + "api/v1/mobile/workers",
                 "access_token=" + access_token,
                 HTTPRequest.RequestType.GET);
 
