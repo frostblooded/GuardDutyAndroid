@@ -19,7 +19,7 @@
         android:layout_alignLeft="@+id/company_log_in_password_field"
         android:layout_alignStart="@+id/company_log_in_password_field"
         android:layout_marginTop="100dp"
-        android:hint="Company Name" />
+        android:hint="@string/company_name" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
         android:layout_below="@+id/company_log_in_username_field"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:hint="Password" />
+        android:hint="@string/password" />
 
     <Button
         android:layout_width="wrap_content"
@@ -40,5 +40,6 @@
         android:layout_marginTop="150dp"
         android:layout_below="@+id/company_log_in_password_field"
         android:layout_centerHorizontal="true"
-        android:onClick="onClick" />
+        android:onClick="logInCompany"
+        android:hint="@string/log_in"/>
 </RelativeLayout>

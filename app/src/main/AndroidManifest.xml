@@ -20,7 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CompanyLogIn"></activity>
+        <activity android:name=".CompanyLogIn" />
+        <activity android:name=".WorkerLogIn"></activity>
     </application>
 
 </manifest>

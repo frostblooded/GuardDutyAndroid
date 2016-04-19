@@ -20,7 +20,7 @@ public class CompanyLogIn extends AppCompatActivity {
         setContentView(R.layout.activity_company_log_in);
     }
 
-    public void onClick(View v) {
+    public void logInCompany(View v) {
         JSONObject json = new JSONObject();
         try {
             json.put("company_name", "frostblooded");
@@ -46,8 +46,6 @@ public class CompanyLogIn extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        Log.i(MainActivity.TAG, "JSON: " + json.toString());
 
         response = HTTPRequest.sendAsync(HTTPRequest.SERVER_IP + "api/v1/mobile/workers",
                 "access_token=" + access_token,

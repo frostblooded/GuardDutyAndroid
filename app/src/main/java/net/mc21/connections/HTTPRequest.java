@@ -75,8 +75,6 @@ public class HTTPRequest {
         printout.flush();
         printout.close();
 
-        Log.i(MainActivity.TAG, String.valueOf(connection.getResponseCode()));
-
         //Get Response
         InputStream is = connection.getInputStream();
         InputStreamReader isr = new InputStreamReader(is);
@@ -100,8 +98,6 @@ public class HTTPRequest {
         connection.setReadTimeout(TIMEOUT);
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Content-Type", "application/json");
-
-        Log.i(MainActivity.TAG, String.valueOf(connection.getResponseCode()));
 
         //Get Response
         InputStream is = connection.getInputStream();
