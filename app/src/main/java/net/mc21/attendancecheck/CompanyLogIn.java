@@ -7,9 +7,10 @@ import android.view.View;
 
 import net.mc21.connections.HTTPRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 public class CompanyLogIn extends AppCompatActivity {
 
@@ -20,30 +21,38 @@ public class CompanyLogIn extends AppCompatActivity {
     }
 
     public void onClick(View v) {
-        Log.i(MainActivity.TAG, "Making request...");
-
-        /*JSONObject json = new JSONObject();
+        JSONObject json = new JSONObject();
         try {
-            json.put("first_name", "Nikolay");
-            json.put("last_name", "Danailov");
-            json.put("password", "foobar");
-            json.put("password_confirmation", "foobar");
+            json.put("company_name", "frostblooded");
+            json.put("password_digest", "$2a$10$q67BfKTG3lHP7/UuJbFoXuWHPbCVLeS5sXo2mnMuqIWdGjuUrqKCS");
         } catch (JSONException e) {
-            e.printStackTrace();
             Log.i(MainActivity.TAG, "JSON put error: " + e.toString());
-        }*/
+            e.printStackTrace();
+        }
 
-        String response = HTTPRequest.POST("http://91.139.243.106:3000/api/v1/mobile/login");
+        String response = "";
+
+        response = HTTPRequest.sendAsync("http://91.139.243.106:3000/api/v1/mobile/login",
+                json.toString(),
+                HTTPRequest.RequestType.POST);
+
         Log.i(MainActivity.TAG, "Response: " + response);
-
-        JSONObject j ;
+        String access_token = null;
+        JSONObject response_json = new JSONObject();
 
         try {
-            j = new JSONObject(response);
-            Log.i(MainActivity.TAG, "Access token: " + j.get("access_token"));
+            response_json = new JSONObject(response);
+            access_token = response_json.getString("access_token");
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.i(MainActivity.TAG, "JSON error: " + e.toString());
         }
+
+        Log.i(MainActivity.TAG, "JSON: " + json.toString());
+
+        response = HTTPRequest.sendAsync("http://91.139.243.106:3000/api/v1/mobile/workers",
+                "access_token=" + access_token,
+                HTTPRequest.RequestType.GET);
+
+        Log.i(MainActivity.TAG, "Response: " + response);
     }
 }
