@@ -6,18 +6,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
-import net.mc21.connections.HTTPRequest;
+import net.mc21.attendancecheck.net.mc21.connections.CustomErrorListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 
 public class WorkerLogIn extends AppCompatActivity {
 
@@ -36,7 +36,7 @@ public class WorkerLogIn extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String url = HTTPRequest.SERVER_IP + "api/v1/mobile/register_device";
+        String url = MainActivity.SERVER_IP + "api/v1/mobile/register_device";
 
         // Request a string response
         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, json,
@@ -45,25 +45,9 @@ public class WorkerLogIn extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         Log.i(MainActivity.TAG, response.toString());
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        String response = error.toString();
+                }, new CustomErrorListener());
 
-                        if(error.networkResponse.data != null) {
-                            try {
-                                response = new String(error.networkResponse.data, "UTF-8");
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        Log.i(MainActivity.TAG, "Volley error: " + response);
-                        error.printStackTrace();
-                    }
-                }
-        );
+        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(25, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         // Add the request to the queue
         Volley.newRequestQueue(this).add(jsonRequest);

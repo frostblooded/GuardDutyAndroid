@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
+    public static String SERVER_IP = "https://hidden-shelf-43728.herokuapp.com/";
     public final static String TAG = "AttendanceCheck";
 
     @Override
