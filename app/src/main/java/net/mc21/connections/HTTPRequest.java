@@ -12,8 +12,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HTTPRequest {
-    public static String SERVER_IP = "http://91.139.243.106:3000/";
-    private static String response = new String();
+    public static String SERVER_IP = "https://hidden-shelf-43728.herokuapp.com/";
+    private static String response;
     private static int TIMEOUT = 10000;
 
     public enum RequestType{
