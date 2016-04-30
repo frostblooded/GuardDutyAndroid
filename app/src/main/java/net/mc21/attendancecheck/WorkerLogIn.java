@@ -11,11 +11,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 
-import net.mc21.attendancecheck.net.mc21.connections.CustomErrorListener;
+import net.mc21.connections.CustomErrorListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 public class WorkerLogIn extends AppCompatActivity {
 
@@ -26,18 +30,31 @@ public class WorkerLogIn extends AppCompatActivity {
     }
 
     private void registerDevice() {
-
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(MainActivity.isGoogleServicesAvailable()) {
+                    try {
+                        InstanceID instanceID = InstanceID.getInstance(MainActivity.context);
+                        String token = instanceID.getToken("394378341767", GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+                    } catch (IOException e) {
+                        Log.i(MainActivity.TAG, "Token getting error: " + e.toString());
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
     private void checkWorkerLogin() {
+        String first_name = ((TextView)findViewById(R.id.worker_login_first_name_field)).getText().toString();
+        String last_name = ((TextView)findViewById(R.id.worker_login_last_name_field)).getText().toString();
+        String password = ((TextView)findViewById(R.id.worker_login_password_field)).getText().toString();
 
-    }
-
-    private void validateLogIn(String firstName, String lastName, String password) {
         JSONObject json = new JSONObject();
         try {
-            json.put("first_name", firstName);
-            json.put("last_name", lastName);
+            json.put("first_name", first_name);
+            json.put("last_name", last_name);
             json.put("password", password);
         } catch (JSONException e) {
             Log.i(MainActivity.TAG, "JSON put error: " + e.toString());
@@ -51,15 +68,28 @@ public class WorkerLogIn extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         boolean success = false;
+
                         try {
                             success = response.getBoolean("success");
-                            Log.i(MainActivity.TAG, String.valueOf(success));
-
-                            if(success) {
-                                registerDevice();
-                            }
                         } catch (JSONException e) {
+                            Log.i(MainActivity.TAG, "JSON error: " + e.toString());
                             e.printStackTrace();
+                        }
+
+                        Log.i(MainActivity.TAG, response.toString());
+
+                        if(success) {
+                            registerDevice();
+                        } else {
+                            String error = "";
+
+                            try {
+                                error = response.getString("error");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            Log.i(MainActivity.TAG, "Login error: " + error);
                         }
                     }
                 }, new CustomErrorListener());
@@ -70,9 +100,6 @@ public class WorkerLogIn extends AppCompatActivity {
     }
 
     public void logInWorker(View v) {
-        String first_name = ((TextView)findViewById(R.id.worker_login_first_name_field)).getText().toString();
-        String last_name = ((TextView)findViewById(R.id.worker_login_last_name_field)).getText().toString();
-        String password = ((TextView)findViewById(R.id.worker_login_password_field)).getText().toString();
-        validateLogIn(first_name, last_name, password);
+        checkWorkerLogin();
     }
 }

@@ -1,4 +1,4 @@
-package net.mc21.attendancecheck.net.mc21.connections;
+package net.mc21.connections;
 
 import android.util.Log;
 
