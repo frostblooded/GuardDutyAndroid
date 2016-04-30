@@ -40,7 +40,6 @@ public class WorkerLogIn extends AppCompatActivity {
                     try {
                         InstanceID instanceID = InstanceID.getInstance(MainActivity.context);
                         String token = instanceID.getToken(MainActivity.GCM_TOKEN_REQUEST_SECRET, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-                        Log.i(MainActivity.TAG, instanceID.getId());
 
                         sentData.put("gcm_token", token);
                         Log.i(MainActivity.TAG, "Acquired token " + token);
