@@ -1,5 +1,7 @@
 package net.mc21.attendancecheck;
 
+import android.content.Context;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +24,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public class WorkerLogIn extends AppCompatActivity {
+    public static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,16 +32,37 @@ public class WorkerLogIn extends AppCompatActivity {
         setContentView(R.layout.activity_worker_login);
     }
 
-    private void registerDevice() {
+    private void registerDevice(final JSONObject sentData) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(MainActivity.isGoogleServicesAvailable()) {
                     try {
                         InstanceID instanceID = InstanceID.getInstance(MainActivity.context);
-                        String token = instanceID.getToken("394378341767", GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+                        String token = instanceID.getToken(MainActivity.GCM_TOKEN_REQUEST_SECRET, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+                        Log.i(MainActivity.TAG, instanceID.getId());
+
+                        sentData.put("gcm_token", token);
+                        Log.i(MainActivity.TAG, "Acquired token " + token);
+
+                        String url = MainActivity.SERVER_IP + "api/v1/mobile/register_device";
+
+                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, sentData,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        Log.i(MainActivity.TAG, "Registration token send response: " + response.toString());
+                                    }
+                                }, new CustomErrorListener());
+
+                        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(MainActivity.REQUEST_TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+                        Volley.newRequestQueue(MainActivity.context).add(jsonRequest);
                     } catch (IOException e) {
                         Log.i(MainActivity.TAG, "Token getting error: " + e.toString());
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        Log.i(MainActivity.TAG, "JSON error: " + e.toString());
                         e.printStackTrace();
                     }
                 }
@@ -51,7 +75,8 @@ public class WorkerLogIn extends AppCompatActivity {
         String last_name = ((TextView)findViewById(R.id.worker_login_last_name_field)).getText().toString();
         String password = ((TextView)findViewById(R.id.worker_login_password_field)).getText().toString();
 
-        JSONObject json = new JSONObject();
+        final JSONObject json = new JSONObject();
+
         try {
             json.put("first_name", first_name);
             json.put("last_name", last_name);
@@ -76,10 +101,10 @@ public class WorkerLogIn extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        Log.i(MainActivity.TAG, response.toString());
+                        Log.i(MainActivity.TAG, "Login check response: " + response.toString());
 
                         if(success) {
-                            registerDevice();
+                            registerDevice(json);
                         } else {
                             String error = "";
 
@@ -94,12 +119,18 @@ public class WorkerLogIn extends AppCompatActivity {
                     }
                 }, new CustomErrorListener());
 
-        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(MainActivity.REQUEST_TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         Volley.newRequestQueue(this).add(jsonRequest);
     }
 
     public void logInWorker(View v) {
         checkWorkerLogin();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+        context = this;
     }
 }

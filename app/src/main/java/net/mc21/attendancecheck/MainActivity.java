@@ -14,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
     public static Context context;
     public static String SERVER_IP = "https://hidden-shelf-43728.herokuapp.com/";
     public final static String TAG = "AttendanceCheck";
+    public final static int REQUEST_TIMEOUT = 5000;
+    public final static String GCM_TOKEN_REQUEST_SECRET = "394378341767";
 
     public static boolean isGoogleServicesAvailable() {
         GoogleApiAvailability api = GoogleApiAvailability.getInstance();
