@@ -7,28 +7,27 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="net.mc21.attendancecheck.WorkerLogIn">
+    tools:context="net.mc21.attendancecheck.CompanyLogIn">
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/worker_log_in_username_field"
+        android:id="@+id/company_login_username_field"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/worker_log_in_password_field"
-        android:layout_alignStart="@+id/worker_log_in_password_field"
+        android:layout_alignLeft="@+id/company_login_password_field"
+        android:layout_alignStart="@+id/company_login_password_field"
         android:layout_marginTop="100dp"
-        android:hint="@string/worker_name"
-        android:singleLine="false" />
+        android:hint="@string/company_name" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/worker_log_in_password_field"
-        android:layout_below="@+id/worker_log_in_username_field"
+        android:id="@+id/company_login_password_field"
+        android:layout_below="@+id/company_login_username_field"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:hint="@string/password" />
@@ -37,9 +36,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/log_in"
-        android:id="@+id/worker_log_in_submit_button"
+        android:id="@+id/company_login_submit_button"
         android:layout_marginTop="150dp"
-        android:layout_below="@+id/worker_log_in_password_field"
+        android:layout_below="@+id/company_login_password_field"
         android:layout_centerHorizontal="true"
-        android:onClick="logInWorker" />
+        android:onClick="logInCompany" />
 </RelativeLayout>

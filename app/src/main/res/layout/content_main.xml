@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/log_in_as_worker"
-        android:id="@+id/menu_worker_log_in_button"
+        android:id="@+id/menu_worker_login_button"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="130dp"
@@ -26,9 +26,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/log_in_as_company"
-        android:id="@+id/menu_company_log_in_button"
+        android:id="@+id/menu_company_login_button"
         android:layout_marginTop="125dp"
-        android:layout_below="@+id/menu_worker_log_in_button"
+        android:layout_below="@+id/menu_worker_login_button"
         android:layout_centerHorizontal="true"
         android:onClick="openCompanyLogIn" />
 
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sign_up_new_company"
-        android:id="@+id/menu_company_sign_up_button"
-        android:layout_below="@+id/menu_company_log_in_button"
+        android:id="@+id/menu_company_signup_button"
+        android:layout_below="@+id/menu_company_login_button"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

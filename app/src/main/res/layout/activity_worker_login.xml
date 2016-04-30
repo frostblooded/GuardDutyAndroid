@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="net.mc21.attendancecheck.WorkerLogIn">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/worker_login_last_name_field"
+        android:hint="@string/last_name"
+        android:singleLine="false"
+        android:layout_below="@+id/worker_login_first_name_field"
+        android:layout_alignLeft="@+id/worker_login_password_field"
+        android:layout_alignStart="@+id/worker_login_password_field" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/worker_login_password_field"
+        android:hint="@string/password"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/log_in"
+        android:id="@+id/worker_login_submit_button"
+        android:onClick="logInWorker"
+        android:layout_below="@+id/worker_login_password_field"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/worker_login_first_name_field"
+        android:hint="@string/first_name"
+        android:singleLine="false"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/worker_login_last_name_field"
+        android:layout_alignStart="@+id/worker_login_last_name_field"
+        android:layout_marginTop="97dp" />
+</RelativeLayout>
