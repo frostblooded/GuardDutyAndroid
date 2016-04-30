@@ -9,4 +9,7 @@
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="log_in">Log In</string>
+    <string name="remainging_time">Remaining time</string>
+    <string name="time">time</string>
+    <string name="stop_call">Stop call</string>
 </resources>
