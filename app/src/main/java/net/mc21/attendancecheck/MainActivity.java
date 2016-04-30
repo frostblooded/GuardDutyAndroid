@@ -26,7 +26,8 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     public static Context context;
-    public static String SERVER_IP = "https://hidden-shelf-43728.herokuapp.com/";
+    //public static String SERVER_IP = "https://hidden-shelf-43728.herokuapp.com/";
+    public static String SERVER_IP = "http://91.139.243.106:3000/";
     public final static String TAG = "AttendanceCheck";
     public final static int REQUEST_TIMEOUT = 5000;
     public final static String GCM_TOKEN_REQUEST_SECRET = "394378341767";
