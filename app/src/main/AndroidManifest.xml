@@ -55,9 +55,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CompanyLogIn" />
-        <activity android:name=".WorkerLogIn" />
-        <activity android:name=".Call"></activity>
+        <activity android:name=".CompanyLoginActivity" />
+        <activity android:name=".WorkerLoginActivity" />
+        <activity android:name=".CallActivity" />
+        <activity android:name=".CompanySignupActivity"></activity>
     </application>
 
 </manifest>

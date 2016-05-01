@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-public class CompanyLogIn extends AppCompatActivity {
+public class CompanyLoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -12,6 +12,6 @@ public class CompanyLogIn extends AppCompatActivity {
         setContentView(R.layout.activity_company_login);
     }
 
-    public void logInCompany(View v) {
+    public void loginCompany(View v) {
     }
 }

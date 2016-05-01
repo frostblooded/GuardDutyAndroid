@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="net.mc21.attendancecheck.WorkerLogIn">
+    tools:context=".WorkerLoginActivity">
 
     <EditText
         android:layout_width="wrap_content"
@@ -36,10 +36,11 @@
         android:layout_height="wrap_content"
         android:text="@string/log_in"
         android:id="@+id/worker_login_submit_button"
-        android:onClick="logInWorker"
+        android:onClick="loginWorker"
         android:layout_below="@+id/worker_login_password_field"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp" />
+        android:layout_marginTop="80dp"
+        android:layout_alignParentEnd="false" />
 
     <EditText
         android:layout_width="wrap_content"

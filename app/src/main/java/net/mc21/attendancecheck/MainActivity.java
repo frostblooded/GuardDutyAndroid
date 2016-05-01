@@ -45,12 +45,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void openCompanyLogIn(View v) {
-        Intent i = new Intent(this, CompanyLogIn.class);
+    public void openCompanyLogin(View v) {
+        Intent i = new Intent(this, CompanyLoginActivity.class);
         startActivity(i);
     }
 
-    public void openWorkerLogIn(View v) {
+    public void openWorkerLogin(View v) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                                 boolean deviceLoggedIn = response.getBoolean("device_exists");
 
                                 if(!deviceLoggedIn) {
-                                    Intent i = new Intent(MainActivity.context, WorkerLogIn.class);
+                                    Intent i = new Intent(MainActivity.context, WorkerLoginActivity.class);
                                     startActivity(i);
                                 }
                             } catch (JSONException e) {

@@ -8,15 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
-import net.mc21.connections.CustomErrorListener;
 import net.mc21.connections.HTTP;
 
 import org.json.JSONException;
@@ -24,7 +19,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-public class WorkerLogIn extends AppCompatActivity {
+public class WorkerLoginActivity extends AppCompatActivity {
     public static Context context;
 
     @Override
@@ -51,7 +46,7 @@ public class WorkerLogIn extends AppCompatActivity {
                             public void onResponse(JSONObject response) {
                                 Log.i(MainActivity.TAG, "Registration token send response: " + response.toString());
                             }
-                        }, WorkerLogIn.context);
+                        }, WorkerLoginActivity.context);
                     } catch (IOException e) {
                         Log.i(MainActivity.TAG, "Token getting error: " + e.toString());
                         e.printStackTrace();
@@ -64,7 +59,7 @@ public class WorkerLogIn extends AppCompatActivity {
         }).start();
     }
 
-    private void checkWorkerLogin() {
+    public void loginWorker(View v) {
         String first_name = ((TextView)findViewById(R.id.worker_login_first_name_field)).getText().toString();
         String last_name = ((TextView)findViewById(R.id.worker_login_last_name_field)).getText().toString();
         String password = ((TextView)findViewById(R.id.worker_login_password_field)).getText().toString();
@@ -112,13 +107,10 @@ public class WorkerLogIn extends AppCompatActivity {
         }, this);
     }
 
-    public void logInWorker(View v) {
-        checkWorkerLogin();
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onResume() {
+        super.onResume();
         context = this;
+        Log.i(MainActivity.TAG, "Context: " + context.toString());
     }
 }

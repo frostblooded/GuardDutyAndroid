@@ -27,7 +27,7 @@ import net.mc21.connections.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Call extends AppCompatActivity {
+public class CallActivity extends AppCompatActivity {
     private static int DEFAULT_SUBMISSION_INTERVAL = 15 * 60 * 1000;
     private static int DEFAILT_ALARM_TIME = 60 * 1000;
     private static int TICK_INTERVAL = 1000;

@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
-import net.mc21.attendancecheck.Call;
+import net.mc21.attendancecheck.CallActivity;
 import net.mc21.attendancecheck.MainActivity;
 
 public class MyGcmListenerService extends GcmListenerService {
@@ -15,7 +15,7 @@ public class MyGcmListenerService extends GcmListenerService {
         super.onMessageReceived(from, data);
         Log.i(MainActivity.TAG, "Received call!");
 
-        Call.startedFromPushNotification = true;
+        CallActivity.startedFromPushNotification = true;
 
         Intent intent = new Intent("android.intent.category.LAUNCHER");
         intent.putExtra("call_token", data.getString("call_token"));
@@ -24,7 +24,7 @@ public class MyGcmListenerService extends GcmListenerService {
         intent.putExtra("alarm_time", Integer.parseInt(data.getString("alarm_time")));
         intent.putExtra("call_id", data.getString("call_id"));
 
-        intent.setClassName("net.mc21.attendancecheck", "net.mc21.attendancecheck.Call");
+        intent.setClassName("net.mc21.attendancecheck", "net.mc21.attendancecheck.CallActivity");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
