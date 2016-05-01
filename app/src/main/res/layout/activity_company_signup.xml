@@ -16,17 +16,17 @@
         android:layout_marginTop="60dp"
         android:hint="@string/company_name"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/eompany_signup_email_field"
-        android:layout_alignStart="@+id/eompany_signup_email_field"
-        android:layout_alignRight="@+id/eompany_signup_email_field"
-        android:layout_alignEnd="@+id/eompany_signup_email_field" />
+        android:layout_alignLeft="@+id/company_signup_email_field"
+        android:layout_alignStart="@+id/company_signup_email_field"
+        android:layout_alignRight="@+id/company_signup_email_field"
+        android:layout_alignEnd="@+id/company_signup_email_field" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:id="@+id/eompany_signup_email_field"
+        android:id="@+id/company_signup_email_field"
         android:hint="@string/email"
         android:layout_below="@+id/company_signup_name_field"
         android:layout_alignLeft="@+id/company_signup_password_field"
@@ -41,7 +41,7 @@
         android:id="@+id/company_signup_password_field"
         android:layout_marginTop="53dp"
         android:hint="@string/password"
-        android:layout_below="@+id/eompany_signup_email_field"
+        android:layout_below="@+id/company_signup_email_field"
         android:layout_centerHorizontal="true" />
 
     <EditText
@@ -60,8 +60,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sign_up"
-        android:id="@+id/button"
+        android:id="@+id/company_signup_button"
         android:layout_below="@+id/company_signup_password_confirmation_field"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="46dp" />
+        android:layout_marginTop="46dp"
+        android:onClick="signUpCompany" />
 </RelativeLayout>
