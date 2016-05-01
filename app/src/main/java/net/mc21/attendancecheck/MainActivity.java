@@ -90,4 +90,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
     }
+
+    public void openCompanySignup(View v) {
+        Intent i = new Intent(MainActivity.context, CompanySignupActivity.class);
+        startActivity(i);
+    }
 }

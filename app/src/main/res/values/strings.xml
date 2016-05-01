@@ -12,4 +12,7 @@
     <string name="remainging_time">Remaining time</string>
     <string name="time">time</string>
     <string name="stop_call">Stop call</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="email">Email</string>
 </resources>

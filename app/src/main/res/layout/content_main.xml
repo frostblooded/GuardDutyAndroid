@@ -38,5 +38,6 @@
         android:text="@string/sign_up_new_company"
         android:id="@+id/menu_company_signup_button"
         android:layout_below="@+id/menu_company_login_button"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="openCompanySignup" />
 </RelativeLayout>
