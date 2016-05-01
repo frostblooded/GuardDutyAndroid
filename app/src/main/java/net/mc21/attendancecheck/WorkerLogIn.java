@@ -17,6 +17,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
 import net.mc21.connections.CustomErrorListener;
+import net.mc21.connections.HTTP;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,19 +45,13 @@ public class WorkerLogIn extends AppCompatActivity {
                         sentData.put("gcm_token", token);
                         Log.i(MainActivity.TAG, "Acquired token " + token);
 
-                        String url = MainActivity.SERVER_IP + "api/v1/mobile/register_device";
-
-                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, sentData,
-                                new Response.Listener<JSONObject>() {
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-                                        Log.i(MainActivity.TAG, "Registration token send response: " + response.toString());
-                                    }
-                                }, new CustomErrorListener());
-
-                        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(MainActivity.REQUEST_TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-                        Volley.newRequestQueue(MainActivity.context).add(jsonRequest);
+                        String url = HTTP.SERVER_IP + "api/v1/mobile/register_device";
+                        HTTP.POST(url, sentData, new Response.Listener<JSONObject>(){
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.i(MainActivity.TAG, "Registration token send response: " + response.toString());
+                            }
+                        }, WorkerLogIn.context);
                     } catch (IOException e) {
                         Log.i(MainActivity.TAG, "Token getting error: " + e.toString());
                         e.printStackTrace();
@@ -85,42 +80,36 @@ public class WorkerLogIn extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String url = MainActivity.SERVER_IP + "api/v1/mobile/check_worker_login";
+        String url = HTTP.SERVER_IP + "api/v1/mobile/check_worker_login";
+        HTTP.POST(url, json, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                boolean success = false;
 
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, json,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        boolean success = false;
+                try {
+                    success = response.getBoolean("success");
+                } catch (JSONException e) {
+                    Log.i(MainActivity.TAG, "JSON error: " + e.toString());
+                    e.printStackTrace();
+                }
 
-                        try {
-                            success = response.getBoolean("success");
-                        } catch (JSONException e) {
-                            Log.i(MainActivity.TAG, "JSON error: " + e.toString());
-                            e.printStackTrace();
-                        }
+                Log.i(MainActivity.TAG, "Login check response: " + response.toString());
 
-                        Log.i(MainActivity.TAG, "Login check response: " + response.toString());
+                if(success) {
+                    registerDevice(json);
+                } else {
+                    String error = "";
 
-                        if(success) {
-                            registerDevice(json);
-                        } else {
-                            String error = "";
-
-                            try {
-                                error = response.getString("error");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                            Log.i(MainActivity.TAG, "Login error: " + error);
-                        }
+                    try {
+                        error = response.getString("error");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new CustomErrorListener());
 
-        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(MainActivity.REQUEST_TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        Volley.newRequestQueue(this).add(jsonRequest);
+                    Log.i(MainActivity.TAG, "Login error: " + error);
+                }
+            }
+        }, this);
     }
 
     public void logInWorker(View v) {

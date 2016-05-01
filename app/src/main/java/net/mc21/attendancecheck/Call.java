@@ -20,6 +20,13 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+
+import net.mc21.connections.HTTP;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Call extends AppCompatActivity {
     private static int DEFAULT_SUBMISSION_INTERVAL = 15 * 60 * 1000;
     private static int DEFAILT_ALARM_TIME = 60 * 1000;
@@ -27,11 +34,11 @@ public class Call extends AppCompatActivity {
     private static int ALLOWED_PUSH_NOTIFICATION_DELAY = 2 * 60 * 1000;
 
     public static boolean startedFromPushNotification = false;
-    public String id;
-    public String receival_time;
+    public String call_id;
+    public String send_time;
     public int submission_interval;
     public int alarm_time;
-    public String token;
+    public String call_token;
     public int remainingSeconds;
     private PowerManager.WakeLock wakeLock;
     private Ringtone ringtone;
@@ -40,12 +47,38 @@ public class Call extends AppCompatActivity {
 
     private void exit(){
         startedFromPushNotification = false;
+        sendResult();
         wakeLock.release();
         ringtone.stop();
         timer.cancel();
-        //new SubmissionHandler().execute(this);
         vibrator.cancel();
         finish();
+    }
+
+    private void sendResult(){
+        String url = HTTP.SERVER_IP + "api/v1/mobile/respond_to_call";
+
+        JSONObject json = new JSONObject();
+
+        try {
+            json.put("call_token", call_token);
+            json.put("time_left", alarm_time);
+            json.put("call_id", call_id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.i(MainActivity.TAG, "Sent params: " + json.toString());
+        Log.i(MainActivity.TAG, "GCM token: " + call_token);
+        Log.i(MainActivity.TAG, "Time left: " + alarm_time);
+        Log.i(MainActivity.TAG, "Call ID: " + call_id);
+
+        HTTP.POST(url, json, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.i(MainActivity.TAG, "Token responding result: " + response.toString());
+            }
+        }, this);
     }
 
     //Uses deprecated code, but is the only solution I found
@@ -128,11 +161,11 @@ public class Call extends AppCompatActivity {
     private void initializeVariables(){
         Intent intent = getIntent();
 
-        receival_time = intent.getStringExtra("receival_time");
-        token = intent.getStringExtra("token");
+        send_time = intent.getStringExtra("send_time");
+        call_token = intent.getStringExtra("call_token");
         submission_interval = intent.getIntExtra("submission_interval", DEFAULT_SUBMISSION_INTERVAL);
         alarm_time = intent.getIntExtra("alarm_time", DEFAILT_ALARM_TIME);
-        id = intent.getStringExtra("id");
+        call_id = intent.getStringExtra("call_id");
     }
 
     @Override
