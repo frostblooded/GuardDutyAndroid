@@ -62,16 +62,11 @@ public class Call extends AppCompatActivity {
 
         try {
             json.put("call_token", call_token);
-            json.put("time_left", alarm_time);
+            json.put("time_left", remainingSeconds);
             json.put("call_id", call_id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        Log.i(MainActivity.TAG, "Sent params: " + json.toString());
-        Log.i(MainActivity.TAG, "GCM token: " + call_token);
-        Log.i(MainActivity.TAG, "Time left: " + alarm_time);
-        Log.i(MainActivity.TAG, "Call ID: " + call_id);
 
         HTTP.POST(url, json, new Response.Listener<JSONObject>() {
             @Override
