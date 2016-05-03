@@ -50,8 +50,18 @@
         android:id="@+id/worker_login_first_name_field"
         android:hint="@string/first_name"
         android:singleLine="false"
+        android:layout_below="@+id/worker_login_company_name_field"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/worker_login_company_name_field"
+        android:layout_marginTop="82dp"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/worker_login_last_name_field"
-        android:layout_alignStart="@+id/worker_login_last_name_field"
-        android:layout_marginTop="97dp" />
+        android:layout_alignLeft="@+id/worker_login_first_name_field"
+        android:layout_alignStart="@+id/worker_login_first_name_field"
+        android:layout_alignRight="@+id/worker_login_first_name_field"
+        android:layout_alignEnd="@+id/worker_login_first_name_field"
+        android:hint="@string/company_name" />
 </RelativeLayout>
