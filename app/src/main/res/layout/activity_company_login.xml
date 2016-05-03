@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/company_login_username_field"
+        android:id="@+id/company_login_company_name_field"
         android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/company_login_password_field"
         android:layout_alignStart="@+id/company_login_password_field"
@@ -27,7 +27,7 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/company_login_password_field"
-        android:layout_below="@+id/company_login_username_field"
+        android:layout_below="@+id/company_login_company_name_field"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:hint="@string/password" />
