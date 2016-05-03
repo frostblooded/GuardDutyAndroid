@@ -52,31 +52,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toggleButtonStatus() {
-        final String signout_worker_text = "Sign out worker";
-        final String login_worker_text = "Log in as worker";
+        final String signout_worker_text = getString(R.string.sign_out_worker);
+        final String login_worker_text = getString(R.string.log_in_as_worker);
 
         Button b = (Button) findViewById(R.id.menu_worker_login_button);
         String buttonText = b.getText().toString();
 
-        switch(buttonText) {
-            case signout_worker_text:
-                b.setText(login_worker_text);
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        openWorkerLogin(v);
-                    }
-                });
-                break;
-            case login_worker_text:
-                b.setText(signout_worker_text);
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        signOutWorker();
-                    }
-                });
-                break;
+        if(buttonText == signout_worker_text) {
+            b.setText(login_worker_text);
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openWorkerLogin(v);
+                }
+            });
+        } else {
+            b.setText(signout_worker_text);
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    signOutWorker();
+                }
+            });
         }
     }
 
