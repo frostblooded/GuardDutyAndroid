@@ -34,17 +34,14 @@ public class WorkerLoginActivity extends AppCompatActivity {
             public void run() {
                 if(MainActivity.isGoogleServicesAvailable()) {
                     try {
-                        InstanceID instanceID = InstanceID.getInstance(MainActivity.context);
-                        String token = instanceID.getToken(MainActivity.GCM_TOKEN_REQUEST_SECRET, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-
-                        sentData.put("gcm_token", token);
-                        Log.i(MainActivity.TAG, "Acquired token " + token);
+                        sentData.put("gcm_token", MainActivity.obtainToken(WorkerLoginActivity.context));
 
                         String url = HTTP.SERVER_IP + "api/v1/mobile/register_device";
                         HTTP.POST(url, sentData, new Response.Listener<JSONObject>(){
                             @Override
                             public void onResponse(JSONObject response) {
                                 Log.i(MainActivity.TAG, "Registration token send response: " + response.toString());
+                                finish();
                             }
                         }, WorkerLoginActivity.context);
                     } catch (IOException e) {
