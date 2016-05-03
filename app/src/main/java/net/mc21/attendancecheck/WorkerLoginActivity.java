@@ -63,6 +63,7 @@ public class WorkerLoginActivity extends AppCompatActivity {
         String first_name = ((TextView)findViewById(R.id.worker_login_first_name_field)).getText().toString();
         String last_name = ((TextView)findViewById(R.id.worker_login_last_name_field)).getText().toString();
         String password = ((TextView)findViewById(R.id.worker_login_password_field)).getText().toString();
+        String company_name = ((TextView)findViewById(R.id.worker_login_company_name_field)).getText().toString();
 
         final JSONObject json = new JSONObject();
 
@@ -70,6 +71,7 @@ public class WorkerLoginActivity extends AppCompatActivity {
             json.put("first_name", first_name);
             json.put("last_name", last_name);
             json.put("password", password);
+            json.put("company_name", company_name);
         } catch (JSONException e) {
             Log.i(MainActivity.TAG, "JSON put error: " + e.toString());
             e.printStackTrace();
@@ -92,16 +94,6 @@ public class WorkerLoginActivity extends AppCompatActivity {
 
                 if(success) {
                     registerDevice(json);
-                } else {
-                    String error = "";
-
-                    try {
-                        error = response.getString("error");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    Log.i(MainActivity.TAG, "Login error: " + error);
                 }
             }
         }, this);
@@ -111,6 +103,5 @@ public class WorkerLoginActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         context = this;
-        Log.i(MainActivity.TAG, "Context: " + context.toString());
     }
 }
