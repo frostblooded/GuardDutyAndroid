@@ -44,18 +44,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        try {
-            Log.i(MainActivity.TAG, getGCMToken(this));
-            Log.i(MainActivity.TAG, getGCMToken(this));
-            Log.i(MainActivity.TAG, getGCMToken(this));
-            Log.i(MainActivity.TAG, getGCMToken(this));
-            Log.i(MainActivity.TAG, getGCMToken(this));
-            Log.i(MainActivity.TAG, getGCMToken(this));
-            Log.i(MainActivity.TAG, getGCMToken(this));
-            Log.i(MainActivity.TAG, getGCMToken(this));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         context = this;
         initWorkerButton();
         setContentView(R.layout.activity_main);
