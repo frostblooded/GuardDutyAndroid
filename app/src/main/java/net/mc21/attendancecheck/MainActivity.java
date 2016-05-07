@@ -85,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject json = new JSONObject();
                         json.put("gcm_token", obtainToken(MainActivity.context));
 
-                        String url = HTTP.SERVER_IP + "api/v1/mobile/signout_device";
-                        HTTP.POST(url, json, new Response.Listener<JSONObject>(){
+                        String url = HTTP.SERVER_IP + "api/v1/devices/" + obtainToken(MainActivity.context);
+                        HTTP.DELETE(url, new Response.Listener<JSONObject>(){
                             @Override
                             public void onResponse(JSONObject response) {
                                 Log.i(MainActivity.TAG, "Signout device response: " + response.toString());

@@ -26,7 +26,7 @@ public class CompanySignupActivity extends AppCompatActivity {
         String password = ((TextView)findViewById(R.id.company_signup_password_field)).getText().toString();
         String passwordConfirmation = ((TextView)findViewById(R.id.company_signup_password_confirmation_field)).getText().toString();
 
-        String url = HTTP.SERVER_IP + "api/v1/mobile/signup_company";
+        String url = HTTP.SERVER_IP + "api/v1/companies";
 
         JSONObject json = new JSONObject();
 

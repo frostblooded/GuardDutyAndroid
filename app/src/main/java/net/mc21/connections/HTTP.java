@@ -21,7 +21,7 @@ public class HTTP {
         makeRequest(Request.Method.GET, url, null, listener, context);
     }
 
-    public static void POST(String url, JSONObject sentData, Response.Listener<JSONObject> listener, Context context) {
+    public static void POST (String url, JSONObject sentData, Response.Listener<JSONObject> listener, Context context) {
         makeRequest(Request.Method.POST, url, sentData, listener, context);
     }
 

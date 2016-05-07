@@ -56,7 +56,7 @@ public class CallActivity extends AppCompatActivity {
     }
 
     private void sendResult(){
-        String url = HTTP.SERVER_IP + "api/v1/mobile/respond_to_call";
+        String url = HTTP.SERVER_IP + "api/v1/call/" + call_id;
 
         JSONObject json = new JSONObject();
 
@@ -68,7 +68,7 @@ public class CallActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        HTTP.POST(url, json, new Response.Listener<JSONObject>() {
+        HTTP.PUT(url, json, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.i(MainActivity.TAG, "Token responding result: " + response.toString());

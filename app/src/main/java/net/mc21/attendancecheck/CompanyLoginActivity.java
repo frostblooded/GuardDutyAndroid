@@ -43,7 +43,7 @@ public class CompanyLoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String url = HTTP.SERVER_IP + "api/v1/mobile/login_company";
+        String url = HTTP.SERVER_IP + "api/v1/companies/login";
 
         HTTP.POST(url, json, new Response.Listener<JSONObject>() {
             @Override
