@@ -23,10 +23,10 @@ public class CompanyLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_company_login);
     }
 
-    private void saveGCMToken(String token) {
+    private void saveAccessToken(String token) {
         SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString("access_token", token);
+        editor.putString(MainActivity.SP_ACCESS_TOKEN, token);
         editor.commit();
     }
 
@@ -57,7 +57,7 @@ public class CompanyLoginActivity extends AppCompatActivity {
                 }
 
                 Log.i(MainActivity.TAG, "Company login response token: " + token);
-                saveGCMToken(token);
+                saveAccessToken(token);
             }
         }, this);
     }

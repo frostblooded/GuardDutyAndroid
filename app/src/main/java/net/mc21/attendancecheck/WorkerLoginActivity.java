@@ -44,7 +44,7 @@ public class WorkerLoginActivity extends AppCompatActivity {
                         json.put("last_name", last_name);
                         json.put("password", password);
                         json.put("company_name", company_name);
-                        json.put("gcm_token", MainActivity.obtainToken(WorkerLoginActivity.context));
+                        json.put("gcm_token", MainActivity.getGCMToken(WorkerLoginActivity.context));
 
                         String url = HTTP.SERVER_IP + "api/v1/devices";
                         HTTP.POST(url, json, new Response.Listener<JSONObject>(){
