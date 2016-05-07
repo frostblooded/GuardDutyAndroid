@@ -113,11 +113,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    JSONObject json = new JSONObject();
-                    json.put("gcm_token", obtainToken(MainActivity.context));
-
-                    String url = HTTP.SERVER_IP + "api/v1/mobile/check_device_login_status";
-                    HTTP.POST(url, json, new Response.Listener<JSONObject>() {
+                    String url = HTTP.SERVER_IP + "api/v1/devices/" + obtainToken(MainActivity.context);
+                    HTTP.GET(url, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
@@ -133,9 +130,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     }, MainActivity.context);
-                } catch (JSONException e) {
-                    Log.i(MainActivity.TAG, "JSON error: " + e.toString());
-                    e.printStackTrace();
                 } catch (IOException e) {
                     Log.i(MainActivity.TAG, "Token acquiring error: " + e.toString());
                     e.printStackTrace();

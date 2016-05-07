@@ -13,14 +13,24 @@ import net.mc21.attendancecheck.MainActivity;
 import org.json.JSONObject;
 
 public class HTTP {
-    //public static String SERVER_IP = "https://hidden-shelf-43728.herokuapp.com/";
-    public static String SERVER_IP = "http://91.139.243.106:3000/";
+    public static String SERVER_IP = "https://hidden-shelf-43728.herokuapp.com/";
+    //public static String SERVER_IP = "http://91.139.243.106:3000/";
 
     public static void POST(String url, JSONObject sentData, Response.Listener<JSONObject> listener, Context context) {
         Response.ErrorListener errorListener = new CustomErrorListener();
         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, sentData,
                 listener, errorListener);
-        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(MainActivity.REQUEST_TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(MainActivity.REQUEST_TIMEOUT,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Volley.newRequestQueue(context).add(jsonRequest);
+    }
+
+    public static void GET(String url, Response.Listener<JSONObject> listener, Context context) {
+        Response.ErrorListener errorListener = new CustomErrorListener();
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                listener, errorListener);
+        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(MainActivity.REQUEST_TIMEOUT,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Volley.newRequestQueue(context).add(jsonRequest);
     }
 }
