@@ -13,23 +13,32 @@ import net.mc21.attendancecheck.MainActivity;
 import org.json.JSONObject;
 
 public class HTTP {
+    public final static int REQUEST_TIMEOUT = 5000;
     public static String SERVER_IP = "https://hidden-shelf-43728.herokuapp.com/";
     //public static String SERVER_IP = "http://91.139.243.106:3000/";
 
-    public static void POST(String url, JSONObject sentData, Response.Listener<JSONObject> listener, Context context) {
-        Response.ErrorListener errorListener = new CustomErrorListener();
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, sentData,
-                listener, errorListener);
-        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(MainActivity.REQUEST_TIMEOUT,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(context).add(jsonRequest);
+    public static void GET(String url, Response.Listener<JSONObject> listener, Context context) {
+        makeRequest(Request.Method.GET, url, null, listener, context);
     }
 
-    public static void GET(String url, Response.Listener<JSONObject> listener, Context context) {
+    public static void POST(String url, JSONObject sentData, Response.Listener<JSONObject> listener, Context context) {
+        makeRequest(Request.Method.POST, url, sentData, listener, context);
+    }
+
+    public static void PUT(String url, JSONObject sentData, Response.Listener<JSONObject> listener, Context context) {
+        makeRequest(Request.Method.PUT, url, sentData, listener, context);
+    }
+
+    public static void DELETE(String url, Response.Listener<JSONObject> listener, Context context) {
+        makeRequest(Request.Method.DELETE, url, null, listener, context);
+    }
+
+    private static void makeRequest(int method, String url, JSONObject sentData,
+                                    Response.Listener<JSONObject> listener, Context context) {
         Response.ErrorListener errorListener = new CustomErrorListener();
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(method, url, sentData,
                 listener, errorListener);
-        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(MainActivity.REQUEST_TIMEOUT,
+        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(REQUEST_TIMEOUT,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Volley.newRequestQueue(context).add(jsonRequest);
     }
