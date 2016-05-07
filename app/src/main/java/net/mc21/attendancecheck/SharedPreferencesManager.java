@@ -14,12 +14,14 @@ public class SharedPreferencesManager {
     public final static String SP_GCM_TOKEN = "gcm_token";
     public final static String SP_ACCESS_TOKEN = "access_token";
     public final static String SP_COMPANY_ID = "company_id";
+    public final static String SP_COMPANY_NAME = "company_name";
 
-    public static void saveAccessToken(String token, String company_id, Context context) {
+    public static void saveAccessToken(String token, String company_id, String company_name, Context context) {
         SharedPreferences sp = context.getSharedPreferences(SharedPreferencesManager.SP_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(SharedPreferencesManager.SP_ACCESS_TOKEN, token);
         editor.putString(SharedPreferencesManager.SP_COMPANY_ID, company_id);
+        editor.putString(SharedPreferencesManager.SP_COMPANY_NAME, company_name);
         editor.commit();
     }
 
@@ -74,5 +76,10 @@ public class SharedPreferencesManager {
     public static String getCompanyID(Context context) {
         SharedPreferences sp = context.getSharedPreferences(SP_NAME, context.MODE_PRIVATE);
         return sp.getString(SP_COMPANY_ID, null);
+    }
+
+    public static String getCompanyName(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(SP_NAME, context.MODE_PRIVATE);
+        return sp.getString(SP_COMPANY_NAME, null);
     }
 }

@@ -51,16 +51,18 @@ public class CompanyLoginActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 String token = "";
                 String company_id = "";
+                String company_name = "";
 
                 try {
                     token = response.getString("access_token");
                     company_id = response.getString("company_id");
+                    company_name = response.getString("company_name");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 Log.i(MainActivity.TAG, "Company login response token: " + token);
-                SharedPreferencesManager.saveAccessToken(token, company_id, CompanyLoginActivity.context);
+                SharedPreferencesManager.saveAccessToken(token, company_id, company_name, CompanyLoginActivity.context);
 
                 boolean noError = response.isNull("error");
 
