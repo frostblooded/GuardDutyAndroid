@@ -59,15 +59,17 @@ public class MainActivity extends AppCompatActivity {
             return spToken.toString();
         }
 
-        // Else get it and save it
+        // Else get token
         final StringBuilder token = new StringBuilder();
 
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    InstanceID instanceID = InstanceID.getInstance(context);
-                    token.append(instanceID.getToken(MainActivity.GCM_TOKEN_REQUEST_SECRET, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null));
+                    if(isGoogleServicesAvailable()) {
+                        InstanceID instanceID = InstanceID.getInstance(context);
+                        token.append(instanceID.getToken(MainActivity.GCM_TOKEN_REQUEST_SECRET, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null));
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -79,9 +81,11 @@ public class MainActivity extends AppCompatActivity {
         try {
             t.join();
         } catch (InterruptedException e) {
+            Log.i(MainActivity.TAG, "Join interrupted(waiting for GCM token): " + e.toString());
             e.printStackTrace();
         }
 
+        // Save token
         SharedPreferences.Editor spEditor = sp.edit();
         spEditor.putString(SP_GCM_TOKEN, token.toString());
         spEditor.commit();
