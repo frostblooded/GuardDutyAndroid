@@ -1,6 +1,7 @@
 package net.mc21.attendancecheck;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,10 +24,11 @@ public class CompanyLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_company_login);
     }
 
-    private void saveAccessToken(String token) {
-        SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
+    private void saveAccessToken(String token, String company_id) {
+        SharedPreferences sp = getSharedPreferences(SharedPreferencesManager.SP_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString(MainActivity.SP_ACCESS_TOKEN, token);
+        editor.putString(SharedPreferencesManager.SP_ACCESS_TOKEN, token);
+        editor.putString(SharedPreferencesManager.SP_COMPANY_ID, company_id);
         editor.commit();
     }
 
@@ -49,15 +51,24 @@ public class CompanyLoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 String token = "";
+                String company_id = "";
 
                 try {
                     token = response.getString("access_token");
+                    company_id = response.getString("company_id");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 Log.i(MainActivity.TAG, "Company login response token: " + token);
-                saveAccessToken(token);
+                saveAccessToken(token, company_id);
+
+                boolean noError = response.isNull("error");
+
+                if(noError){
+                    Intent i = new Intent(MainActivity.context, CompanyProfileActivity.class);
+                    startActivity(i);
+                }
             }
         }, this);
     }

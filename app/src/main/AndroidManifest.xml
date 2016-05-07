@@ -58,7 +58,8 @@
         <activity android:name=".CompanyLoginActivity" />
         <activity android:name=".WorkerLoginActivity" />
         <activity android:name=".CallActivity" />
-        <activity android:name=".CompanySignupActivity"></activity>
+        <activity android:name=".CompanySignupActivity" />
+        <activity android:name=".CompanyProfileActivity"></activity>
     </application>
 
 </manifest>
