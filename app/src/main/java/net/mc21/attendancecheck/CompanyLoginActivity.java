@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CompanyLoginActivity extends AppCompatActivity {
+    public static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +25,10 @@ public class CompanyLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_company_login);
     }
 
-    private void saveAccessToken(String token, String company_id) {
-        SharedPreferences sp = getSharedPreferences(SharedPreferencesManager.SP_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(SharedPreferencesManager.SP_ACCESS_TOKEN, token);
-        editor.putString(SharedPreferencesManager.SP_COMPANY_ID, company_id);
-        editor.commit();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        context = this;
     }
 
     public void loginCompany(View v) {
@@ -61,7 +60,7 @@ public class CompanyLoginActivity extends AppCompatActivity {
                 }
 
                 Log.i(MainActivity.TAG, "Company login response token: " + token);
-                saveAccessToken(token, company_id);
+                SharedPreferencesManager.saveAccessToken(token, company_id, CompanyLoginActivity.context);
 
                 boolean noError = response.isNull("error");
 
