@@ -56,7 +56,7 @@ public class CallActivity extends AppCompatActivity {
     }
 
     private void sendResult(){
-        String url = HTTP.SERVER_IP + "api/v1/call/" + call_id;
+        String url = HTTP.SERVER_IP + "api/v1/calls/" + call_id;
 
         JSONObject json = new JSONObject();
 
