@@ -62,7 +62,7 @@ public class CompanyLoginActivity extends AppCompatActivity {
                 }
 
                 Log.i(MainActivity.TAG, "Company login response token: " + token);
-                SharedPreferencesManager.saveAccessToken(token, company_id, company_name, CompanyLoginActivity.context);
+                SharedPreferencesManager.saveCompany(token, company_id, company_name, CompanyLoginActivity.context);
 
                 boolean noError = response.isNull("error");
 

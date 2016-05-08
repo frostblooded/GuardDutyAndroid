@@ -7,6 +7,8 @@ import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 public class SharedPreferencesManager {
@@ -16,7 +18,7 @@ public class SharedPreferencesManager {
     public final static String SP_COMPANY_ID = "company_id";
     public final static String SP_COMPANY_NAME = "company_name";
 
-    public static void saveAccessToken(String token, String company_id, String company_name, Context context) {
+    public static void saveCompany(String token, String company_id, String company_name, Context context) {
         SharedPreferences sp = context.getSharedPreferences(SharedPreferencesManager.SP_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(SharedPreferencesManager.SP_ACCESS_TOKEN, token);
@@ -68,18 +70,8 @@ public class SharedPreferencesManager {
         return token.toString();
     }
 
-    public static String getAccessToken(Context context) {
+    public static String getString(String string, Context context) {
         SharedPreferences sp = context.getSharedPreferences(SP_NAME, context.MODE_PRIVATE);
-        return sp.getString(SP_ACCESS_TOKEN, null);
-    }
-
-    public static String getCompanyID(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(SP_NAME, context.MODE_PRIVATE);
-        return sp.getString(SP_COMPANY_ID, null);
-    }
-
-    public static String getCompanyName(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(SP_NAME, context.MODE_PRIVATE);
-        return sp.getString(SP_COMPANY_NAME, null);
+        return sp.getString(string, null);
     }
 }

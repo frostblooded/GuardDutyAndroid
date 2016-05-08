@@ -23,6 +23,5 @@ public class CustomErrorListener implements Response.ErrorListener {
         }
 
         Log.i(MainActivity.TAG, "Volley error: " + response);
-        error.printStackTrace();
     }
 }

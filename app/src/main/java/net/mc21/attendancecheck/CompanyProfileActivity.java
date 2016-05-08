@@ -24,6 +24,6 @@ public class CompanyProfileActivity extends AppCompatActivity {
 
     private void initCompanyName() {
         TextView text = (TextView) findViewById(R.id.company_profile_company_name_text);
-        text.setText(SharedPreferencesManager.getCompanyName(this));
+        text.setText(SharedPreferencesManager.getString(SharedPreferencesManager.SP_COMPANY_NAME, this));
     }
 }
