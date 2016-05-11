@@ -18,15 +18,6 @@ public class SharedPreferencesManager {
     public final static String SP_COMPANY_ID = "company_id";
     public final static String SP_COMPANY_NAME = "company_name";
 
-    public static void saveCompany(String token, String company_id, String company_name, Context context) {
-        SharedPreferences sp = context.getSharedPreferences(SharedPreferencesManager.SP_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(SharedPreferencesManager.SP_ACCESS_TOKEN, token);
-        editor.putString(SharedPreferencesManager.SP_COMPANY_ID, company_id);
-        editor.putString(SharedPreferencesManager.SP_COMPANY_NAME, company_name);
-        editor.commit();
-    }
-
     public static String getGCMToken(final Context context) throws IOException {
         SharedPreferences sp = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         String spToken = sp.getString(SP_GCM_TOKEN, null);
@@ -73,5 +64,12 @@ public class SharedPreferencesManager {
     public static String getString(String string, Context context) {
         SharedPreferences sp = context.getSharedPreferences(SP_NAME, context.MODE_PRIVATE);
         return sp.getString(string, null);
+    }
+
+    public static void saveString(String key, String value, Context context) {
+        SharedPreferences sp = context.getSharedPreferences(SharedPreferencesManager.SP_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(key, value);
+        editor.commit();
     }
 }
