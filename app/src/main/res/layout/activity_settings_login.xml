@@ -7,17 +7,17 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".CompanyLoginActivity">
+    tools:context=".SettingsLoginActivity">
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/company_login_company_name_field"
+        android:id="@+id/settings_login_company_name_field"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/company_login_password_field"
-        android:layout_alignStart="@+id/company_login_password_field"
+        android:layout_alignLeft="@+id/settings_login_password_field"
+        android:layout_alignStart="@+id/settings_login_password_field"
         android:layout_marginTop="100dp"
         android:hint="@string/company_name" />
 
@@ -26,8 +26,8 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/company_login_password_field"
-        android:layout_below="@+id/company_login_company_name_field"
+        android:id="@+id/settings_login_password_field"
+        android:layout_below="@+id/settings_login_company_name_field"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:hint="@string/password" />
@@ -36,9 +36,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/log_in"
-        android:id="@+id/company_login_submit_button"
+        android:id="@+id/settings_login_submit_button"
         android:layout_marginTop="150dp"
-        android:layout_below="@+id/company_login_password_field"
+        android:layout_below="@+id/settings_login_password_field"
         android:layout_centerHorizontal="true"
         android:onClick="loginCompany" />
 </RelativeLayout>

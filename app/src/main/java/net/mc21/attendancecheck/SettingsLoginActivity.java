@@ -2,7 +2,6 @@ package net.mc21.attendancecheck;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,13 +15,13 @@ import net.mc21.connections.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CompanyLoginActivity extends AppCompatActivity {
+public class SettingsLoginActivity extends AppCompatActivity {
     public static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_company_login);
+        setContentView(R.layout.activity_settings_login);
     }
 
     @Override
@@ -32,8 +31,8 @@ public class CompanyLoginActivity extends AppCompatActivity {
     }
 
     public void loginCompany(View v) {
-        String company_name = ((EditText) findViewById(R.id.company_login_company_name_field)).getText().toString();
-        String password = ((EditText) findViewById(R.id.company_login_password_field)).getText().toString();
+        String company_name = ((EditText) findViewById(R.id.settings_login_company_name_field)).getText().toString();
+        String password = ((EditText) findViewById(R.id.settings_login_password_field)).getText().toString();
 
         JSONObject json = new JSONObject();
 
@@ -69,7 +68,7 @@ public class CompanyLoginActivity extends AppCompatActivity {
                 boolean noError = response.isNull("error");
 
                 if(noError){
-                    Intent i = new Intent(MainActivity.context, CompanyProfileActivity.class);
+                    Intent i = new Intent(MainActivity.context, SettingsActivity.class);
                     startActivity(i);
                 }
             }

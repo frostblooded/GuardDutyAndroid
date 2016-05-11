@@ -1,24 +1,15 @@
 package net.mc21.attendancecheck;
 
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
-import com.android.volley.Response;
-
-import net.mc21.connections.HTTP;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-public class CompanyProfileActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_company_profile);
+        setContentView(R.layout.activity_settings);
         initCompanyName();
     }
 

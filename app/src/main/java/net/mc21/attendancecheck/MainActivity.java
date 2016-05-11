@@ -2,7 +2,6 @@ package net.mc21.attendancecheck;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -12,8 +11,6 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.iid.InstanceID;
 
 import net.mc21.connections.HTTP;
 
@@ -148,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openSettingsLogin(View v) {
-        Intent i = new Intent(this, CompanyLoginActivity.class);
+        Intent i = new Intent(this, SettingsLoginActivity.class);
         startActivity(i);
     }
 
