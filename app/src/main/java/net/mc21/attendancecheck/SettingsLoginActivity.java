@@ -43,7 +43,7 @@ public class SettingsLoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String url = HTTP.SERVER_IP + "api/v1/companies/login";
+        String url = HTTP.SERVER_IP + "api/v1/access_tokens";
 
         HTTP.POST(url, json, new Response.Listener<JSONObject>() {
             @Override
