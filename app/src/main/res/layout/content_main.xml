@@ -25,19 +25,11 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/log_in_as_company"
+        android:text="@string/log_in_to_settings"
         android:id="@+id/menu_company_login_button"
         android:layout_marginTop="125dp"
         android:layout_below="@+id/menu_worker_login_button"
         android:layout_centerHorizontal="true"
-        android:onClick="openCompanyLogin" />
+        android:onClick="openSettingsLogin" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_up_new_company"
-        android:id="@+id/menu_company_signup_button"
-        android:layout_below="@+id/menu_company_login_button"
-        android:layout_centerHorizontal="true"
-        android:onClick="openCompanySignup" />
 </RelativeLayout>

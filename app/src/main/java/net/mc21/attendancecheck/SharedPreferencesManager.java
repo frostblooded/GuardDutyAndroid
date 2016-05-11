@@ -17,6 +17,7 @@ public class SharedPreferencesManager {
     public final static String SP_ACCESS_TOKEN = "access_token";
     public final static String SP_COMPANY_ID = "company_id";
     public final static String SP_COMPANY_NAME = "company_name";
+    public final static String SP_SITE_NAME = "site_name";
 
     public static String getGCMToken(final Context context) throws IOException {
         SharedPreferences sp = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);

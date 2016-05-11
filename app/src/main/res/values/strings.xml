@@ -4,7 +4,6 @@
     <string name="log_in_as_worker">Log in as worker</string>
     <string name="sign_out_worker">Sign out worker</string>
     <string name="log_in_as_company">Log in as company</string>
-    <string name="sign_up_new_company">Sign up new company</string>
     <string name="company_name">Company Name</string>
     <string name="password">Password</string>
     <string name="first_name">First name</string>
@@ -13,7 +12,7 @@
     <string name="remainging_time">Remaining time</string>
     <string name="time">time</string>
     <string name="stop_call">Stop call</string>
-    <string name="sign_up">Sign Up</string>
-    <string name="confirm_password">Confirm Password</string>
     <string name="email">Email</string>
+    <string name="please_login_to_configure_application">Please login to configure application.</string>
+    <string name="log_in_to_settings">Log in to settings</string>
 </resources>

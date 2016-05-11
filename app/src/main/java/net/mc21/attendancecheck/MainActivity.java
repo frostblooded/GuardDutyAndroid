@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.google.android.gms.common.ConnectionResult;
@@ -36,6 +37,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return result == ConnectionResult.SUCCESS;
+    }
+
+    public static void showToast(String text, Context context) {
+        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        String company_name = SharedPreferencesManager.getString(SharedPreferencesManager.SP_COMPANY_NAME, this);
+        String site_name = SharedPreferencesManager.getString(SharedPreferencesManager.SP_SITE_NAME, this);
+
+        if(company_name == null || site_name == null) {
+            showToast(getString(R.string.please_login_to_configure_application), getApplicationContext());
+            openSettingsLogin(null);
+        }
     }
 
     @Override
@@ -129,18 +147,13 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    public void openCompanyLogin(View v) {
+    public void openSettingsLogin(View v) {
         Intent i = new Intent(this, CompanyLoginActivity.class);
         startActivity(i);
     }
 
     public void openWorkerLogin(View v) {
         Intent i = new Intent(MainActivity.context, WorkerLoginActivity.class);
-        startActivity(i);
-    }
-
-    public void openCompanySignup(View v) {
-        Intent i = new Intent(MainActivity.context, CompanySignupActivity.class);
         startActivity(i);
     }
 }
