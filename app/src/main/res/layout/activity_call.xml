@@ -12,13 +12,13 @@
     <Button
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:text="Stop call"
+        android:text="@string/stop_call"
         android:id="@+id/call_respond_button"
         android:layout_below="@+id/call_remaining_time_value"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:background="#fe0000"
-        android:textSize="30dp" />
+        android:textSize="30sp" />
 
     <TextView
         android:layout_width="wrap_content"

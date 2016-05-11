@@ -1,7 +1,6 @@
 package net.mc21.attendancecheck;
 
 import android.content.Context;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,8 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.Response;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.iid.InstanceID;
 
 import net.mc21.connections.HTTP;
 
@@ -44,7 +41,7 @@ public class WorkerLoginActivity extends AppCompatActivity {
                         json.put("last_name", last_name);
                         json.put("password", password);
                         json.put("company_name", company_name);
-                        json.put("gcm_token", SharedPreferencesManager.getGCMToken(WorkerLoginActivity.context));
+                        json.put("gcm_token", SPManager.getGCMToken(WorkerLoginActivity.context));
 
                         String url = HTTP.SERVER_IP + "api/v1/devices";
                         HTTP.POST(url, json, new Response.Listener<JSONObject>(){

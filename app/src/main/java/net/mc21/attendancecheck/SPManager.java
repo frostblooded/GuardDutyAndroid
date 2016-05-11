@@ -7,11 +7,9 @@ import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
-import org.json.JSONObject;
-
 import java.io.IOException;
 
-public class SharedPreferencesManager {
+public class SPManager {
     public final static String SP_NAME = "AttendanceCheck";
     public final static String SP_GCM_TOKEN = "gcm_token";
     public final static String SP_ACCESS_TOKEN = "access_token";
@@ -68,7 +66,7 @@ public class SharedPreferencesManager {
     }
 
     public static void saveString(String key, String value, Context context) {
-        SharedPreferences sp = context.getSharedPreferences(SharedPreferencesManager.SP_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(key, value);
         editor.commit();

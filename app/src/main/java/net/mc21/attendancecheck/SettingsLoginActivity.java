@@ -61,9 +61,9 @@ public class SettingsLoginActivity extends AppCompatActivity {
                 }
 
                 Log.i(MainActivity.TAG, "Company login response token: " + token);
-                SharedPreferencesManager.saveString(SharedPreferencesManager.SP_ACCESS_TOKEN, token, context);
-                SharedPreferencesManager.saveString(SharedPreferencesManager.SP_COMPANY_ID, company_id, context);
-                SharedPreferencesManager.saveString(SharedPreferencesManager.SP_COMPANY_NAME, company_name, context);
+                SPManager.saveString(SPManager.SP_ACCESS_TOKEN, token, context);
+                SPManager.saveString(SPManager.SP_COMPANY_ID, company_id, context);
+                SPManager.saveString(SPManager.SP_COMPANY_NAME, company_name, context);
 
                 boolean noError = response.isNull("error");
 

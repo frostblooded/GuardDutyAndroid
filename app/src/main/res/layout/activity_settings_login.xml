@@ -19,7 +19,8 @@
         android:layout_alignLeft="@+id/settings_login_password_field"
         android:layout_alignStart="@+id/settings_login_password_field"
         android:layout_marginTop="100dp"
-        android:hint="@string/company_name" />
+        android:hint="@string/company_name"
+        android:text="frostblooded" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -30,7 +31,8 @@
         android:layout_below="@+id/settings_login_company_name_field"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:hint="@string/password" />
+        android:hint="@string/password"
+        android:text="foobarrr" />
 
     <Button
         android:layout_width="wrap_content"

@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        String company_name = SharedPreferencesManager.getString(SharedPreferencesManager.SP_COMPANY_NAME, this);
-        String site_name = SharedPreferencesManager.getString(SharedPreferencesManager.SP_SITE_NAME, this);
+        String company_name = SPManager.getString(SPManager.SP_COMPANY_NAME, this);
+        String site_name = SPManager.getString(SPManager.SP_SITE_NAME, this);
 
         if(company_name == null || site_name == null) {
             showToast(getString(R.string.please_login_to_configure_application), getApplicationContext());
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 if(MainActivity.isGoogleServicesAvailable()) {
                     try {
-                        String url = HTTP.SERVER_IP + "api/v1/devices/" + SharedPreferencesManager.getGCMToken(MainActivity.context);
+                        String url = HTTP.SERVER_IP + "api/v1/devices/" + SPManager.getGCMToken(MainActivity.context);
                         HTTP.DELETE(url, new Response.Listener<JSONObject>(){
                             @Override
                             public void onResponse(JSONObject response) {
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    String url = HTTP.SERVER_IP + "api/v1/devices/" + SharedPreferencesManager.getGCMToken(MainActivity.context);
+                    String url = HTTP.SERVER_IP + "api/v1/devices/" + SPManager.getGCMToken(MainActivity.context);
                     HTTP.GET(url, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
