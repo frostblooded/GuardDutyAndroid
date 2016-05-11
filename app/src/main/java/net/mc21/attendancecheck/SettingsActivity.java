@@ -24,7 +24,6 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        initCompanyName();
         initSpinner();
     }
 
@@ -63,10 +62,5 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             }
         }, getApplicationContext());
-    }
-
-    private void initCompanyName() {
-        TextView text = (TextView) findViewById(R.id.settings_title);
-        text.setText(SPManager.getString(SPManager.SP_COMPANY_NAME, this));
     }
 }
