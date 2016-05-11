@@ -14,7 +14,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void initCompanyName() {
-        TextView text = (TextView) findViewById(R.id.company_profile_company_name_text);
+        TextView text = (TextView) findViewById(R.id.settings_company_name_text);
         text.setText(SharedPreferencesManager.getString(SharedPreferencesManager.SP_COMPANY_NAME, this));
     }
 }
