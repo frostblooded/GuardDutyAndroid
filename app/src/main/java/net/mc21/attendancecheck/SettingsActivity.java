@@ -2,7 +2,6 @@ package net.mc21.attendancecheck;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -67,7 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void initCompanyName() {
-        TextView text = (TextView) findViewById(R.id.settings_company_name_text);
+        TextView text = (TextView) findViewById(R.id.settings_title);
         text.setText(SPManager.getString(SPManager.SP_COMPANY_NAME, this));
     }
 }

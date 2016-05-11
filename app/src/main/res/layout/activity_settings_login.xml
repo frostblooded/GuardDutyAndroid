@@ -39,8 +39,18 @@
         android:layout_height="wrap_content"
         android:text="@string/log_in"
         android:id="@+id/settings_login_submit_button"
-        android:layout_marginTop="150dp"
+        android:onClick="loginCompany"
         android:layout_below="@+id/settings_login_password_field"
         android:layout_centerHorizontal="true"
-        android:onClick="loginCompany" />
+        android:layout_marginTop="82dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/settings_login"
+        android:id="@+id/settings_login_title"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp" />
 </RelativeLayout>

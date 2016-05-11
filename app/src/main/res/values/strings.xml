@@ -15,4 +15,6 @@
     <string name="log_in_to_settings">Log in to settings</string>
     <string name="routes">Routes</string>
     <string name="device_site">Device site</string>
+    <string name="settings_login">Settings login</string>
+    <string name="worker_login">Worker login</string>
 </resources>
