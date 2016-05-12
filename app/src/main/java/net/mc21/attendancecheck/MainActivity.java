@@ -14,6 +14,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 import net.mc21.connections.HTTP;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,6 +35,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return result == ConnectionResult.SUCCESS;
+    }
+
+    public static String getJsonArrayItem(JSONArray array, String key, String value, String returnKey) {
+        for(int i = 0; i < array.length(); i++) {
+            try {
+                JSONObject obj = array.getJSONObject(i);
+
+                if(obj.getString(key) == value)
+                    return obj.getString(returnKey);
+            } catch (JSONException e) {
+                Log.i(MainActivity.TAG, "JSON error: " + e.toString());
+                e.printStackTrace();
+            }
+        }
+
+        return null;
     }
 
     public static void showToast(String text, Context context) {

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WorkerLoginActivity extends AppCompatActivity {
+    private JSONArray workersJsonArray;
     public static Context context;
 
     @Override
@@ -37,59 +38,63 @@ public class WorkerLoginActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if(MainActivity.isGoogleServicesAvailable()) {
-                    try {
-                        String password = ((TextView)findViewById(R.id.worker_login_password_field)).getText().toString();
+                try {
+                    Spinner spinner = (Spinner) findViewById(R.id.worker_login_spinner);
+                    String selectedWorker = (String) spinner.getSelectedItem();
+                    String workerId = MainActivity.getJsonArrayItem(workersJsonArray, "name", selectedWorker, "id");
+                    String password = ((TextView)findViewById(R.id.worker_login_password_field)).getText().toString();
 
-                        final JSONObject json = new JSONObject();
-                        json.put("password", password);
-                        json.put("gcm_token", SPManager.getGCMToken(WorkerLoginActivity.context));
+                    final JSONObject json = new JSONObject();
+                    json.put("company_id", SPManager.getString(SPManager.SP_COMPANY_NAME, getApplicationContext()));
+                    json.put("site_id", SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext()));
+                    json.put("worker_id", workerId);
+                    json.put("password", password);
+                    json.put("gcm_token", SPManager.getGCMToken(WorkerLoginActivity.context));
 
-                        String url = HTTP.SERVER_IP + "api/v1/devices";
-                        HTTP.POST(url, json, new Response.Listener<JSONObject>(){
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                Log.i(MainActivity.TAG, "Registration token send response: " + response.toString());
-                                finish();
-                            }
-                        }, WorkerLoginActivity.context);
-                    } catch (IOException e) {
-                        Log.i(MainActivity.TAG, "Token getting error: " + e.toString());
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        Log.i(MainActivity.TAG, "JSON error: " + e.toString());
-                        e.printStackTrace();
-                    }
+                    String url = HTTP.SERVER_IP + "api/v1/devices";
+                    HTTP.POST(url, json, new Response.Listener<JSONObject>(){
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.i(MainActivity.TAG, "Registration token send response: " + response.toString());
+                            finish();
+                        }
+                    }, WorkerLoginActivity.context);
+                } catch (IOException e) {
+                    Log.i(MainActivity.TAG, "Token getting error: " + e.toString());
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    Log.i(MainActivity.TAG, "JSON error: " + e.toString());
+                    e.printStackTrace();
                 }
             }
         }).start();
     }
 
     private void initSpinner() {
-        String company = SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext());
+        String company_id = SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext());
         String token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
-        String site = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
-        String url = HTTP.SERVER_IP + "api/v1/companies/" + company + "/sites/" + site + "/workers?access_token=" + token;
-
-        Log.i(MainActivity.TAG, url);
+        String site_id = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
+        String url = HTTP.SERVER_IP + "api/v1/companies/" + company_id + "/sites/" + site_id + "/workers?access_token=" + token;
 
         HTTP.GETArray(url, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 try {
+                    workersJsonArray = response;
                     List<String> workers = new ArrayList<String>();
 
-                    for(int i = 0; i < response.length(); i++) {
-                        workers.add(response.getJSONObject(i).getString("name"));
+                    for(int i = 0; i < workersJsonArray.length(); i++) {
+                        workers.add(workersJsonArray.getJSONObject(i).getString("name"));
                     }
 
-                    Spinner spinner = (Spinner) findViewById(R.id.settings_site_spinner);
+                    Spinner spinner = (Spinner) findViewById(R.id.worker_login_spinner);
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, workers);
                     spinner.setAdapter(adapter);
                     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                            String selectedWorker = parent.getItemAtPosition(position).toString();
+                            MainActivity.getJsonArrayItem(workersJsonArray, "name", selectedWorker, "id");
                         }
 
                         @Override

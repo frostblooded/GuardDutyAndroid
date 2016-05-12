@@ -31,7 +31,7 @@ public class SettingsLoginActivity extends AppCompatActivity {
     }
 
     public void loginCompany(View v) {
-        String company_name = ((EditText) findViewById(R.id.settings_login_company_name_field)).getText().toString();
+        final String company_name = ((EditText) findViewById(R.id.settings_login_company_name_field)).getText().toString();
         String password = ((EditText) findViewById(R.id.settings_login_password_field)).getText().toString();
 
         JSONObject json = new JSONObject();
@@ -50,17 +50,20 @@ public class SettingsLoginActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 String token = "";
                 String company_id = "";
+                String company_name = "";
 
                 try {
                     token = response.getString("access_token");
                     company_id = response.getString("company_id");
+                    company_name = response.getString("company_name");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 Log.i(MainActivity.TAG, "Company login response token: " + token);
-                SPManager.saveString(SPManager.SP_ACCESS_TOKEN, token, context);
-                SPManager.saveString(SPManager.SP_COMPANY_ID, company_id, context);
+                SPManager.saveString(SPManager.SP_ACCESS_TOKEN, token, getApplicationContext());
+                SPManager.saveString(SPManager.SP_COMPANY_ID, company_id, getApplicationContext());
+                SPManager.saveString(SPManager.SP_COMPANY_NAME, company_name, getApplicationContext());
 
                 boolean noError = response.isNull("error");
 
