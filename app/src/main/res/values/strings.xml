@@ -5,8 +5,6 @@
     <string name="sign_out_worker">Sign out worker</string>
     <string name="company_name">Company Name</string>
     <string name="password">Password</string>
-    <string name="first_name">First name</string>
-    <string name="last_name">Last name</string>
     <string name="log_in">Log In</string>
     <string name="remainging_time">Remaining time</string>
     <string name="time">time</string>

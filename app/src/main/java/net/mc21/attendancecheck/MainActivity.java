@@ -44,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        String company_name = SPManager.getString(SPManager.SP_COMPANY_NAME, this);
-        String site_name = SPManager.getString(SPManager.SP_SITE_NAME, this);
+        String company_id = SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext());
+        String site_id = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
 
-        if(company_name == null || site_name == null) {
+        if(company_id == null || site_id == null) {
             showToast(getString(R.string.please_login_to_configure_application), getApplicationContext());
             openSettingsLogin(null);
         }

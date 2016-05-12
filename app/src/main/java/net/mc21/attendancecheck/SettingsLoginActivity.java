@@ -50,12 +50,10 @@ public class SettingsLoginActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 String token = "";
                 String company_id = "";
-                String company_name = "";
 
                 try {
                     token = response.getString("access_token");
                     company_id = response.getString("company_id");
-                    company_name = response.getString("company_name");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -63,7 +61,6 @@ public class SettingsLoginActivity extends AppCompatActivity {
                 Log.i(MainActivity.TAG, "Company login response token: " + token);
                 SPManager.saveString(SPManager.SP_ACCESS_TOKEN, token, context);
                 SPManager.saveString(SPManager.SP_COMPANY_ID, company_id, context);
-                SPManager.saveString(SPManager.SP_COMPANY_NAME, company_name, context);
 
                 boolean noError = response.isNull("error");
 

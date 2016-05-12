@@ -2,6 +2,7 @@ package net.mc21.attendancecheck;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,11 +15,13 @@ import net.mc21.connections.HTTP;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity {
+    private JSONArray workersJsonArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,19 +30,36 @@ public class SettingsActivity extends AppCompatActivity {
         initSpinner();
     }
 
+    private String getJsonArrayItem(JSONArray array, String key, String value, String returnKey) {
+        for(int i = 0; i < array.length(); i++) {
+            try {
+                JSONObject obj = array.getJSONObject(i);
+
+                if(obj.getString(key) == value)
+                    return obj.getString(returnKey);
+            } catch (JSONException e) {
+                Log.i(MainActivity.TAG, "JSON error: " + e.toString());
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
     private void initSpinner() {
-        String company = SPManager.getString(SPManager.SP_COMPANY_NAME, getApplicationContext());
+        String company_id = SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext());
         String token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
-        String url = HTTP.SERVER_IP + "api/v1/companies/" + company + "/sites?access_token=" + token;
+        String url = HTTP.SERVER_IP + "api/v1/companies/" + company_id + "/sites?access_token=" + token;
 
         HTTP.GETArray(url, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(JSONArray response) {
+            public void onResponse(final JSONArray response) {
                 try {
+                    workersJsonArray = response;
                     List<String> sites = new ArrayList<String>();
 
-                    for(int i = 0; i < response.length(); i++) {
-                        sites.add(response.getJSONObject(i).getString("name"));
+                    for(int i = 0; i < workersJsonArray.length(); i++) {
+                        sites.add(workersJsonArray.getJSONObject(i).getString("name"));
                     }
 
                     Spinner spinner = (Spinner) findViewById(R.id.settings_site_spinner);
@@ -49,13 +69,12 @@ public class SettingsActivity extends AppCompatActivity {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             String selectedSite = parent.getItemAtPosition(position).toString();
-                            SPManager.saveString(SPManager.SP_SITE_NAME, selectedSite, getApplicationContext());
+                            String site_id = getJsonArrayItem(workersJsonArray, "name", selectedSite, "id");
+                            SPManager.saveString(SPManager.SP_SITE_ID, site_id, getApplicationContext());
                         }
 
                         @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
-                        }
+                        public void onNothingSelected(AdapterView<?> parent) {}
                     });
                 } catch (JSONException e) {
                     e.printStackTrace();
