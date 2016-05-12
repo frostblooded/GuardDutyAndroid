@@ -70,6 +70,7 @@ public class SettingsLoginActivity extends AppCompatActivity {
                 if(noError){
                     Intent i = new Intent(MainActivity.context, SettingsActivity.class);
                     startActivity(i);
+                    finish();
                 }
             }
         }, this);

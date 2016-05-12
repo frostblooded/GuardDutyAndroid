@@ -45,7 +45,7 @@ public class WorkerLoginActivity extends AppCompatActivity {
                     String password = ((TextView)findViewById(R.id.worker_login_password_field)).getText().toString();
 
                     final JSONObject json = new JSONObject();
-                    json.put("company_id", SPManager.getString(SPManager.SP_COMPANY_NAME, getApplicationContext()));
+                    json.put("company_id", SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext()));
                     json.put("site_id", SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext()));
                     json.put("worker_id", workerId);
                     json.put("password", password);
@@ -85,6 +85,7 @@ public class WorkerLoginActivity extends AppCompatActivity {
 
                     for(int i = 0; i < workersJsonArray.length(); i++) {
                         workers.add(workersJsonArray.getJSONObject(i).getString("name"));
+                        Log.i(MainActivity.TAG, workers.get(i).toString());
                     }
 
                     Spinner spinner = (Spinner) findViewById(R.id.worker_login_spinner);
