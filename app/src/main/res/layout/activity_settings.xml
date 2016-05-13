@@ -12,11 +12,12 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/routes"
-        android:id="@+id/settings_workers_button"
+        android:text="@string/create_new_route"
+        android:id="@+id/settings_new_route_button"
         android:layout_marginBottom="152dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="openRouteCreation" />
 
     <TextView
         android:layout_width="wrap_content"
