@@ -3,10 +3,12 @@ package net.mc21.attendancecheck;
 import android.*;
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -34,14 +36,34 @@ public class RouteCreationActivity extends FragmentActivity implements OnMapRead
     private GoogleMap mMap;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(!GPSIsEnabled()) {
+            enableGPS();
+            MainActivity.showToast("Please turn on the GPS. Otherwise the map won't work properly.", getApplicationContext());
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         activity = this;
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_creation);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    private void enableGPS() {
+        Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivity(i);
+    }
+
+    private boolean GPSIsEnabled() {
+        LocationManager manager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
     private void initMap() {
@@ -89,6 +111,7 @@ public class RouteCreationActivity extends FragmentActivity implements OnMapRead
         Location bestLocation = null;
 
         for(String provider: providers) {
+            // It is okay if the bottom line is underlined... depending on how you use it
             Location l = mLocationManager.getLastKnownLocation(provider);
 
             if(l == null) {
