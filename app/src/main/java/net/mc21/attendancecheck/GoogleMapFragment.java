@@ -21,6 +21,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
@@ -31,6 +32,11 @@ public class GoogleMapFragment extends SupportMapFragment implements OnMapReadyC
 
     private final static int START_ZOOM = 15;
     private GoogleMap mMap;
+
+    public void createMarker(Location location) {
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.addMarker(new MarkerOptions().position(latLng));
+    }
 
     @Override
     public void onResume() {
@@ -63,9 +69,14 @@ public class GoogleMapFragment extends SupportMapFragment implements OnMapReadyC
         setCameraOnDevicePos();
     }
 
+    public boolean isReady() {
+        return mMap != null;
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
         boolean hasPermissions = ActivityCompat.checkSelfPermission(getActivity(), PERMISSION_1) == PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(), PERMISSION_2) == PackageManager.PERMISSION_GRANTED;
 
@@ -97,7 +108,7 @@ public class GoogleMapFragment extends SupportMapFragment implements OnMapReadyC
         mMap.setMyLocationEnabled(true);
     }
 
-    private Location getLastKnownLocation() {
+    public Location getLastKnownLocation() {
         LocationManager mLocationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
         List<String> providers = mLocationManager.getProviders(true);
         Location bestLocation = null;
