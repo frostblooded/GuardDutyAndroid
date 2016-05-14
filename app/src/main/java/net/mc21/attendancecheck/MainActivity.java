@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        setContentView(R.layout.activity_main);
 
         String company_id = SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext());
         String site_id = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
@@ -75,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         context = this;
         initWorkerButton();
-        setContentView(R.layout.activity_main);
     }
 
 
