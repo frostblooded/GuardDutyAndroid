@@ -16,8 +16,15 @@ public class RouteCreationActivity extends AppCompatActivity {
     }
 
     public void createCheckpoint(View v) {
-        if(!mapFragment.isReady())
+        if(!mapFragment.GPSIsEnabled()) {
+            mapFragment.enableGPS();
+            return;
+        }
+
+        if(!mapFragment.isReady()) {
             MainActivity.showToast("Map is not ready yet. Please wait a moment and try again!", getApplicationContext());
+            return;
+        }
 
         mapFragment.createMarker(mapFragment.getLastKnownLocation());
     }

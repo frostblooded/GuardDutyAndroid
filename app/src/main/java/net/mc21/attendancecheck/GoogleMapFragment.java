@@ -21,8 +21,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GoogleMapFragment extends SupportMapFragment implements OnMapReadyCallback {
@@ -32,80 +34,30 @@ public class GoogleMapFragment extends SupportMapFragment implements OnMapReadyC
 
     private final static int START_ZOOM = 15;
     private GoogleMap mMap;
+    private List<Marker> markers;
 
     public void createMarker(Location location) {
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(latLng));
+        Marker m = mMap.addMarker(new MarkerOptions().position(latLng));
+        markers.add(m);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if(!GPSIsEnabled()) {
-            enableGPS();
-            MainActivity.showToast("Please turn on the GPS. Otherwise the map won't work properly.", getActivity());
-        }
+    public List<Marker> getMarkers() {
+        return markers;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getMapAsync(this);
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    private void enableGPS() {
+    public void enableGPS() {
         Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         startActivity(i);
     }
 
-    private boolean GPSIsEnabled() {
+    public boolean GPSIsEnabled() {
         LocationManager manager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
         return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
-    private void initMap() {
-        setLocationEnabled();
-        setCameraOnDevicePos();
-    }
-
     public boolean isReady() {
         return mMap != null;
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        boolean hasPermissions = ActivityCompat.checkSelfPermission(getActivity(), PERMISSION_1) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(), PERMISSION_2) == PackageManager.PERMISSION_GRANTED;
-
-        if (!hasPermissions) {
-            requestPermission();
-            return;
-        }
-
-        initMap();
-    }
-
-    private void requestPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), PERMISSION_1)) {
-            MainActivity.showToast("GPS is required to get your location. Please allow it.", getActivity());
-        }
-
-        ActivityCompat.requestPermissions(getActivity(), new String[]{PERMISSION_1, PERMISSION_2}, ACCESS_LOCATION_REQUEST_CODE);
-    }
-
-    private void setLocationEnabled() {
-        boolean hasPermissions = ActivityCompat.checkSelfPermission(getActivity(), PERMISSION_1) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(), PERMISSION_2) == PackageManager.PERMISSION_GRANTED;
-
-        if (!hasPermissions) {
-            Log.i(MainActivity.TAG, "No permissions for location!");
-            return;
-        }
-
-        mMap.setMyLocationEnabled(true);
     }
 
     public Location getLastKnownLocation() {
@@ -129,16 +81,36 @@ public class GoogleMapFragment extends SupportMapFragment implements OnMapReadyC
         return bestLocation;
     }
 
-    private void setCameraOnDevicePos() {
-        Location location = getLastKnownLocation();
+    @Override
+    public void onResume() {
+        super.onResume();
 
-        if(location == null) {
-            Log.i(MainActivity.TAG, "Last known location is null");
+        if(!GPSIsEnabled()) {
+            enableGPS();
+            MainActivity.showToast("Please turn on the GPS. Otherwise the map won't work properly.", getActivity());
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        markers = new ArrayList<>();
+        getMapAsync(this);
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        boolean hasPermissions = ActivityCompat.checkSelfPermission(getActivity(), PERMISSION_1) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), PERMISSION_2) == PackageManager.PERMISSION_GRANTED;
+
+        if (!hasPermissions) {
+            requestPermission();
             return;
         }
 
-        LatLng devicePos = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(devicePos, START_ZOOM));
+        initMap();
     }
 
     @Override
@@ -159,5 +131,42 @@ public class GoogleMapFragment extends SupportMapFragment implements OnMapReadyC
 
                 break;
         }
+    }
+
+    private void initMap() {
+        setLocationEnabled();
+        setCameraOnDevicePos();
+    }
+
+    private void requestPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), PERMISSION_1)) {
+            MainActivity.showToast("GPS is required to get your location. Please allow it.", getActivity());
+        }
+
+        ActivityCompat.requestPermissions(getActivity(), new String[]{PERMISSION_1, PERMISSION_2}, ACCESS_LOCATION_REQUEST_CODE);
+    }
+
+    private void setLocationEnabled() {
+        boolean hasPermissions = ActivityCompat.checkSelfPermission(getActivity(), PERMISSION_1) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), PERMISSION_2) == PackageManager.PERMISSION_GRANTED;
+
+        if (!hasPermissions) {
+            Log.i(MainActivity.TAG, "No permissions for location!");
+            return;
+        }
+
+        mMap.setMyLocationEnabled(true);
+    }
+
+    private void setCameraOnDevicePos() {
+        Location location = getLastKnownLocation();
+
+        if(location == null) {
+            Log.i(MainActivity.TAG, "Last known location is null");
+            return;
+        }
+
+        LatLng devicePos = new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(devicePos, START_ZOOM));
     }
 }
