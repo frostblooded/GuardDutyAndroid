@@ -66,7 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void openRouteCreation(View v) {
-        Intent i = new Intent(getApplicationContext(), GoogleMapFragment.class);
+        Intent i = new Intent(getApplicationContext(), RouteCreationActivity.class);
         startActivity(i);
     }
 }

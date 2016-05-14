@@ -82,7 +82,8 @@
 
         <activity
             android:name=".GoogleMapFragment"
-            android:label="@string/title_activity_route_creation"></activity>
+            android:label="@string/title_activity_route_creation" />
+        <activity android:name=".RouteCreationActivity"></activity>
     </application>
 
 </manifest>

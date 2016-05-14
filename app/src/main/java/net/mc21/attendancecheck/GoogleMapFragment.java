@@ -12,6 +12,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,35 +24,28 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
-public class GoogleMapFragment extends FragmentActivity implements OnMapReadyCallback {
+public class GoogleMapFragment extends SupportMapFragment implements OnMapReadyCallback {
     private final static int ACCESS_LOCATION_REQUEST_CODE = 19;
     private final static String PERMISSION_1 = Manifest.permission.ACCESS_FINE_LOCATION;
     private final static String PERMISSION_2 = Manifest.permission.ACCESS_COARSE_LOCATION;
 
     private final static int START_ZOOM = 15;
-
-    private Activity activity;
     private GoogleMap mMap;
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         if(!GPSIsEnabled()) {
             enableGPS();
-            MainActivity.showToast("Please turn on the GPS. Otherwise the map won't work properly.", getApplicationContext());
+            MainActivity.showToast("Please turn on the GPS. Otherwise the map won't work properly.", getActivity());
         }
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        activity = this;
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_google_map);
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getMapAsync(this);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     private void enableGPS() {
@@ -58,7 +54,7 @@ public class GoogleMapFragment extends FragmentActivity implements OnMapReadyCal
     }
 
     private boolean GPSIsEnabled() {
-        LocationManager manager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        LocationManager manager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
         return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
@@ -70,8 +66,8 @@ public class GoogleMapFragment extends FragmentActivity implements OnMapReadyCal
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        boolean hasPermissions = ActivityCompat.checkSelfPermission(this, PERMISSION_1) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, PERMISSION_2) == PackageManager.PERMISSION_GRANTED;
+        boolean hasPermissions = ActivityCompat.checkSelfPermission(getActivity(), PERMISSION_1) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), PERMISSION_2) == PackageManager.PERMISSION_GRANTED;
 
         if (!hasPermissions) {
             requestPermission();
@@ -82,16 +78,16 @@ public class GoogleMapFragment extends FragmentActivity implements OnMapReadyCal
     }
 
     private void requestPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, PERMISSION_1)) {
-            MainActivity.showToast("GPS is required to get your location. Please allow it.", getApplicationContext());
+        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), PERMISSION_1)) {
+            MainActivity.showToast("GPS is required to get your location. Please allow it.", getActivity());
         }
 
-        ActivityCompat.requestPermissions(activity, new String[]{PERMISSION_1, PERMISSION_2}, ACCESS_LOCATION_REQUEST_CODE);
+        ActivityCompat.requestPermissions(getActivity(), new String[]{PERMISSION_1, PERMISSION_2}, ACCESS_LOCATION_REQUEST_CODE);
     }
 
     private void setLocationEnabled() {
-        boolean hasPermissions = ActivityCompat.checkSelfPermission(this, PERMISSION_1) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, PERMISSION_2) == PackageManager.PERMISSION_GRANTED;
+        boolean hasPermissions = ActivityCompat.checkSelfPermission(getActivity(), PERMISSION_1) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), PERMISSION_2) == PackageManager.PERMISSION_GRANTED;
 
         if (!hasPermissions) {
             Log.i(MainActivity.TAG, "No permissions for location!");
@@ -102,7 +98,7 @@ public class GoogleMapFragment extends FragmentActivity implements OnMapReadyCal
     }
 
     private Location getLastKnownLocation() {
-        LocationManager mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        LocationManager mLocationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
         List<String> providers = mLocationManager.getProviders(true);
         Location bestLocation = null;
 
@@ -143,11 +139,11 @@ public class GoogleMapFragment extends FragmentActivity implements OnMapReadyCal
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                    MainActivity.showToast("Permission granted!", getApplicationContext());
+                    MainActivity.showToast("Permission granted!", getActivity());
                     initMap();
                 } else {
-                    MainActivity.showToast("The map can't find your location! Please enter the map again and allow it to use GPS.", getApplicationContext());
-                    finish();
+                    MainActivity.showToast("The map can't find your location! Please enter the map again and allow it to use GPS.", getActivity());
+                    getActivity().finish();
                 }
 
                 break;
