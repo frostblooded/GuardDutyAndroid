@@ -3,12 +3,10 @@ package net.mc21.attendancecheck;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.android.volley.Response;
 
@@ -16,7 +14,6 @@ import net.mc21.connections.HTTP;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void openRouteCreation(View v) {
-        Intent i = new Intent(getApplicationContext(), RouteCreationActivity.class);
+        Intent i = new Intent(getApplicationContext(), GoogleMapFragment.class);
         startActivity(i);
     }
 }

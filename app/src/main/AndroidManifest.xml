@@ -81,7 +81,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".RouteCreationActivity"
+            android:name=".GoogleMapFragment"
             android:label="@string/title_activity_route_creation"></activity>
     </application>
 

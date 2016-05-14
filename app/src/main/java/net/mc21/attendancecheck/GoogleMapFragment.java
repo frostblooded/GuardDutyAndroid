@@ -1,16 +1,13 @@
 package net.mc21.attendancecheck;
 
-import android.*;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -21,11 +18,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-public class RouteCreationActivity extends FragmentActivity implements OnMapReadyCallback {
+public class GoogleMapFragment extends FragmentActivity implements OnMapReadyCallback {
     private final static int ACCESS_LOCATION_REQUEST_CODE = 19;
     private final static String PERMISSION_1 = Manifest.permission.ACCESS_FINE_LOCATION;
     private final static String PERMISSION_2 = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -49,7 +45,7 @@ public class RouteCreationActivity extends FragmentActivity implements OnMapRead
     protected void onCreate(Bundle savedInstanceState) {
         activity = this;
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_route_creation);
+        setContentView(R.layout.fragment_google_map);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
