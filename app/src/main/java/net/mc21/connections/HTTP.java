@@ -39,7 +39,7 @@ public class HTTP {
 
     private static void makeJsonObjectRequest(int method, String url, JSONObject sentData,
                                     Response.Listener<JSONObject> listener, ProgressDialog progressDialog, Context context) {
-        Response.ErrorListener errorListener = new CustomErrorListener(progressDialog);
+        Response.ErrorListener errorListener = new CustomErrorListener(progressDialog, context);
         JsonObjectRequest jsonRequest = new JsonObjectRequest(method, url, sentData,
                 listener, errorListener);
         jsonRequest.setRetryPolicy(new DefaultRetryPolicy(REQUEST_TIMEOUT,
@@ -66,7 +66,7 @@ public class HTTP {
 
     private static void makeJsonArrayRequest(int method, String url, JSONArray sentData,
                                              Response.Listener<JSONArray> listener, ProgressDialog progressDialog, Context context) {
-        Response.ErrorListener errorListener = new CustomErrorListener(progressDialog);
+        Response.ErrorListener errorListener = new CustomErrorListener(progressDialog, context);
         JsonArrayRequest jsonRequest = new JsonArrayRequest(method, url, sentData,
                 listener, errorListener);
         jsonRequest.setRetryPolicy(new DefaultRetryPolicy(REQUEST_TIMEOUT,

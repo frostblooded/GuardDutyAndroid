@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         ConnectionResult connectionResult = new ConnectionResult(result);
 
         if(!connectionResult.isSuccess()) {
-            Log.i(MainActivity.TAG, connectionResult.toString());
+            showToast(connectionResult.toString(), MainActivity.context);
         }
 
         return result == ConnectionResult.SUCCESS;

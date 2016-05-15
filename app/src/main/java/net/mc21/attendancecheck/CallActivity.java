@@ -31,7 +31,6 @@ public class CallActivity extends AppCompatActivity {
     private static int DEFAULT_SUBMISSION_INTERVAL = 15 * 60 * 1000;
     private static int DEFAILT_ALARM_TIME = 60 * 1000;
     private static int TICK_INTERVAL = 1000;
-    private static int ALLOWED_PUSH_NOTIFICATION_DELAY = 2 * 60 * 1000;
 
     public static boolean startedFromPushNotification = false;
     public String call_id;

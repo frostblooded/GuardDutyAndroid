@@ -78,7 +78,7 @@ public class RouteCreationActivity extends AppCompatActivity {
         HTTP.POST(url, sentData, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.i(MainActivity.TAG, "Route creationg response: " + response.toString());
+                Log.i(MainActivity.TAG, "Route creation response: " + response.toString());
                 MainActivity.showToast("Route created successfully!", getApplicationContext());
                 progressDialog.dismiss();
                 finish();

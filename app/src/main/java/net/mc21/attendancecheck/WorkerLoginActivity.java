@@ -43,42 +43,46 @@ public class WorkerLoginActivity extends AppCompatActivity {
     }
 
     public void loginWorker(View v) {
-        progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Logging in");
+        if(workersJsonArray != null) {
+            progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Logging in");
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Spinner spinner = (Spinner) findViewById(R.id.worker_login_spinner);
-                    String selectedWorker = (String) spinner.getSelectedItem();
-                    String workerId = MainActivity.getJsonArrayItem(workersJsonArray, "name", selectedWorker, "id");
-                    String password = ((TextView)findViewById(R.id.worker_login_password_field)).getText().toString();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Spinner spinner = (Spinner) findViewById(R.id.worker_login_spinner);
+                        String selectedWorker = (String) spinner.getSelectedItem();
+                        String workerId = MainActivity.getJsonArrayItem(workersJsonArray, "name", selectedWorker, "id");
+                        String password = ((TextView)findViewById(R.id.worker_login_password_field)).getText().toString();
 
-                    final JSONObject json = new JSONObject();
-                    json.put("company_id", SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext()));
-                    json.put("site_id", SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext()));
-                    json.put("worker_id", workerId);
-                    json.put("password", password);
-                    json.put("gcm_token", SPManager.getGCMToken(WorkerLoginActivity.context));
+                        final JSONObject json = new JSONObject();
+                        json.put("company_id", SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext()));
+                        json.put("site_id", SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext()));
+                        json.put("worker_id", workerId);
+                        json.put("password", password);
+                        json.put("gcm_token", SPManager.getGCMToken(WorkerLoginActivity.context));
 
-                    String url = HTTP.SERVER_IP + "api/v1/devices";
-                    HTTP.POST(url, json, new Response.Listener<JSONObject>(){
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.i(MainActivity.TAG, "Registration token send response: " + response.toString());
-                            progressDialog.hide();
-                            finish();
-                        }
-                    }, progressDialog, getApplicationContext());
-                } catch (IOException e) {
-                    Log.i(MainActivity.TAG, "Token getting error: " + e.toString());
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    Log.i(MainActivity.TAG, "JSON error: " + e.toString());
-                    e.printStackTrace();
+                        String url = HTTP.SERVER_IP + "api/v1/devices";
+                        HTTP.POST(url, json, new Response.Listener<JSONObject>(){
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.i(MainActivity.TAG, "Registration token send response: " + response.toString());
+                                progressDialog.hide();
+                                finish();
+                            }
+                        }, progressDialog, getApplicationContext());
+                    } catch (IOException e) {
+                        Log.i(MainActivity.TAG, "Token getting error: " + e.toString());
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        Log.i(MainActivity.TAG, "JSON error: " + e.toString());
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }).start();
+            }).start();
+        } else {
+            MainActivity.showToast("No internet connection!", getApplicationContext());
+        }
     }
 
     private void initSpinner() {
@@ -98,7 +102,6 @@ public class WorkerLoginActivity extends AppCompatActivity {
 
                     for(int i = 0; i < workersJsonArray.length(); i++) {
                         workers.add(workersJsonArray.getJSONObject(i).getString("name"));
-                        Log.i(MainActivity.TAG, workers.get(i).toString());
                     }
 
                     Spinner spinner = (Spinner) findViewById(R.id.worker_login_spinner);
