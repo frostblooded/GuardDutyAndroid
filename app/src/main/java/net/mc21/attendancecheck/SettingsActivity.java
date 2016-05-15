@@ -30,12 +30,12 @@ public class SettingsActivity extends AppCompatActivity {
         initSpinner();
     }
 
-    private int getElementIndex(JSONArray array, String key, String value) {
+    private int getElementIndex(JSONArray array, String key, int value) {
         for(int i = 0; i < array.length(); i++) {
             try {
                 JSONObject obj = array.getJSONObject(i);
 
-                if(obj.getString(key) == value)
+                if(obj.getInt(key) == value)
                     return i;
             } catch (JSONException e) {
                 Log.i(MainActivity.TAG, "JSON error: " + e.toString());
@@ -68,7 +68,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                     // Set default selection
                     String siteId = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
-                    int selectedIndex = getElementIndex(response, "id", siteId);
+                    int selectedIndex = getElementIndex(response, "id", Integer.parseInt(siteId));
                     Log.i(MainActivity.TAG, "Default selection: " + selectedIndex);
                     spinner.setSelection(selectedIndex);
 
