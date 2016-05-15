@@ -39,7 +39,9 @@ public class WorkerLoginActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        progressDialog.dismiss();
+
+        if(progressDialog != null)
+            progressDialog.dismiss();
     }
 
     public void loginWorker(View v) {

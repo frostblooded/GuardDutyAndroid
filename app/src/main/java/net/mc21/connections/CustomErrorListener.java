@@ -31,16 +31,14 @@ public class CustomErrorListener implements Response.ErrorListener {
             String response = "";
 
             if(error instanceof NoConnectionError) {
-                MainActivity.showToast("No internet connection!", context);
-                return;
-            }
-
-            if(error.networkResponse != null) {
+                response = "No internet connection!";
+            } else if(error.networkResponse != null) {
                 response = new String(error.networkResponse.data, "UTF-8");
+                JSONObject json = new JSONObject(response);
+                response = "Error: " + json.getString("error");
             }
 
-            JSONObject json = new JSONObject(response);
-            MainActivity.showToast("Error: " + json.getString("error"), context);
+            MainActivity.showToast(response, context);
         } catch (UnsupportedEncodingException e) {
             Log.i(MainActivity.TAG, "Unsupported encoding: " + e.toString());
             e.printStackTrace();

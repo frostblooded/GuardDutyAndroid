@@ -32,7 +32,9 @@ public class RouteCreationActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        progressDialog.dismiss();
+
+        if(progressDialog != null)
+            progressDialog.dismiss();
     }
 
     public void createCheckpoint(View v) {
@@ -80,7 +82,7 @@ public class RouteCreationActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.i(MainActivity.TAG, "Route creation response: " + response.toString());
                 MainActivity.showToast("Route created successfully!", getApplicationContext());
-                progressDialog.dismiss();
+                progressDialog.hide();
                 finish();
             }
         }, progressDialog, getApplicationContext());

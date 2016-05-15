@@ -36,7 +36,9 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        progressDialog.dismiss();
+
+        if(progressDialog != null)
+            progressDialog.dismiss();
     }
 
     private int getElementIndex(JSONArray array, String key, int value) {
