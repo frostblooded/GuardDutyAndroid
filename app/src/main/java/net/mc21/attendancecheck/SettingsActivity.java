@@ -1,5 +1,6 @@
 package net.mc21.attendancecheck;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import com.android.volley.Response;
@@ -22,12 +24,19 @@ import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity {
     private JSONArray sitesJsonArray;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         initSpinner();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        progressDialog.dismiss();
     }
 
     private int getElementIndex(JSONArray array, String key, int value) {
@@ -47,6 +56,8 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void initSpinner() {
+        progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Getting sites", true);
+
         String company_id = SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext());
         String token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
         String url = HTTP.SERVER_IP + "api/v1/companies/" + company_id + "/sites?access_token=" + token;
@@ -85,6 +96,8 @@ public class SettingsActivity extends AppCompatActivity {
                     });
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } finally {
+                    progressDialog.hide();
                 }
             }
         }, getApplicationContext());

@@ -1,11 +1,15 @@
 package net.mc21.attendancecheck;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -24,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     public static Context context;
     public final static String TAG = "AttendanceCheck";
     public final static String GCM_TOKEN_REQUEST_SECRET = "394378341767";
+
+    private ProgressDialog progressDialog;
 
     public static boolean isGoogleServicesAvailable() {
         GoogleApiAvailability api = GoogleApiAvailability.getInstance();
@@ -78,7 +84,11 @@ public class MainActivity extends AppCompatActivity {
         initWorkerButton();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        progressDialog.dismiss();
+    }
 
     public void toggleButtonStatus() {
         final String signout_worker_text = getString(R.string.sign_out_worker);
@@ -107,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void signOutWorker() {
+        progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Signing out", true);
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -118,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onResponse(JSONObject response) {
                                 Log.i(MainActivity.TAG, "Signout device response: " + response.toString());
                                 toggleButtonStatus();
+                                progressDialog.hide();
                             }
                         }, MainActivity.context);
                     } catch (IOException e) {
@@ -132,6 +145,8 @@ public class MainActivity extends AppCompatActivity {
     // Changes 'log in worker' button to 'sign out worker' button
     // based on if the device is already logged in
     private void initWorkerButton() {
+        progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Checking device login status", true);
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -150,6 +165,8 @@ public class MainActivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 Log.i(MainActivity.TAG, "JSON error: " + e.toString());
                                 e.printStackTrace();
+                            } finally {
+                                progressDialog.hide();
                             }
                         }
                     }, MainActivity.context);

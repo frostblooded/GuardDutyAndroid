@@ -1,5 +1,6 @@
 package net.mc21.attendancecheck;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import java.util.List;
 public class WorkerLoginActivity extends AppCompatActivity {
     private JSONArray workersJsonArray;
     public static Context context;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,15 @@ public class WorkerLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_worker_login);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        progressDialog.dismiss();
+    }
+
     public void loginWorker(View v) {
+        progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Logging in");
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -56,6 +66,7 @@ public class WorkerLoginActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             Log.i(MainActivity.TAG, "Registration token send response: " + response.toString());
+                            progressDialog.hide();
                             finish();
                         }
                     }, WorkerLoginActivity.context);

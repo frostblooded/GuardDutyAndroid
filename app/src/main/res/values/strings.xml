@@ -16,4 +16,5 @@
     <string name="worker_login">Worker login</string>
     <string name="create_new_route">Create new route</string>
     <string name="title_activity_route_creation">Map</string>
+    <string name="please_wait">Please wait</string>
 </resources>

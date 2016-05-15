@@ -1,5 +1,6 @@
 package net.mc21.attendancecheck;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,13 +19,20 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class RouteCreationActivity extends AppCompatActivity {
-    GoogleMapFragment mapFragment;
+    private GoogleMapFragment mapFragment;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_creation);
         mapFragment = (GoogleMapFragment) getSupportFragmentManager().findFragmentById(R.id.route_creation_map);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        progressDialog.dismiss();
     }
 
     public void createCheckpoint(View v) {
@@ -42,6 +50,7 @@ public class RouteCreationActivity extends AppCompatActivity {
     }
 
     public void finishRoute(View v) {
+        progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Saving route");
         List<Marker> markers = mapFragment.getMarkers();
         JSONArray positionsJSON = new JSONArray();
         JSONObject sentData = new JSONObject();
@@ -71,6 +80,7 @@ public class RouteCreationActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.i(MainActivity.TAG, "Route creationg response: " + response.toString());
                 MainActivity.showToast("Route created successfully!", getApplicationContext());
+                progressDialog.dismiss();
                 finish();
             }
         }, getApplicationContext());
