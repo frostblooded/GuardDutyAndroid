@@ -84,6 +84,6 @@ public class SettingsLoginActivity extends AppCompatActivity {
                     progressDialog.hide();
                 }
             }
-        }, this);
+        }, progressDialog, getApplicationContext());
     }
 }

@@ -69,7 +69,7 @@ public class WorkerLoginActivity extends AppCompatActivity {
                             progressDialog.hide();
                             finish();
                         }
-                    }, WorkerLoginActivity.context);
+                    }, progressDialog, getApplicationContext());
                 } catch (IOException e) {
                     Log.i(MainActivity.TAG, "Token getting error: " + e.toString());
                     e.printStackTrace();
@@ -82,6 +82,8 @@ public class WorkerLoginActivity extends AppCompatActivity {
     }
 
     private void initSpinner() {
+        progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Getting workers");
+
         String company_id = SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext());
         String token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
         String site_id = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
@@ -116,9 +118,11 @@ public class WorkerLoginActivity extends AppCompatActivity {
                     });
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } finally {
+                    progressDialog.hide();
                 }
             }
-        }, getApplicationContext());
+        }, progressDialog, getApplicationContext());
     }
 
     @Override

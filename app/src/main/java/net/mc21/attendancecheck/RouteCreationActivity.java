@@ -83,6 +83,6 @@ public class RouteCreationActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 finish();
             }
-        }, getApplicationContext());
+        }, progressDialog, getApplicationContext());
     }
 }

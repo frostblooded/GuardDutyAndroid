@@ -100,7 +100,7 @@ public class SettingsActivity extends AppCompatActivity {
                     progressDialog.hide();
                 }
             }
-        }, getApplicationContext());
+        }, progressDialog, getApplicationContext());
     }
 
     public void openRouteCreation(View v) {

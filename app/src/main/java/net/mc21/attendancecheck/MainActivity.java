@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                                 toggleButtonStatus();
                                 progressDialog.hide();
                             }
-                        }, MainActivity.context);
+                        }, progressDialog, getApplicationContext());
                     } catch (IOException e) {
                         Log.i(MainActivity.TAG, "Signout error: " + e.toString());
                         e.printStackTrace();
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                                 progressDialog.hide();
                             }
                         }
-                    }, MainActivity.context);
+                    }, progressDialog, getApplicationContext());
                 } catch (IOException e) {
                     Log.i(MainActivity.TAG, "Token acquiring error: " + e.toString());
                     e.printStackTrace();

@@ -73,7 +73,7 @@ public class CallActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.i(MainActivity.TAG, "Token responding result: " + response.toString());
             }
-        }, this);
+        }, null, this);
     }
 
     //Uses deprecated code, but is the only solution I found
