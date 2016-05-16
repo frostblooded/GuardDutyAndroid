@@ -79,11 +79,14 @@ public class SettingsActivity extends AppCompatActivity {
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, sites);
                     spinner.setAdapter(adapter);
 
-                    // Set default selection
                     String siteId = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
-                    int selectedIndex = getElementIndex(response, "id", Integer.parseInt(siteId));
-                    Log.i(MainActivity.TAG, "Default selection: " + selectedIndex);
-                    spinner.setSelection(selectedIndex);
+
+                    if(siteId != null) {
+                        // Set default selection
+                        int selectedIndex = getElementIndex(response, "id", Integer.parseInt(siteId));
+                        Log.i(MainActivity.TAG, "Default selection: " + selectedIndex);
+                        spinner.setSelection(selectedIndex);
+                    }
 
                     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
