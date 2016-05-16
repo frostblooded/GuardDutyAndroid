@@ -52,8 +52,14 @@ public class RouteCreationActivity extends AppCompatActivity {
     }
 
     public void finishRoute(View v) {
-        progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Saving route");
         List<Marker> markers = mapFragment.getMarkers();
+
+        if(markers.size() == 0) {
+            MainActivity.showToast("There are no markers! Please put some first.", getApplicationContext());
+            return;
+        }
+
+        progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Saving route");
         JSONArray positionsJSON = new JSONArray();
         JSONObject sentData = new JSONObject();
 
