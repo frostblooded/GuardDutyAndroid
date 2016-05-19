@@ -17,8 +17,8 @@ import org.json.JSONObject;
 
 public class HTTP {
     public final static int REQUEST_TIMEOUT = 5000;
-    public static String SERVER_IP = "https://hidden-shelf-43728.herokuapp.com/";
-    //public static String SERVER_IP = "http://91.139.243.106:3000/";
+    //public static String SERVER_IP = "https://hidden-shelf-43728.herokuapp.com/";
+    public static String SERVER_IP = "http://91.139.243.106:3000/";
 
     // JSON object
     public static void GET(String url, Response.Listener<JSONObject> listener, ProgressDialog progressDialog, Context context) {
