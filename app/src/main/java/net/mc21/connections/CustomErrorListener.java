@@ -30,9 +30,11 @@ public class CustomErrorListener implements Response.ErrorListener {
         try {
             String response = "";
 
+            // Check if there was no connection
             if(error instanceof NoConnectionError) {
                 response = "No internet connection!";
             } else if(error.networkResponse != null) {
+                // Make data into string
                 response = new String(error.networkResponse.data, "UTF-8");
                 JSONObject json = new JSONObject(response);
                 response = "Error: " + json.getString("error");
@@ -46,6 +48,7 @@ public class CustomErrorListener implements Response.ErrorListener {
             Log.i(MainActivity.TAG, "JSON error: " + e.toString());
             e.printStackTrace();
         } finally {
+            // Hide passed progress dialog
             if(progressDialog != null)
                 progressDialog.hide();
         }

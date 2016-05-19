@@ -57,6 +57,17 @@ public class SettingsActivity extends AppCompatActivity {
         return -1;
     }
 
+    void setSpinnerDefault(Spinner spinner, JSONArray response) {
+        String siteId = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
+
+        if(siteId != null) {
+            // Set default selection
+            int selectedIndex = getElementIndex(response, "id", Integer.parseInt(siteId));
+            Log.i(MainActivity.TAG, "Default selection: " + selectedIndex);
+            spinner.setSelection(selectedIndex);
+        }
+    }
+
     private void initSpinner() {
         progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Getting sites", true);
 
@@ -78,15 +89,7 @@ public class SettingsActivity extends AppCompatActivity {
                     Spinner spinner = (Spinner) findViewById(R.id.settings_site_spinner);
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, sites);
                     spinner.setAdapter(adapter);
-
-                    String siteId = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
-
-                    if(siteId != null) {
-                        // Set default selection
-                        int selectedIndex = getElementIndex(response, "id", Integer.parseInt(siteId));
-                        Log.i(MainActivity.TAG, "Default selection: " + selectedIndex);
-                        spinner.setSelection(selectedIndex);
-                    }
+                    setSpinnerDefault(spinner, response);
 
                     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override

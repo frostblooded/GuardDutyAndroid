@@ -43,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
         return result == ConnectionResult.SUCCESS;
     }
 
+    public static void showToast(String text, Context context) {
+        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+    }
+
     public static String getJsonArrayItem(JSONArray array, String key, String value, String returnKey) {
         for(int i = 0; i < array.length(); i++) {
             try {
@@ -59,8 +63,30 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
-    public static void showToast(String text, Context context) {
-        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+    public void toggleButtonStatus() {
+        final String signout_worker_text = getString(R.string.sign_out_worker);
+        final String login_worker_text = getString(R.string.log_in_as_worker);
+
+        Button b = (Button) findViewById(R.id.menu_worker_login_button);
+        String buttonText = b.getText().toString();
+
+        if(buttonText == signout_worker_text) {
+            b.setText(login_worker_text);
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openWorkerLogin(v);
+                }
+            });
+        } else {
+            b.setText(signout_worker_text);
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    signOutWorker();
+                }
+            });
+        }
     }
 
     @Override
@@ -90,32 +116,6 @@ public class MainActivity extends AppCompatActivity {
 
         if(progressDialog != null)
             progressDialog.dismiss();
-    }
-
-    public void toggleButtonStatus() {
-        final String signout_worker_text = getString(R.string.sign_out_worker);
-        final String login_worker_text = getString(R.string.log_in_as_worker);
-
-        Button b = (Button) findViewById(R.id.menu_worker_login_button);
-        String buttonText = b.getText().toString();
-
-        if(buttonText == signout_worker_text) {
-            b.setText(login_worker_text);
-            b.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openWorkerLogin(v);
-                }
-            });
-        } else {
-            b.setText(signout_worker_text);
-            b.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    signOutWorker();
-                }
-            });
-        }
     }
 
     private void signOutWorker() {
