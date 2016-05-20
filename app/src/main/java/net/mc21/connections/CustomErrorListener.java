@@ -34,7 +34,6 @@ public class CustomErrorListener implements Response.ErrorListener {
             if(error instanceof NoConnectionError) {
                 response = "No internet connection!";
             } else if(error.networkResponse != null) {
-                // Make data into string
                 response = new String(error.networkResponse.data, "UTF-8");
                 JSONObject json = new JSONObject(response);
                 response = "Error: " + json.getString("error");
