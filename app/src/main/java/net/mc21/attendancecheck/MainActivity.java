@@ -126,7 +126,8 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 if(MainActivity.isGoogleServicesAvailable()) {
                     try {
-                        String url = HTTP.SERVER_IP + "api/v1/devices/" + SPManager.getGCMToken(MainActivity.context);
+                        String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
+                        String url = HTTP.SERVER_IP + "api/v1/devices/" + SPManager.getGCMToken(MainActivity.context) + "?access_token=" + access_token;
                         HTTP.DELETE(url, new Response.Listener<JSONObject>(){
                             @Override
                             public void onResponse(JSONObject response) {
@@ -153,7 +154,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    String url = HTTP.SERVER_IP + "api/v1/devices/" + SPManager.getGCMToken(MainActivity.context);
+                    String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
+                    String url = HTTP.SERVER_IP + "api/v1/devices/" + SPManager.getGCMToken(MainActivity.context) + "?access_token=" + access_token;
                     HTTP.GET(url, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {

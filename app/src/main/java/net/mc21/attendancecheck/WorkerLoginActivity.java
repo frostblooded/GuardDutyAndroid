@@ -52,6 +52,7 @@ public class WorkerLoginActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try {
+                        String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
                         Spinner spinner = (Spinner) findViewById(R.id.worker_login_spinner);
                         String selectedWorker = (String) spinner.getSelectedItem();
                         String workerId = MainActivity.getJsonArrayItem(workersJsonArray, "name", selectedWorker, "id");
@@ -63,7 +64,7 @@ public class WorkerLoginActivity extends AppCompatActivity {
                         json.put("password", password);
                         json.put("gcm_token", SPManager.getGCMToken(WorkerLoginActivity.context));
 
-                        String url = HTTP.SERVER_IP + "api/v1/devices";
+                        String url = HTTP.SERVER_IP + "api/v1/devices?access_token=" + access_token;
                         HTTP.POST(url, json, new Response.Listener<JSONObject>(){
                             @Override
                             public void onResponse(JSONObject response) {
