@@ -58,7 +58,6 @@ public class WorkerLoginActivity extends AppCompatActivity {
                         String password = ((TextView)findViewById(R.id.worker_login_password_field)).getText().toString();
 
                         final JSONObject json = new JSONObject();
-                        json.put("company_id", SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext()));
                         json.put("site_id", SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext()));
                         json.put("worker_id", workerId);
                         json.put("password", password);
