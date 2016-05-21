@@ -109,18 +109,6 @@ public class WorkerLoginActivity extends AppCompatActivity {
                     Spinner spinner = (Spinner) findViewById(R.id.worker_login_spinner);
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, workers);
                     spinner.setAdapter(adapter);
-                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            String selectedWorker = parent.getItemAtPosition(position).toString();
-                            MainActivity.getJsonArrayItem(workersJsonArray, "name", selectedWorker, "id");
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
-                        }
-                    });
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } finally {
