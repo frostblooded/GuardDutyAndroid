@@ -89,7 +89,7 @@ public class SettingsActivity extends AppCompatActivity {
                     Spinner spinner = (Spinner) findViewById(R.id.settings_site_spinner);
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, sites);
                     spinner.setAdapter(adapter);
-                    setSpinnerDefault(spinner, response);
+                    setSpinnerDefault(spinner, sitesJsonArray);
 
                     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
