@@ -32,7 +32,7 @@ public class CustomErrorListener implements Response.ErrorListener {
 
             // Check if there was no connection
             if(error instanceof NoConnectionError) {
-                response = "No internet connection!";
+                response = "Can't reach server!";
             } else if(error.networkResponse != null) {
                 response = new String(error.networkResponse.data, "UTF-8");
                 JSONObject json = new JSONObject(response);
