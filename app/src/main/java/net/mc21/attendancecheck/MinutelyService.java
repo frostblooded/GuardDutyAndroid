@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -52,7 +53,11 @@ public class MinutelyService extends Service {
     }
 
     private void doMinutelyWork() {
-        WakeLockManager.acquire(getApplicationContext());
+        // If device has Doze, wake it up before the minutely work,
+        // so that all network operations work correctly
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            WakeLockManager.acquire(getApplicationContext());
+
         String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
         String gcmToken = null;
 
@@ -82,7 +87,9 @@ public class MinutelyService extends Service {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         Log.i(MainActivity.TAG, "Getting worker status check");
-                                        WakeLockManager.release();
+
+                                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                                            WakeLockManager.release();
                                     }
                                 }, null, getApplicationContext());
                             }
