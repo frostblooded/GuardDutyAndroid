@@ -3,9 +3,6 @@ package net.mc21.attendancecheck;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.PowerManager;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +14,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
 import net.mc21.connections.HTTP;
+import net.mc21.minutelywork.MinutelyService;
 
 import org.json.JSONArray;
 import org.json.JSONException;

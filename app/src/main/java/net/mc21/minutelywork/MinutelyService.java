@@ -1,4 +1,4 @@
-package net.mc21.attendancecheck;
+package net.mc21.minutelywork;
 
 import android.app.KeyguardManager;
 import android.app.Service;
@@ -14,6 +14,9 @@ import android.util.Log;
 
 import com.android.volley.Response;
 
+import net.mc21.attendancecheck.MainActivity;
+import net.mc21.attendancecheck.SPManager;
+import net.mc21.attendancecheck.WakeLockManager;
 import net.mc21.connections.HTTP;
 
 import org.json.JSONException;

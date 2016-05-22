@@ -84,7 +84,7 @@
             android:label="@string/title_activity_route_creation" />
         <activity android:name=".RouteCreationActivity" />
 
-        <service android:name=".MinutelyService"/>
+        <service android:name="net.mc21.minutelywork.MinutelyService"/>
     </application>
 
 </manifest>
