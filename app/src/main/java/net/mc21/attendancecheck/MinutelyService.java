@@ -43,15 +43,16 @@ public class MinutelyService extends Service {
                 public void run() {
                     Log.i(MainActivity.TAG, "Tick");
                     doMinutelyWork();
-                    handler.postDelayed(this, MINUTE);
+                    handler.postDelayed(this, SECOND * 5);
                 }
-            }, MINUTE);
+            }, SECOND * 5);
         }
 
         return START_STICKY;
     }
 
     private void doMinutelyWork() {
+        WakeLockManager.acquire(getApplicationContext());
         String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
         String gcmToken = null;
 
@@ -81,6 +82,7 @@ public class MinutelyService extends Service {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         Log.i(MainActivity.TAG, "Getting worker status check");
+                                        WakeLockManager.release();
                                     }
                                 }, null, getApplicationContext());
                             }
