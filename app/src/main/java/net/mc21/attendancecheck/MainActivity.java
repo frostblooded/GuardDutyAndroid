@@ -3,13 +3,13 @@ package net.mc21.attendancecheck;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -92,12 +92,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        startMinutelyHandler();
         setContentView(R.layout.activity_main);
 
         String company_id = SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext());
         String site_id = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
 
-        if(company_id == null || site_id == null) {
+        if (company_id == null || site_id == null) {
             showToast(getString(R.string.please_login_to_configure_application), getApplicationContext());
             openSettingsLogin(null);
         }
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         context = this;
-        initWorkerButton();
+        // initWorkerButton();
     }
 
     @Override
@@ -182,13 +183,18 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
+    private void startMinutelyHandler() {
+        Intent i = new Intent(getApplicationContext(), MinutelyService.class);
+        startService(i);
+    }
+
     public void openSettingsLogin(View v) {
-        Intent i = new Intent(this, SettingsLoginActivity.class);
+        Intent i = new Intent(getApplicationContext(), SettingsLoginActivity.class);
         startActivity(i);
     }
 
     public void openWorkerLogin(View v) {
-        Intent i = new Intent(MainActivity.context, WorkerLoginActivity.class);
+        Intent i = new Intent(getApplicationContext(), WorkerLoginActivity.class);
         startActivity(i);
     }
 }
