@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -19,6 +20,7 @@ public class HTTP {
     public final static int REQUEST_TIMEOUT = 5000;
     //public static String SERVER_IP = "https://hidden-shelf-43728.herokuapp.com/";
     public static String SERVER_IP = "http://91.139.243.106:3000/";
+    private static RequestQueue requestQueue;
 
     // JSON object
     public static void GET(String url, Response.Listener<JSONObject> listener, ProgressDialog progressDialog, Context context) {
@@ -44,7 +46,11 @@ public class HTTP {
                 listener, errorListener);
         jsonRequest.setRetryPolicy(new DefaultRetryPolicy(REQUEST_TIMEOUT,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(context).add(jsonRequest);
+
+        if(requestQueue == null)
+            requestQueue = Volley.newRequestQueue(context);
+
+        requestQueue.add(jsonRequest);
     }
 
     // JSON array
@@ -71,6 +77,10 @@ public class HTTP {
                 listener, errorListener);
         jsonRequest.setRetryPolicy(new DefaultRetryPolicy(REQUEST_TIMEOUT,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(context).add(jsonRequest);
+
+        if(requestQueue == null)
+            requestQueue = Volley.newRequestQueue(context);
+
+        requestQueue.add(jsonRequest);
     }
 }
