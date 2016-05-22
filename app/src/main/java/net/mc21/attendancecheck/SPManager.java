@@ -22,11 +22,12 @@ public class SPManager {
         String spToken = sp.getString(SP_GCM_TOKEN, null);
 
         // If token was in SP, return it
-        if(spToken != null) {
+        if(spToken != "") {
             return spToken.toString();
         }
 
         // Else get token
+        Log.i(MainActivity.TAG, "Getting new token");
         final StringBuilder token = new StringBuilder();
 
         Thread t = new Thread(new Runnable() {
