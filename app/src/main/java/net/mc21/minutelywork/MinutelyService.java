@@ -1,6 +1,8 @@
 package net.mc21.minutelywork;
 
 import android.app.KeyguardManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,11 +12,13 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.android.volley.Response;
 
 import net.mc21.attendancecheck.MainActivity;
+import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.SPManager;
 import net.mc21.attendancecheck.WakeLockManager;
 import net.mc21.connections.HTTP;
@@ -27,6 +31,7 @@ import java.io.IOException;
 public class MinutelyService extends Service {
     private final static int SECOND = 1000;
     private final static int MINUTE = 60 * SECOND;
+    private final static int NOTIFICATION_ID = 19;
     private static Handler handler = new Handler();
 
     public static boolean isRunning = false;
@@ -36,9 +41,21 @@ public class MinutelyService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    private void runAsForeground() {
+        Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
+        Notification notification = new NotificationCompat.Builder(getApplicationContext())
+                .setContentText("AttendanceCheck is running")
+                .setContentTitle("AttendanceCheck")
+                .setSmallIcon(R.drawable.cast_ic_notification_0)
+                .setContentIntent(pendingIntent).build();
+        startForeground(NOTIFICATION_ID, notification);
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(!isRunning) {
+            runAsForeground();
             isRunning = true;
             Log.i(MainActivity.TAG, "Starting service!");
 
@@ -46,7 +63,7 @@ public class MinutelyService extends Service {
                 @Override
                 public void run() {
                     Log.i(MainActivity.TAG, "Tick");
-                    doMinutelyWork();
+                    //doMinutelyWork();
                     handler.postDelayed(this, SECOND * 5);
                 }
             }, SECOND * 5);
