@@ -45,8 +45,8 @@ public class MinutelyService extends Service {
         Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
         Notification notification = new NotificationCompat.Builder(getApplicationContext())
-                .setContentText("AttendanceCheck is running")
-                .setContentTitle("AttendanceCheck")
+                .setContentText(getString(R.string.app_name) + " " + getString(R.string.is_running))
+                .setContentTitle(getString(R.string.app_name))
                 .setSmallIcon(R.drawable.cast_ic_notification_0)
                 .setContentIntent(pendingIntent).build();
         startForeground(NOTIFICATION_ID, notification);
