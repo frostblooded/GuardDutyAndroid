@@ -32,7 +32,7 @@ public class CallActivity extends AppCompatActivity {
     private static int DEFAILT_ALARM_TIME = 60 * 1000;
     private static int TICK_INTERVAL = 1000;
 
-    public static boolean startedFromPushNotification = false;
+    public static boolean startedFromService = false;
     public String call_id;
     public String send_time;
     public int submission_interval;
@@ -45,7 +45,7 @@ public class CallActivity extends AppCompatActivity {
     private Vibrator vibrator;
 
     private void exit(){
-        startedFromPushNotification = false;
+        startedFromService = false;
         sendResult();
         wakeLock.release();
         ringtone.stop();
@@ -166,7 +166,7 @@ public class CallActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(startedFromPushNotification){
+        if(startedFromService){
             initializeVariables();
             Log.i(MainActivity.TAG, "Handling submission...");
             setContentView(R.layout.activity_call);
