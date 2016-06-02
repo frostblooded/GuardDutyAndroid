@@ -15,7 +15,7 @@ public class MyGcmListenerService extends GcmListenerService {
         super.onMessageReceived(from, data);
         Log.i(MainActivity.TAG, "Received call!");
 
-        CallActivity.startedFromPushNotification = true;
+        CallActivity.startedFromService = true;
 
         Intent intent = new Intent("android.intent.category.LAUNCHER");
         intent.putExtra("call_token", data.getString("call_token"));
