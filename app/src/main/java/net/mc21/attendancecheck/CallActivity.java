@@ -1,6 +1,5 @@
 package net.mc21.attendancecheck;
 
-import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -8,7 +7,6 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.CountDownTimer;
-import android.os.PowerManager;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,13 +19,6 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.android.volley.Response;
-
-import net.mc21.connections.HTTP;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class CallActivity extends AppCompatActivity {
     private static int DEFAULT_ALARM_TIME = 60 * 1000;
@@ -103,11 +94,11 @@ public class CallActivity extends AppCompatActivity {
     }
 
     private void setUpButton(){
-        final Animation animation = new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
-        animation.setDuration(1000); // duration - half a second
-        animation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
-        animation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
-        animation.setRepeatMode(Animation.REVERSE); // Reverse animation at the end so the button will fade back in
+        final Animation animation = new AlphaAnimation(1, 0);
+        animation.setDuration(1000);
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setRepeatMode(Animation.REVERSE);
 
         Button button = (Button) findViewById(R.id.call_respond_button);
         button.setAnimation(animation);
@@ -151,10 +142,9 @@ public class CallActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(MainActivity.TAG, "Got submission...");
 
         if(startedFromService){
-            Log.i(MainActivity.TAG, "Handling submission...");
+            Log.i(MainActivity.TAG, "Starting call...");
             setContentView(R.layout.activity_call);
             remainingSeconds = DEFAULT_ALARM_TIME;
             unlockScreen();
@@ -163,6 +153,8 @@ public class CallActivity extends AppCompatActivity {
             startTimer();
             setUpButton();
             startVibration();
+        } else {
+            Log.i(MainActivity.TAG, "Attempted to start call, but it seems to be started incorrectly");
         }
     }
 }
