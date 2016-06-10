@@ -17,11 +17,13 @@ import android.util.Log;
 
 import com.android.volley.Response;
 
+import net.mc21.attendancecheck.CallActivity;
 import net.mc21.attendancecheck.MainActivity;
 import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.SPManager;
 import net.mc21.attendancecheck.WakeLockManager;
 import net.mc21.connections.HTTP;
+import net.mc21.gcm.MyGcmListenerService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,9 +34,11 @@ public class MinutelyService extends Service {
     private final static int SECOND = 1000;
     private final static int MINUTE = 60 * SECOND;
     private final static int NOTIFICATION_ID = 19;
-    private static Handler handler = new Handler();
 
+    private static Handler handler = new Handler();
     public static boolean isRunning = false;
+
+    private int minutesSinceLastCall = 0;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -57,13 +61,12 @@ public class MinutelyService extends Service {
         if(!isRunning) {
             runAsForeground();
             isRunning = true;
-            Log.i(MainActivity.TAG, "Starting service!");
+            CallActivity.makeCall(getApplicationContext());
 
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Log.i(MainActivity.TAG, "Tick");
-                    //doMinutelyWork();
+                    makeCall();
                     handler.postDelayed(this, SECOND * 5);
                 }
             }, SECOND * 5);
@@ -73,50 +76,24 @@ public class MinutelyService extends Service {
     }
 
     private void doMinutelyWork() {
+        minutesSinceLastCall++;
+        Log.i(MainActivity.TAG, "Minutes since last call: " + minutesSinceLastCall);
+
+        if(minutesSinceLastCall >= 15) {
+            makeCall();
+            minutesSinceLastCall = 0;
+        }
+    }
+
+    private void makeCall() {
         // If device has Doze, wake it up before the minutely work,
         // so that all network operations work correctly
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            WakeLockManager.acquire(getApplicationContext());
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        //    WakeLockManager.acquire(getApplicationContext());
 
-        String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
-        String gcmToken = null;
+        CallActivity.makeCall(getApplicationContext());
 
-        try{
-            gcmToken = SPManager.getGCMToken(getApplicationContext());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        final String url = HTTP.SERVER_IP + "api/v1/devices/" + gcmToken + "?access_token=" + access_token;
-        HTTP.GET(url, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.i(MainActivity.TAG, "Getting worker status check");
-
-                HTTP.GET(url, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.i(MainActivity.TAG, "Getting worker status check");
-
-                        HTTP.GET(url, new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                Log.i(MainActivity.TAG, "Getting worker status check");
-
-                                HTTP.GET(url, new Response.Listener<JSONObject>() {
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-                                        Log.i(MainActivity.TAG, "Getting worker status check");
-
-                                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                            WakeLockManager.release();
-                                    }
-                                }, null, getApplicationContext());
-                            }
-                        }, null, getApplicationContext());
-                    }
-                }, null, getApplicationContext());
-            }
-        }, null, getApplicationContext());
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        //    WakeLockManager.release();
     }
 }

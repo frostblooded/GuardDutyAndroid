@@ -14,18 +14,6 @@ public class MyGcmListenerService extends GcmListenerService {
     public void onMessageReceived(String from, Bundle data) {
         super.onMessageReceived(from, data);
         Log.i(MainActivity.TAG, "Received call!");
-
-        CallActivity.startedFromService = true;
-
-        Intent intent = new Intent("android.intent.category.LAUNCHER");
-        intent.putExtra("call_token", data.getString("call_token"));
-        intent.putExtra("send_time", data.getString("send_time"));
-        intent.putExtra("submission_interval", Integer.parseInt(data.getString("submission_interval")));
-        intent.putExtra("alarm_time", Integer.parseInt(data.getString("alarm_time")));
-        intent.putExtra("call_id", data.getString("call_id"));
-
-        intent.setClassName("net.mc21.attendancecheck", "net.mc21.attendancecheck.CallActivity");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        CallActivity.makeCall(getApplicationContext());
     }
 }

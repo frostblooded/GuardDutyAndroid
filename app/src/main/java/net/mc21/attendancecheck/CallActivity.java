@@ -14,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -28,26 +30,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CallActivity extends AppCompatActivity {
-    private static int DEFAULT_SUBMISSION_INTERVAL = 15 * 60 * 1000;
-    private static int DEFAILT_ALARM_TIME = 60 * 1000;
+    private static int DEFAULT_ALARM_TIME = 60 * 1000;
     private static int TICK_INTERVAL = 1000;
 
     public static boolean startedFromService = false;
-    public String call_id;
-    public String send_time;
-    public int submission_interval;
-    public int alarm_time;
-    public String call_token;
     public int remainingSeconds;
-    private PowerManager.WakeLock wakeLock;
     private Ringtone ringtone;
     private CountDownTimer timer;
     private Vibrator vibrator;
 
+    public static void makeCall(Context context) {
+        CallActivity.startedFromService = true;
+        Intent intent = new Intent(context, CallActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
     private void exit(){
         startedFromService = false;
-        sendResult();
-        wakeLock.release();
+        //sendResult();
         ringtone.stop();
         timer.cancel();
         vibrator.cancel();
@@ -55,7 +56,7 @@ public class CallActivity extends AppCompatActivity {
     }
 
     private void sendResult(){
-        String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
+        /*String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
         String url = HTTP.SERVER_IP + "api/v1/calls/" + call_id + "?access_token=" + access_token;
         JSONObject json = new JSONObject();
 
@@ -72,20 +73,15 @@ public class CallActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.i(MainActivity.TAG, "Token responding result: " + response.toString());
             }
-        }, null, this);
+        }, null, this);*/
     }
 
     //Uses deprecated code, but is the only solution I found
-    protected void unlockScreen(){
-        KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-        final KeyguardManager.KeyguardLock kl = km.newKeyguardLock("MyKeyguardLock");
-        kl.disableKeyguard();
-
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK
-                | PowerManager.ACQUIRE_CAUSES_WAKEUP
-                | PowerManager.ON_AFTER_RELEASE, "MyWakeLock");
-        wakeLock.acquire();
+    protected void unlockScreen() {
+        Window w = getWindow();
+        w.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        w.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        w.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
     }
 
 
@@ -135,8 +131,8 @@ public class CallActivity extends AppCompatActivity {
     }
 
     private void startTimer(){
-        //                                    + 2 so that it actually starts counting from alarm_time
-        timer = new CountDownTimer(alarm_time + 2, TICK_INTERVAL) {
+        //                                            + 2 so that it actually starts counting from alarm_time
+        timer = new CountDownTimer(DEFAULT_ALARM_TIME + 2, TICK_INTERVAL) {
             @Override
             public void onTick(long millisUntilFinished) {
                 remainingSeconds = (int)(millisUntilFinished / 1000);
@@ -152,25 +148,15 @@ public class CallActivity extends AppCompatActivity {
         }.start();
     }
 
-    private void initializeVariables(){
-        Intent intent = getIntent();
-
-        send_time = intent.getStringExtra("send_time");
-        call_token = intent.getStringExtra("call_token");
-        submission_interval = intent.getIntExtra("submission_interval", DEFAULT_SUBMISSION_INTERVAL);
-        alarm_time = intent.getIntExtra("alarm_time", DEFAILT_ALARM_TIME);
-        call_id = intent.getStringExtra("call_id");
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(MainActivity.TAG, "Got submission...");
 
         if(startedFromService){
-            initializeVariables();
             Log.i(MainActivity.TAG, "Handling submission...");
             setContentView(R.layout.activity_call);
-            remainingSeconds = alarm_time;
+            remainingSeconds = DEFAULT_ALARM_TIME;
             unlockScreen();
             setVolume();
             startSound();
