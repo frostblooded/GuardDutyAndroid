@@ -121,30 +121,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void signOutWorker() {
-        progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Signing out", true);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if(MainActivity.isGoogleServicesAvailable()) {
-                    try {
-                        String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
-                        String url = HTTP.SERVER_IP + "api/v1/devices/" + SPManager.getGCMToken(MainActivity.context) + "?access_token=" + access_token;
-                        HTTP.DELETE(url, new Response.Listener<JSONObject>(){
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                Log.i(MainActivity.TAG, "Signout device response: " + response.toString());
-                                toggleButtonStatus();
-                                progressDialog.hide();
-                            }
-                        }, progressDialog, getApplicationContext());
-                    } catch (IOException e) {
-                        Log.i(MainActivity.TAG, "Signout error: " + e.toString());
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
+        SPManager.saveString(SPManager.SP_WORKER_ID, null, getApplicationContext());
     }
 
     // Changes 'log in worker' button to 'sign out worker' button
