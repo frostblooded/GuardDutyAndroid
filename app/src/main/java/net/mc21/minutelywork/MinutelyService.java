@@ -29,10 +29,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MinutelyService extends Service {
     private final static int SECOND = 1000;
     private final static int MINUTE = 60 * SECOND;
+    private final static int SHIFT_START = 6;
+    private final static int SHIFT_END = 20;
     private final static int NOTIFICATION_ID = 19;
 
     private static Handler handler = new Handler();
@@ -56,12 +60,21 @@ public class MinutelyService extends Service {
         startForeground(NOTIFICATION_ID, notification);
     }
 
+    private boolean isShift() {
+        Calendar cal = Calendar.getInstance();
+        int currentHour = cal.get(Calendar.HOUR_OF_DAY);
+
+        if(SHIFT_START < SHIFT_END)
+            return currentHour >= SHIFT_START && currentHour < SHIFT_END;
+        else
+            return currentHour < SHIFT_END || currentHour >= SHIFT_START;
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(!isRunning) {
             runAsForeground();
             isRunning = true;
-            CallActivity.makeCall(getApplicationContext());
 
             handler.postDelayed(new Runnable() {
                 @Override
@@ -77,7 +90,6 @@ public class MinutelyService extends Service {
 
     private void doMinutelyWork() {
         minutesSinceLastCall++;
-        Log.i(MainActivity.TAG, "Minutes since last call: " + minutesSinceLastCall);
 
         if(minutesSinceLastCall >= 15) {
             makeCall();
@@ -88,12 +100,13 @@ public class MinutelyService extends Service {
     private void makeCall() {
         // If device has Doze, wake it up before the minutely work,
         // so that all network operations work correctly
-        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        //    WakeLockManager.acquire(getApplicationContext());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            WakeLockManager.acquire(getApplicationContext());
 
-        CallActivity.makeCall(getApplicationContext());
+        if(isShift())
+            CallActivity.makeCall(getApplicationContext());
 
-        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        //    WakeLockManager.release();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            WakeLockManager.release();
     }
 }
