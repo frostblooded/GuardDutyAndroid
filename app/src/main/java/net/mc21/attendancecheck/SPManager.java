@@ -16,6 +16,7 @@ public class SPManager {
     public final static String SP_COMPANY_ID = "company_id";
     public final static String SP_COMPANY_NAME = "company_name";
     public final static String SP_SITE_ID = "site_id";
+    public final static String SP_WORKER_ID = "worker_id";
 
     public static String getGCMToken(final Context context) throws IOException {
         SharedPreferences sp = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
