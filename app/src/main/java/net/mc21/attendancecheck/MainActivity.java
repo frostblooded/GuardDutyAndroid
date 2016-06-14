@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.IntegerRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
@@ -122,43 +123,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void signOutWorker() {
         SPManager.saveString(SPManager.SP_WORKER_ID, null, getApplicationContext());
+        toggleButtonStatus();
     }
 
     // Changes 'log in worker' button to 'sign out worker' button
     // based on if the device is already logged in
     private void initWorkerButton() {
-        progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Checking device login status", true);
+        String workerId = SPManager.getString(SPManager.SP_WORKER_ID, getApplicationContext());
+        boolean loggedIn = workerId != null;
+        Log.i(MainActivity.TAG, "Logged in: " + loggedIn);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
-                    String url = HTTP.SERVER_IP + "api/v1/devices/" + SPManager.getGCMToken(MainActivity.context) + "?access_token=" + access_token;
-                    HTTP.GET(url, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                Log.i(MainActivity.TAG, "Login check: " + response.toString());
-                                boolean deviceLoggedIn = response.getBoolean("device_exists");
-
-                                if(deviceLoggedIn) {
-                                    toggleButtonStatus();
-                                }
-                            } catch (JSONException e) {
-                                Log.i(MainActivity.TAG, "JSON error: " + e.toString());
-                                e.printStackTrace();
-                            } finally {
-                                progressDialog.hide();
-                            }
-                        }
-                    }, progressDialog, getApplicationContext());
-                } catch (IOException e) {
-                    Log.i(MainActivity.TAG, "Token acquiring error: " + e.toString());
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        if(loggedIn) {
+            toggleButtonStatus();
+        }
     }
 
     private void startMinutelyHandler() {

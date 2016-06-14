@@ -35,8 +35,8 @@ import java.util.Date;
 public class MinutelyService extends Service {
     private final static int SECOND = 1000;
     private final static int MINUTE = 60 * SECOND;
-    private final static int SHIFT_START = 6;
-    private final static int SHIFT_END = 20;
+    private final static int SHIFT_START = 20;
+    private final static int SHIFT_END = 6;
     private final static int NOTIFICATION_ID = 19;
 
     private static Handler handler = new Handler();
@@ -79,7 +79,7 @@ public class MinutelyService extends Service {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    makeCall();
+                    startCall();
                     handler.postDelayed(this, SECOND * 5);
                 }
             }, SECOND * 5);
@@ -92,12 +92,12 @@ public class MinutelyService extends Service {
         minutesSinceLastCall++;
 
         if(minutesSinceLastCall >= 15) {
-            makeCall();
+            startCall();
             minutesSinceLastCall = 0;
         }
     }
 
-    private void makeCall() {
+    private void startCall() {
         // If device has Doze, wake it up before the minutely work,
         // so that all network operations work correctly
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
