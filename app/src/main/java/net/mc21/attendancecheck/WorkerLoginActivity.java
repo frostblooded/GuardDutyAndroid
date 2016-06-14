@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -47,8 +48,31 @@ public class WorkerLoginActivity extends AppCompatActivity {
     public void loginWorker(View v) {
         Spinner spinner = (Spinner) findViewById(R.id.worker_login_spinner);
         String selectedWorker = (String) spinner.getSelectedItem();
-        String workerId = MainActivity.getJsonArrayItem(workersJsonArray, "name", selectedWorker, "id");
-        SPManager.saveString(SPManager.SP_WORKER_ID, workerId, getApplicationContext());
+        final String workerId = MainActivity.getJsonArrayItem(workersJsonArray, "name", selectedWorker, "id");
+        String password = ((EditText)findViewById(R.id.worker_login_password_field)).getText().toString();
+        String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
+
+        JSONObject json = new JSONObject();
+
+        try {
+            json.put("password", password);
+            json.put("access_token", access_token);
+        } catch (JSONException e) {
+            Log.i(MainActivity.TAG, "JSON error: " + e.toString());
+            e.printStackTrace();
+        }
+
+        // Check worker login
+        String url = HTTP.SERVER_IP + "api/v1/workers/" + workerId + "/check_login";
+        HTTP.POST(url, json, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                // If this code gets triggered, login is successful
+                Log.i(MainActivity.TAG, "Worker logged in");
+                SPManager.saveString(SPManager.SP_WORKER_ID, workerId, getApplicationContext());
+                finish();
+            }
+        }, null, getApplicationContext());
     }
 
     private void initSpinner() {
