@@ -35,8 +35,8 @@ import java.util.Date;
 public class MinutelyService extends Service {
     private final static int SECOND = 1000;
     private final static int MINUTE = 60 * SECOND;
-    private final static int SHIFT_START = 20;
-    private final static int SHIFT_END = 6;
+    private final static int SHIFT_START = 6;
+    private final static int SHIFT_END = 15;
     private final static int NOTIFICATION_ID = 19;
 
     private static Handler handler = new Handler();
@@ -68,6 +68,10 @@ public class MinutelyService extends Service {
             return currentHour >= SHIFT_START && currentHour < SHIFT_END;
         else
             return currentHour < SHIFT_END || currentHour >= SHIFT_START;
+    }
+
+    private boolean isLoggedIn() {
+        return SPManager.getString(SPManager.SP_WORKER_ID, getApplicationContext()) != null;
     }
 
     @Override
@@ -103,8 +107,11 @@ public class MinutelyService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             WakeLockManager.acquire(getApplicationContext());
 
-        if(isShift())
-            CallActivity.makeCall(getApplicationContext());
+        if(isShift()) {
+            if (isLoggedIn()) {
+                CallActivity.makeCall(getApplicationContext());
+            }
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             WakeLockManager.release();
