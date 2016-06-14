@@ -46,6 +46,7 @@ public class WorkerLoginActivity extends AppCompatActivity {
     }
 
     public void loginWorker(View v) {
+        progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Checking worker login");
         Spinner spinner = (Spinner) findViewById(R.id.worker_login_spinner);
         String selectedWorker = (String) spinner.getSelectedItem();
         final String workerId = MainActivity.getJsonArrayItem(workersJsonArray, "name", selectedWorker, "id");
@@ -70,9 +71,10 @@ public class WorkerLoginActivity extends AppCompatActivity {
                 // If this code gets triggered, login is successful
                 Log.i(MainActivity.TAG, "Worker logged in");
                 SPManager.saveString(SPManager.SP_WORKER_ID, workerId, getApplicationContext());
+                progressDialog.hide();
                 finish();
             }
-        }, null, getApplicationContext());
+        }, progressDialog, getApplicationContext());
     }
 
     private void initSpinner() {
