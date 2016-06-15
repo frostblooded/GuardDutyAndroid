@@ -1,49 +1,23 @@
 package net.mc21.attendancecheck;
 
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.IntegerRes;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-
-import net.mc21.connections.HTTP;
 import net.mc21.minutelywork.MinutelyService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-
 public class MainActivity extends AppCompatActivity {
     public static Context context;
     public final static String TAG = "AttendanceCheck";
-    public final static String GCM_TOKEN_REQUEST_SECRET = "394378341767";
-
-    private ProgressDialog progressDialog;
-
-    public static boolean isGoogleServicesAvailable() {
-        GoogleApiAvailability api = GoogleApiAvailability.getInstance();
-        int result = api.isGooglePlayServicesAvailable(context);
-        ConnectionResult connectionResult = new ConnectionResult(result);
-
-        if(!connectionResult.isSuccess()) {
-            showToast(connectionResult.toString(), MainActivity.context);
-        }
-
-        return result == ConnectionResult.SUCCESS;
-    }
 
     public static void showToast(String text, Context context) {
         Toast.makeText(context, text, Toast.LENGTH_LONG).show();
@@ -116,9 +90,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        if(progressDialog != null)
-            progressDialog.dismiss();
     }
 
     private void signOutWorker() {

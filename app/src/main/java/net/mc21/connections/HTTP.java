@@ -11,8 +11,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
-import net.mc21.attendancecheck.MainActivity;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 

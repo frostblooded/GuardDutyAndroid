@@ -1,6 +1,5 @@
 package net.mc21.connections;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;

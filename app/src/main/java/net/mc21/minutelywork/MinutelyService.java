@@ -1,36 +1,21 @@
 package net.mc21.minutelywork;
 
-import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.PowerManager;
-import android.provider.Settings;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
-
-import com.android.volley.Response;
 
 import net.mc21.attendancecheck.CallActivity;
 import net.mc21.attendancecheck.MainActivity;
 import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.SPManager;
 import net.mc21.attendancecheck.WakeLockManager;
-import net.mc21.connections.HTTP;
-import net.mc21.gcm.MyGcmListenerService;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 
 public class MinutelyService extends Service {
     private final static int SECOND = 1000;

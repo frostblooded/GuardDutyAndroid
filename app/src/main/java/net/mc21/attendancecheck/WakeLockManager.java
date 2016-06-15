@@ -1,6 +1,5 @@
 package net.mc21.attendancecheck;
 
-import android.app.KeyguardManager;
 import android.content.Context;
 import android.os.PowerManager;
 
