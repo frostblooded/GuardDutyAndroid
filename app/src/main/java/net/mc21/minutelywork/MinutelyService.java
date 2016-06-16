@@ -14,7 +14,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import net.mc21.attendancecheck.CallActivity;
+import net.mc21.calls.CallActivity;
 import net.mc21.attendancecheck.MainActivity;
 import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.SPManager;

@@ -1,4 +1,4 @@
-package net.mc21.attendancecheck;
+package net.mc21.calls;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +19,9 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
+
+import net.mc21.attendancecheck.MainActivity;
+import net.mc21.attendancecheck.R;
 
 public class CallActivity extends AppCompatActivity {
     private static int DEFAULT_ALARM_TIME = 60 * 1000;
