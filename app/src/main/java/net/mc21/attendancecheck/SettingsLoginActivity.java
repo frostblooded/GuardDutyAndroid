@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 import net.mc21.connections.HTTP;
 
@@ -56,7 +58,7 @@ public class SettingsLoginActivity extends AppCompatActivity {
 
         String url = HTTP.SERVER_IP + "api/v1/access_tokens";
 
-        HTTP.POST(url, json, new Response.Listener<JSONObject>() {
+        HTTP.requestObject(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -75,7 +77,7 @@ public class SettingsLoginActivity extends AppCompatActivity {
 
                     boolean noError = response.isNull("error");
 
-                    if(noError){
+                    if (noError) {
                         Intent i = new Intent(MainActivity.context, SettingsActivity.class);
                         startActivity(i);
                         finish();
@@ -86,6 +88,12 @@ public class SettingsLoginActivity extends AppCompatActivity {
                     progressDialog.hide();
                 }
             }
-        }, progressDialog, getApplicationContext());
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                HTTP.handleError(error, getApplicationContext());
+                progressDialog.hide();
+            }
+        }, getApplicationContext());
     }
 }

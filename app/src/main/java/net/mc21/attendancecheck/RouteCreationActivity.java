@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
@@ -83,7 +85,7 @@ public class RouteCreationActivity extends AppCompatActivity {
         String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
 
         String url = HTTP.SERVER_IP + "api/v1/companies/" + company_id + "/sites/" + site_id + "/routes?access_token=" + access_token;
-        HTTP.POST(url, sentData, new Response.Listener<JSONObject>() {
+        HTTP.requestObject(Request.Method.POST, url, sentData, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.i(MainActivity.TAG, "Route creation response: " + response.toString());
@@ -91,6 +93,12 @@ public class RouteCreationActivity extends AppCompatActivity {
                 progressDialog.hide();
                 finish();
             }
-        }, progressDialog, getApplicationContext());
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                HTTP.handleError(error, getApplicationContext());
+                progressDialog.hide();
+            }
+        }, getApplicationContext());
     }
 }

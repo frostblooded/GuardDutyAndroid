@@ -12,7 +12,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 import net.mc21.connections.HTTP;
 
@@ -65,7 +67,7 @@ public class WorkerLoginActivity extends AppCompatActivity {
 
         // Check worker login
         String url = HTTP.SERVER_IP + "api/v1/workers/" + workerId + "/check_login";
-        HTTP.POST(url, json, new Response.Listener<JSONObject>() {
+        HTTP.requestObject(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 // If this code gets triggered, login is successful
@@ -74,7 +76,13 @@ public class WorkerLoginActivity extends AppCompatActivity {
                 progressDialog.hide();
                 finish();
             }
-        }, progressDialog, getApplicationContext());
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                HTTP.handleError(error, getApplicationContext());
+                progressDialog.hide();
+            }
+        }, getApplicationContext());
     }
 
     private void initSpinner() {
@@ -85,7 +93,7 @@ public class WorkerLoginActivity extends AppCompatActivity {
         String site_id = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
         String url = HTTP.SERVER_IP + "api/v1/companies/" + company_id + "/sites/" + site_id + "/workers?access_token=" + token;
 
-        HTTP.GETArray(url, new Response.Listener<JSONArray>() {
+        HTTP.requestArray(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 try {
@@ -105,7 +113,13 @@ public class WorkerLoginActivity extends AppCompatActivity {
                     progressDialog.hide();
                 }
             }
-        }, progressDialog, getApplicationContext());
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                HTTP.handleError(error, getApplicationContext());
+                progressDialog.hide();
+            }
+        }, getApplicationContext());
     }
 
     @Override

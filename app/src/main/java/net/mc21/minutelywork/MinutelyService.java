@@ -10,7 +10,9 @@ import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.CallActivity;
 import net.mc21.attendancecheck.MainActivity;
@@ -93,7 +95,7 @@ public class MinutelyService extends Service {
     private void doMinutelyWork() {
         minutesSinceLastCall++;
 
-        if(minutesSinceLastCall >= 0) {
+        if(minutesSinceLastCall >= MINUTES_BETWEEN_CALLS) {
             updateSettings();
             minutesSinceLastCall = 0;
         }
@@ -124,7 +126,7 @@ public class MinutelyService extends Service {
         String siteId = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
         String url = HTTP.SERVER_IP + "api/v1/companies/" + companyId + "/sites/" + siteId + "/settings?access_token=" + accessToken;
 
-        HTTP.GET(url, new Response.Listener<JSONObject>() {
+        HTTP.requestObject(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -137,7 +139,13 @@ public class MinutelyService extends Service {
 
                 startCall();
             }
-        }, null, getApplicationContext());
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                HTTP.handleError(error, getApplicationContext());
+                startCall();
+            }
+        }, getApplicationContext());
     }
 
     private void startCall() {

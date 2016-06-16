@@ -10,7 +10,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 import net.mc21.connections.HTTP;
 
@@ -74,14 +76,14 @@ public class SettingsActivity extends AppCompatActivity {
         String token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
         String url = HTTP.SERVER_IP + "api/v1/companies/" + company_id + "/sites?access_token=" + token;
 
-        HTTP.GETArray(url, new Response.Listener<JSONArray>() {
+        HTTP.requestArray(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(final JSONArray response) {
                 try {
                     sitesJsonArray = response;
                     List<String> sites = new ArrayList<String>();
 
-                    for(int i = 0; i < sitesJsonArray.length(); i++) {
+                    for (int i = 0; i < sitesJsonArray.length(); i++) {
                         sites.add(sitesJsonArray.getJSONObject(i).getString("name"));
                     }
 
@@ -107,7 +109,13 @@ public class SettingsActivity extends AppCompatActivity {
                     progressDialog.hide();
                 }
             }
-        }, progressDialog, getApplicationContext());
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                HTTP.handleError(error, getApplicationContext());
+                progressDialog.hide();
+            }
+        }, getApplicationContext());
     }
 
     public void openRouteCreation(View v) {
