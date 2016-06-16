@@ -20,6 +20,6 @@ public class SPManager {
         SharedPreferences sp = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(key, value);
-        editor.commit();
+        editor.apply();
     }
 }
