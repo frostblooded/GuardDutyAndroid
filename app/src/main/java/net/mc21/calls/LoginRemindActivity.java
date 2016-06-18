@@ -107,8 +107,7 @@ public class LoginRemindActivity extends AppCompatActivity {
         //                                            + 2 so that it actually starts counting from alarm_time
         timer = new CountDownTimer(DEFAULT_ALARM_TIME + 2, TICK_INTERVAL) {
             @Override
-            public void onTick(long millisUntilFinished) {
-            }
+            public void onTick(long millisUntilFinished) {}
 
             @Override
             public void onFinish() {
@@ -118,8 +117,8 @@ public class LoginRemindActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onStart() {
+        super.onStart();
 
         Log.i(MainActivity.TAG, "Starting login remind...");
         setContentView(R.layout.activity_login_remind);

@@ -10,8 +10,6 @@ import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import net.mc21.calls.CallActivity;
@@ -21,6 +19,8 @@ import net.mc21.attendancecheck.SPManager;
 import net.mc21.attendancecheck.WakeLockManager;
 import net.mc21.calls.LoginRemindActivity;
 import net.mc21.connections.HTTP;
+import net.mc21.connections.SettingsUpdater;
+import net.mc21.connections.UpdateSettingsListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +31,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class MinutelyService extends Service {
+public class MinutelyService extends Service implements UpdateSettingsListener {
     private final static int SECOND = 1000;
     private final static int MINUTE = 60 * SECOND;
     private final static int NOTIFICATION_ID = 19;
@@ -44,11 +44,6 @@ public class MinutelyService extends Service {
     private int minutesSinceLastCall = 0;
     private int shiftStart;
     private int shiftEnd;
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
 
     private void runAsForeground() {
         Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
@@ -75,29 +70,20 @@ public class MinutelyService extends Service {
         return SPManager.getString(SPManager.SP_WORKER_ID, getApplicationContext()) != null;
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        if(!isRunning) {
-            runAsForeground();
-            isRunning = true;
-
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    doMinutelyWork();
-                    handler.postDelayed(this, SECOND);
-                }
-            }, SECOND);
-        }
-
-        return START_STICKY;
-    }
-
     private void doMinutelyWork() {
         minutesSinceLastCall++;
 
         if(minutesSinceLastCall >= MINUTES_BETWEEN_CALLS) {
-            updateSettings();
+            String siteId = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
+
+            // If company has logged in
+            if(siteId != null)
+                SettingsUpdater.run(this, getApplicationContext());
+            else {
+                Log.i(MainActivity.TAG, "Settings not configured!");
+                MainActivity.showToast("AttendanceCheck settings not configured!", getApplicationContext());
+            }
+
             minutesSinceLastCall = 0;
         }
     }
@@ -121,41 +107,6 @@ public class MinutelyService extends Service {
         return calendar.get(Calendar.HOUR_OF_DAY);
     }
 
-    private void updateSettings() {
-        String siteId = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
-
-        // If company has logged in
-        if(siteId != null) {
-            String accessToken = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
-            String companyId = SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext());
-            String url = HTTP.SERVER_IP + "api/v1/companies/" + companyId + "/sites/" + siteId + "/settings?access_token=" + accessToken;
-
-            HTTP.requestObject(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        shiftStart = getHour(response.getString("shift_start"));
-                        shiftEnd = getHour(response.getString("shift_end"));
-                    } catch (JSONException e) {
-                        Log.i(MainActivity.TAG, "JSON parse error: " + e.toString());
-                        e.printStackTrace();
-                    }
-
-                    startCall();
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    HTTP.handleError(error, getApplicationContext());
-                    startCall();
-                }
-            }, getApplicationContext());
-        } else {
-            Log.i(MainActivity.TAG, "Settings not configured!");
-            MainActivity.showToast("AttendanceCheck settings not configured!", getApplicationContext());
-        }
-    }
-
     private void startCall() {
         // If device has Doze, wake it up before the minutely work,
         // so that all network operations work correctly
@@ -171,5 +122,47 @@ public class MinutelyService extends Service {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             WakeLockManager.release();
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if(!isRunning) {
+            runAsForeground();
+            isRunning = true;
+
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doMinutelyWork();
+                    handler.postDelayed(this, SECOND);
+                }
+            }, SECOND);
+        }
+
+        return START_STICKY;
+    }
+
+    @Override
+    public void onSettingsUpdated(JSONObject response) {
+        try {
+            shiftStart = getHour(response.getString("shift_start"));
+            shiftEnd = getHour(response.getString("shift_end"));
+        } catch (JSONException e) {
+            Log.i(MainActivity.TAG, "JSON parse error: " + e.toString());
+            e.printStackTrace();
+        }
+
+        startCall();
+    }
+
+    @Override
+    public void onSettingsUpdateError(VolleyError error) {
+        HTTP.handleError(error, getApplicationContext());
+        startCall();
     }
 }

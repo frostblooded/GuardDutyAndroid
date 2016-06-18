@@ -144,8 +144,8 @@ public class CallActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onStart() {
+        super.onStart();
 
         if(startedFromService){
             Log.i(MainActivity.TAG, "Starting call...");

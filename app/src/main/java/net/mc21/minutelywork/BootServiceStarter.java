@@ -8,8 +8,7 @@ import android.util.Log;
 import net.mc21.attendancecheck.MainActivity;
 
 public class BootServiceStarter extends BroadcastReceiver {
-    public BootServiceStarter() {
-    }
+    public BootServiceStarter() {};
 
     @Override
     public void onReceive(Context context, Intent intent) {
