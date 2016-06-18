@@ -18,9 +18,9 @@ import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.SPManager;
 import net.mc21.attendancecheck.WakeLockManager;
 import net.mc21.calls.LoginRemindActivity;
-import net.mc21.connections.HTTP;
-import net.mc21.connections.requests.UpdateSettingsRequest;
-import net.mc21.connections.interfaces.UpdateSettingsListener;
+import net.mc21.internet.HTTP;
+import net.mc21.internet.requests.UpdateSettingsRequest;
+import net.mc21.internet.requests.interfaces.UpdateSettingsListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;

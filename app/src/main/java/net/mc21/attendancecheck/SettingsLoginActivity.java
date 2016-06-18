@@ -13,7 +13,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import net.mc21.connections.HTTP;
+import net.mc21.internet.HTTP;
 
 import org.json.JSONException;
 import org.json.JSONObject;

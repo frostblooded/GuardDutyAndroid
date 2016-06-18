@@ -1,12 +1,10 @@
-package net.mc21.connections;
+package net.mc21.internet;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NoConnectionError;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;

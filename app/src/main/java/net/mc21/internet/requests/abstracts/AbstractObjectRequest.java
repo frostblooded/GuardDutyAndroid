@@ -1,11 +1,11 @@
-package net.mc21.connections.abstracts;
+package net.mc21.internet.requests.abstracts;
 
 import android.content.Context;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import net.mc21.connections.HTTP;
+import net.mc21.internet.HTTP;
 
 import org.json.JSONObject;
 
