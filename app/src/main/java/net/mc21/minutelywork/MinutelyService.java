@@ -19,6 +19,7 @@ import net.mc21.attendancecheck.MainActivity;
 import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.SPManager;
 import net.mc21.attendancecheck.WakeLockManager;
+import net.mc21.calls.LoginRemindActivity;
 import net.mc21.connections.HTTP;
 
 import org.json.JSONException;
@@ -78,15 +79,16 @@ public class MinutelyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(!isRunning) {
             runAsForeground();
+            updateSettings();
             isRunning = true;
 
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     doMinutelyWork();
-                    handler.postDelayed(this, SECOND * 5);
+                    handler.postDelayed(this, MINUTE);
                 }
-            }, SECOND * 5);
+            }, MINUTE);
         }
 
         return START_STICKY;
@@ -121,31 +123,37 @@ public class MinutelyService extends Service {
     }
 
     private void updateSettings() {
-        String accessToken = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
-        String companyId = SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext());
         String siteId = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
-        String url = HTTP.SERVER_IP + "api/v1/companies/" + companyId + "/sites/" + siteId + "/settings?access_token=" + accessToken;
 
-        HTTP.requestObject(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    shiftStart = getHour(response.getString("shift_start"));
-                    shiftEnd = getHour(response.getString("shift_end"));
-                } catch (JSONException e) {
-                    Log.i(MainActivity.TAG, "JSON parse error: " + e.toString());
-                    e.printStackTrace();
+        // If company has logged in
+        if(siteId != null) {
+            String accessToken = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
+            String companyId = SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext());
+            String url = HTTP.SERVER_IP + "api/v1/companies/" + companyId + "/sites/" + siteId + "/settings?access_token=" + accessToken;
+
+            HTTP.requestObject(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        shiftStart = getHour(response.getString("shift_start"));
+                        shiftEnd = getHour(response.getString("shift_end"));
+                    } catch (JSONException e) {
+                        Log.i(MainActivity.TAG, "JSON parse error: " + e.toString());
+                        e.printStackTrace();
+                    }
+
+                    startCall();
                 }
-
-                startCall();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                HTTP.handleError(error, getApplicationContext());
-                startCall();
-            }
-        }, getApplicationContext());
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    HTTP.handleError(error, getApplicationContext());
+                    startCall();
+                }
+            }, getApplicationContext());
+        } else {
+            Log.i(MainActivity.TAG, "Company hasn't logged in.");
+        }
     }
 
     private void startCall() {
@@ -155,9 +163,10 @@ public class MinutelyService extends Service {
             WakeLockManager.acquire(getApplicationContext());
 
         if(isShift()) {
-            if (isLoggedIn()) {
+            if (isLoggedIn())
                 CallActivity.makeCall(getApplicationContext());
-            }
+            else
+                LoginRemindActivity.makeRemind(getApplicationContext());
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)

@@ -22,52 +22,31 @@ import android.widget.TextView;
 
 import net.mc21.attendancecheck.MainActivity;
 import net.mc21.attendancecheck.R;
+import net.mc21.attendancecheck.WorkerLoginActivity;
 
-public class CallActivity extends AppCompatActivity {
+public class LoginRemindActivity extends AppCompatActivity {
     private static final int DEFAULT_ALARM_TIME = 60 * 1000;
     private static final int TICK_INTERVAL = 1000;
 
-    public static boolean startedFromService = false;
-    public int remainingSeconds;
     private Ringtone ringtone;
     private CountDownTimer timer;
     private Vibrator vibrator;
 
-    public static void makeCall(Context context) {
-        CallActivity.startedFromService = true;
-        Intent intent = new Intent(context, CallActivity.class);
+    public static void makeRemind(Context context) {
+        Intent intent = new Intent(context, LoginRemindActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
     private void exit(){
-        startedFromService = false;
-        //sendResult();
         ringtone.stop();
         timer.cancel();
         vibrator.cancel();
+
+        Intent i = new Intent(getApplicationContext(), WorkerLoginActivity.class);
+        startActivity(i);
+
         finish();
-    }
-
-    private void sendResult(){
-        /*String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
-        String url = HTTP.SERVER_IP + "api/v1/calls/" + call_id + "?access_token=" + access_token;
-        JSONObject json = new JSONObject();
-
-        try {
-            json.put("call_token", call_token);
-            json.put("time_left", remainingSeconds);
-            json.put("call_id", call_id);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        HTTP.PUT(url, json, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.i(MainActivity.TAG, "Token responding result: " + response.toString());
-            }
-        }, null, this);*/
     }
 
     protected void unlockScreen() {
@@ -76,7 +55,6 @@ public class CallActivity extends AppCompatActivity {
         w.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         w.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
     }
-
 
     private void startSound() {
         Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
@@ -129,14 +107,10 @@ public class CallActivity extends AppCompatActivity {
         timer = new CountDownTimer(DEFAULT_ALARM_TIME + 2, TICK_INTERVAL) {
             @Override
             public void onTick(long millisUntilFinished) {
-                remainingSeconds = (int)(millisUntilFinished / 1000);
-                TextView remainingTime = (TextView) findViewById(R.id.call_remaining_time_value);
-                remainingTime.setText(String.valueOf(remainingSeconds) + " секунди");
             }
 
             @Override
             public void onFinish() {
-                remainingSeconds = 0;
                 exit();
             }
         }.start();
@@ -146,18 +120,13 @@ public class CallActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(startedFromService){
-            Log.i(MainActivity.TAG, "Starting call...");
-            setContentView(R.layout.activity_call);
-            remainingSeconds = DEFAULT_ALARM_TIME;
-            unlockScreen();
-            setVolume();
-            startSound();
-            startTimer();
-            setUpButton();
-            startVibration();
-        } else {
-            Log.i(MainActivity.TAG, "Attempted to start call, but it seems to be started incorrectly");
-        }
+        Log.i(MainActivity.TAG, "Starting login remind...");
+        setContentView(R.layout.activity_login_remind);
+        unlockScreen();
+        setVolume();
+        startSound();
+        startTimer();
+        setUpButton();
+        startVibration();
     }
 }
