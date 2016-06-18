@@ -27,7 +27,7 @@ public abstract class AbstractRequest<T> {
         this.context = context;
     }
 
-    protected Response.Listener getListener() {
+    protected Response.Listener<T> getListener() {
         return new Response.Listener<T>() {
             @Override
             public void onResponse(T response) {
