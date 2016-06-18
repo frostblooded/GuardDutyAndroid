@@ -151,7 +151,8 @@ public class MinutelyService extends Service {
                 }
             }, getApplicationContext());
         } else {
-            Log.i(MainActivity.TAG, "Company hasn't logged in.");
+            Log.i(MainActivity.TAG, "Settings not configured!");
+            MainActivity.showToast("AttendanceCheck settings not configured!", getApplicationContext());
         }
     }
 
