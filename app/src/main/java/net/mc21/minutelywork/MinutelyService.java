@@ -78,7 +78,7 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
 
             // If company has logged in
             if(siteId != null)
-                new UpdateSettingsRequest(this, getApplicationContext()).run();
+                new UpdateSettingsRequest(this, getApplicationContext()).makeRequest();
             else {
                 Log.i(MainActivity.TAG, "Settings not configured!");
                 MainActivity.showToast("AttendanceCheck settings not configured!", getApplicationContext());
@@ -152,6 +152,7 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
         try {
             shiftStart = getHour(response.getString("shift_start"));
             shiftEnd = getHour(response.getString("shift_end"));
+            Log.i(MainActivity.TAG, "Shift start: " + shiftStart);
         } catch (JSONException e) {
             Log.i(MainActivity.TAG, "JSON parse error: " + e.toString());
             e.printStackTrace();
