@@ -79,16 +79,15 @@ public class MinutelyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(!isRunning) {
             runAsForeground();
-            updateSettings();
             isRunning = true;
 
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     doMinutelyWork();
-                    handler.postDelayed(this, MINUTE);
+                    handler.postDelayed(this, SECOND);
                 }
-            }, MINUTE);
+            }, SECOND);
         }
 
         return START_STICKY;

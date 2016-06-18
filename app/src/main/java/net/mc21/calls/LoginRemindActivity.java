@@ -25,8 +25,9 @@ import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.WorkerLoginActivity;
 
 public class LoginRemindActivity extends AppCompatActivity {
-    private static final int DEFAULT_ALARM_TIME = 60 * 1000;
-    private static final int TICK_INTERVAL = 1000;
+    private static final int SECOND = 1000;
+    private static final int DEFAULT_ALARM_TIME = 60 * SECOND;
+    private static final int TICK_INTERVAL = SECOND;
 
     private Ringtone ringtone;
     private CountDownTimer timer;

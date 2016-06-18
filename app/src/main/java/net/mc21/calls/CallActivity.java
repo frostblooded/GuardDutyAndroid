@@ -24,8 +24,9 @@ import net.mc21.attendancecheck.MainActivity;
 import net.mc21.attendancecheck.R;
 
 public class CallActivity extends AppCompatActivity {
-    private static final int DEFAULT_ALARM_TIME = 60 * 1000;
-    private static final int TICK_INTERVAL = 1000;
+    private static final int SECOND = 1000;
+    private static final int DEFAULT_ALARM_TIME = 60 * SECOND;
+    private static final int TICK_INTERVAL = SECOND;
 
     public static boolean startedFromService = false;
     public int remainingSeconds;
