@@ -19,8 +19,8 @@ import net.mc21.attendancecheck.SPManager;
 import net.mc21.attendancecheck.WakeLockManager;
 import net.mc21.calls.LoginRemindActivity;
 import net.mc21.connections.HTTP;
-import net.mc21.connections.SettingsUpdater;
-import net.mc21.connections.UpdateSettingsListener;
+import net.mc21.connections.requests.UpdateSettingsRequest;
+import net.mc21.connections.interfaces.UpdateSettingsListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,7 +78,7 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
 
             // If company has logged in
             if(siteId != null)
-                SettingsUpdater.run(this, getApplicationContext());
+                new UpdateSettingsRequest(this, getApplicationContext()).run();
             else {
                 Log.i(MainActivity.TAG, "Settings not configured!");
                 MainActivity.showToast("AttendanceCheck settings not configured!", getApplicationContext());

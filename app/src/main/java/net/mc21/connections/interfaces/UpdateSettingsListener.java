@@ -1,4 +1,4 @@
-package net.mc21.connections;
+package net.mc21.connections.interfaces;
 
 import com.android.volley.VolleyError;
 
