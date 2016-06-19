@@ -16,7 +16,9 @@ import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.internet.HTTP;
 import net.mc21.attendancecheck.internet.requests.AcquireWorkersRequest;
+import net.mc21.attendancecheck.internet.requests.WorkerLoginRequest;
 import net.mc21.attendancecheck.internet.requests.interfaces.AcquireWorkersListener;
+import net.mc21.attendancecheck.internet.requests.interfaces.WorkerLoginListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,8 +27,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorkerLoginActivity extends AppCompatActivity implements AcquireWorkersListener {
+public class WorkerLoginActivity extends AppCompatActivity implements AcquireWorkersListener, WorkerLoginListener {
     private JSONArray workersJsonArray;
+    private String workerId;
     public static Context context;
     private ProgressDialog progressDialog;
 
@@ -48,38 +51,19 @@ public class WorkerLoginActivity extends AppCompatActivity implements AcquireWor
         progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Checking worker login");
         Spinner spinner = (Spinner) findViewById(R.id.worker_login_spinner);
         String selectedWorker = (String) spinner.getSelectedItem();
-        final String workerId = MainActivity.getJsonArrayItem(workersJsonArray, "name", selectedWorker, "id");
+        workerId = MainActivity.getJsonArrayItem(workersJsonArray, "name", selectedWorker, "id");
         String password = ((EditText)findViewById(R.id.worker_login_password_field)).getText().toString();
-        String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
 
         JSONObject json = new JSONObject();
 
         try {
             json.put("password", password);
-            json.put("access_token", access_token);
         } catch (JSONException e) {
             Log.i(MainActivity.TAG, "JSON error: " + e.toString());
             e.printStackTrace();
         }
 
-        // Check worker login
-        String url = HTTP.SERVER_IP + "api/v1/workers/" + workerId + "/check_login";
-        HTTP.requestObject(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                // If this code gets triggered, login is successful
-                Log.i(MainActivity.TAG, "Worker logged in");
-                SPManager.saveString(SPManager.SP_WORKER_ID, workerId, getApplicationContext());
-                progressDialog.hide();
-                finish();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                HTTP.handleError(error, getApplicationContext());
-                progressDialog.hide();
-            }
-        }, getApplicationContext());
+        new WorkerLoginRequest(this, workerId, getApplicationContext()).setData(json).makeRequest();
     }
 
     private void initSpinner() {
@@ -116,6 +100,21 @@ public class WorkerLoginActivity extends AppCompatActivity implements AcquireWor
 
     @Override
     public void onWorkersAcquireError(VolleyError error) {
+        HTTP.handleError(error, getApplicationContext());
+        progressDialog.hide();
+    }
+
+    @Override
+    public void onWorkerLogin(JSONObject response) {
+        // If this code gets executed, login is successful
+        Log.i(MainActivity.TAG, "Worker logged in");
+        SPManager.saveString(SPManager.SP_WORKER_ID, workerId, getApplicationContext());
+        progressDialog.hide();
+        finish();
+    }
+
+    @Override
+    public void onWorkerLoginError(VolleyError error) {
         HTTP.handleError(error, getApplicationContext());
         progressDialog.hide();
     }
