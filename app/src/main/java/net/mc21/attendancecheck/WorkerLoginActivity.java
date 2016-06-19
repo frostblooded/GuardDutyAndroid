@@ -15,6 +15,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.internet.HTTP;
+import net.mc21.attendancecheck.internet.requests.AcquireWorkersRequest;
+import net.mc21.attendancecheck.internet.requests.interfaces.AcquireWorkersListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +25,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorkerLoginActivity extends AppCompatActivity {
+public class WorkerLoginActivity extends AppCompatActivity implements AcquireWorkersListener {
     private JSONArray workersJsonArray;
     public static Context context;
     private ProgressDialog progressDialog;
@@ -82,39 +84,7 @@ public class WorkerLoginActivity extends AppCompatActivity {
 
     private void initSpinner() {
         progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Getting workers");
-
-        String company_id = SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext());
-        String token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
-        String site_id = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
-        String url = HTTP.SERVER_IP + "api/v1/companies/" + company_id + "/sites/" + site_id + "/workers?access_token=" + token;
-
-        HTTP.requestArray(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                try {
-                    workersJsonArray = response;
-                    List<String> workers = new ArrayList<String>();
-
-                    for(int i = 0; i < workersJsonArray.length(); i++) {
-                        workers.add(workersJsonArray.getJSONObject(i).getString("name"));
-                    }
-
-                    Spinner spinner = (Spinner) findViewById(R.id.worker_login_spinner);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, workers);
-                    spinner.setAdapter(adapter);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } finally {
-                    progressDialog.hide();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                HTTP.handleError(error, getApplicationContext());
-                progressDialog.hide();
-            }
-        }, getApplicationContext());
+        new AcquireWorkersRequest(this, getApplicationContext()).makeRequest();
     }
 
     @Override
@@ -122,5 +92,31 @@ public class WorkerLoginActivity extends AppCompatActivity {
         super.onResume();
         context = this;
         initSpinner();
+    }
+
+    @Override
+    public void onWorkersAcquired(JSONArray response) {
+        try {
+            workersJsonArray = response;
+            List<String> workers = new ArrayList<String>();
+
+            for(int i = 0; i < workersJsonArray.length(); i++) {
+                workers.add(workersJsonArray.getJSONObject(i).getString("name"));
+            }
+
+            Spinner spinner = (Spinner) findViewById(R.id.worker_login_spinner);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, workers);
+            spinner.setAdapter(adapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            progressDialog.hide();
+        }
+    }
+
+    @Override
+    public void onWorkersAcquireError(VolleyError error) {
+        HTTP.handleError(error, getApplicationContext());
+        progressDialog.hide();
     }
 }
