@@ -1,18 +1,16 @@
-package net.mc21.attendancecheck;
+package net.mc21.attendancecheck.main;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.internet.HTTP;
 import net.mc21.attendancecheck.internet.requests.SettingsLoginRequest;
 import net.mc21.attendancecheck.internet.requests.interfaces.SettingsLoginListener;

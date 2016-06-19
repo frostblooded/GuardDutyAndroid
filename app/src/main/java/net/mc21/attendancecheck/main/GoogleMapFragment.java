@@ -1,4 +1,4 @@
-package net.mc21.attendancecheck;
+package net.mc21.attendancecheck.main;
 
 import android.Manifest;
 import android.content.Intent;

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import net.mc21.attendancecheck.MainActivity;
+import net.mc21.attendancecheck.main.MainActivity;
 
 public class BootServiceStarter extends BroadcastReceiver {
     public BootServiceStarter() {};

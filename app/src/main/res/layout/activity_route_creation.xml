@@ -7,12 +7,12 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="net.mc21.attendancecheck.RouteCreationActivity">
+    tools:context=".main.RouteCreationActivity">
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="426dp"
-        android:name="net.mc21.attendancecheck.GoogleMapFragment"
+        android:name="net.mc21.attendancecheck.main.GoogleMapFragment"
         android:id="@+id/route_creation_map"
         android:layout_gravity="center_horizontal|top" />
 

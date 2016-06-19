@@ -18,9 +18,9 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 
-import net.mc21.attendancecheck.MainActivity;
+import net.mc21.attendancecheck.main.MainActivity;
 import net.mc21.attendancecheck.R;
-import net.mc21.attendancecheck.WorkerLoginActivity;
+import net.mc21.attendancecheck.main.WorkerLoginActivity;
 
 public class LoginRemindActivity extends AppCompatActivity {
     private static final int SECOND = 1000;

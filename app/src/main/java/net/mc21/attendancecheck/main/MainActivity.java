@@ -1,4 +1,4 @@
-package net.mc21.attendancecheck;
+package net.mc21.attendancecheck.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.minutelywork.MinutelyService;
 
 import org.json.JSONArray;

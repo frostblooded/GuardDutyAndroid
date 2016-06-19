@@ -1,4 +1,4 @@
-package net.mc21.attendancecheck;
+package net.mc21.attendancecheck.main;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -10,10 +10,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.internet.HTTP;
 import net.mc21.attendancecheck.internet.requests.AcquireSitesRequest;
 import net.mc21.attendancecheck.internet.requests.interfaces.AcquireSitesListener;

@@ -13,10 +13,10 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.calls.CallActivity;
-import net.mc21.attendancecheck.MainActivity;
+import net.mc21.attendancecheck.main.MainActivity;
 import net.mc21.attendancecheck.R;
-import net.mc21.attendancecheck.SPManager;
-import net.mc21.attendancecheck.WakeLockManager;
+import net.mc21.attendancecheck.main.SPManager;
+import net.mc21.attendancecheck.main.WakeLockManager;
 import net.mc21.attendancecheck.calls.LoginRemindActivity;
 import net.mc21.attendancecheck.internet.HTTP;
 import net.mc21.attendancecheck.internet.requests.UpdateSettingsRequest;

@@ -5,7 +5,7 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 
-import net.mc21.attendancecheck.SPManager;
+import net.mc21.attendancecheck.main.SPManager;
 import net.mc21.attendancecheck.internet.HTTP;
 import net.mc21.attendancecheck.internet.requests.abstracts.AbstractArrayRequest;
 import net.mc21.attendancecheck.internet.requests.interfaces.AcquireWorkersListener;

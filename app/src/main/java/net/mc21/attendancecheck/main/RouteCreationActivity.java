@@ -1,4 +1,4 @@
-package net.mc21.attendancecheck;
+package net.mc21.attendancecheck.main;
 
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -6,12 +6,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
+import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.internet.HTTP;
 import net.mc21.attendancecheck.internet.requests.RouteCreationRequest;
 import net.mc21.attendancecheck.internet.requests.interfaces.RouteCreationListener;

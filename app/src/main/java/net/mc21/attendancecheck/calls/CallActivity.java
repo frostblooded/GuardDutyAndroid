@@ -19,7 +19,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
-import net.mc21.attendancecheck.MainActivity;
+import net.mc21.attendancecheck.main.MainActivity;
 import net.mc21.attendancecheck.R;
 
 public class CallActivity extends AppCompatActivity {
