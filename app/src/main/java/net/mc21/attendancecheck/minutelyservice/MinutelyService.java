@@ -1,4 +1,4 @@
-package net.mc21.attendancecheck.minutelywork;
+package net.mc21.attendancecheck.minutelyservice;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -13,12 +13,12 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.calls.CallActivity;
-import net.mc21.attendancecheck.common.MiscellaneousHelpers;
+import net.mc21.attendancecheck.common.MiscHelpers;
 import net.mc21.attendancecheck.common.InternetHelpers;
+import net.mc21.attendancecheck.common.SPHelpers;
 import net.mc21.attendancecheck.main.MainActivity;
 import net.mc21.attendancecheck.R;
-import net.mc21.attendancecheck.main.SPManager;
-import net.mc21.attendancecheck.main.WakeLockManager;
+import net.mc21.attendancecheck.common.WakeLockManager;
 import net.mc21.attendancecheck.calls.LoginRemindActivity;
 import net.mc21.attendancecheck.internet.requests.UpdateSettingsRequest;
 import net.mc21.attendancecheck.internet.interfaces.UpdateSettingsListener;
@@ -68,21 +68,21 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
     }
 
     private boolean isLoggedIn() {
-        return SPManager.getString(SPManager.SP_WORKER_ID, getApplicationContext()) != null;
+        return SPHelpers.getString(SPHelpers.SP_WORKER_ID, getApplicationContext()) != null;
     }
 
     private void doMinutelyWork() {
         minutesSinceLastCall++;
 
         if(minutesSinceLastCall >= MINUTES_BETWEEN_CALLS) {
-            String siteId = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
+            String siteId = SPHelpers.getString(SPHelpers.SP_SITE_ID, getApplicationContext());
 
             // If company has logged in
             if(siteId != null)
                 new UpdateSettingsRequest(this, getApplicationContext()).makeRequest();
             else {
                 Log.i(MainActivity.TAG, "Settings not configured!");
-                MiscellaneousHelpers.showToast("AttendanceCheck settings not configured!", getApplicationContext());
+                MiscHelpers.showToast("AttendanceCheck settings not configured!", getApplicationContext());
             }
 
             minutesSinceLastCall = 0;

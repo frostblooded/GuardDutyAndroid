@@ -13,8 +13,9 @@ import android.widget.Spinner;
 import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.R;
-import net.mc21.attendancecheck.common.MiscellaneousHelpers;
+import net.mc21.attendancecheck.common.MiscHelpers;
 import net.mc21.attendancecheck.common.InternetHelpers;
+import net.mc21.attendancecheck.common.SPHelpers;
 import net.mc21.attendancecheck.internet.requests.AcquireWorkersRequest;
 import net.mc21.attendancecheck.internet.requests.WorkerLoginRequest;
 import net.mc21.attendancecheck.internet.interfaces.AcquireWorkersListener;
@@ -51,7 +52,7 @@ public class WorkerLoginActivity extends AppCompatActivity implements AcquireWor
         progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Checking worker login");
         Spinner spinner = (Spinner) findViewById(R.id.worker_login_spinner);
         String selectedWorker = (String) spinner.getSelectedItem();
-        workerId = MiscellaneousHelpers.getJsonArrayItem(workersJsonArray, "name", selectedWorker, "id");
+        workerId = MiscHelpers.getJsonArrayItem(workersJsonArray, "name", selectedWorker, "id");
         String password = ((EditText)findViewById(R.id.worker_login_password_field)).getText().toString();
 
         JSONObject json = new JSONObject();
@@ -108,7 +109,7 @@ public class WorkerLoginActivity extends AppCompatActivity implements AcquireWor
     public void onWorkerLogin(JSONObject response) {
         // If this code gets executed, login is successful
         Log.i(MainActivity.TAG, "Worker logged in");
-        SPManager.saveString(SPManager.SP_WORKER_ID, workerId, getApplicationContext());
+        SPHelpers.saveString(SPHelpers.SP_WORKER_ID, workerId, getApplicationContext());
         progressDialog.hide();
         finish();
     }

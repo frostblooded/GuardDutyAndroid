@@ -6,7 +6,7 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.common.InternetHelpers;
-import net.mc21.attendancecheck.main.SPManager;
+import net.mc21.attendancecheck.common.SPHelpers;
 import net.mc21.attendancecheck.internet.abstracts.AbstractObjectRequest;
 import net.mc21.attendancecheck.internet.interfaces.RouteCreationListener;
 
@@ -27,9 +27,9 @@ public class RouteCreationRequest extends AbstractObjectRequest {
 
     @Override
     protected String getUrl() {
-        String company_id = SPManager.getString(SPManager.SP_COMPANY_ID, context);
-        String site_id = SPManager.getString(SPManager.SP_SITE_ID, context);
-        String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, context);
+        String company_id = SPHelpers.getString(SPHelpers.SP_COMPANY_ID, context);
+        String site_id = SPHelpers.getString(SPHelpers.SP_SITE_ID, context);
+        String access_token = SPHelpers.getString(SPHelpers.SP_ACCESS_TOKEN, context);
 
         return InternetHelpers.SERVER_IP + "api/v1/companies/" + company_id + "/sites/" + site_id + "/routes?access_token=" + access_token;
     }

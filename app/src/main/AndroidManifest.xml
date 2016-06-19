@@ -36,11 +36,11 @@
         <activity android:name=".calls.CallActivity" />
         <activity android:name=".main.SettingsActivity" />
         <activity android:name=".main.RouteCreationActivity" />
-        <service android:name=".minutelywork.MinutelyService" />
+        <service android:name=".minutelyservice.MinutelyService" />
         <activity android:name=".calls.LoginRemindActivity" />
 
         <receiver
-            android:name=".minutelywork.BootServiceStarter"
+            android:name=".minutelyservice.BootServiceStarter"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

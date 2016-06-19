@@ -1,4 +1,4 @@
-package net.mc21.attendancecheck.main;
+package net.mc21.attendancecheck.common;
 
 import android.content.Context;
 import android.os.PowerManager;

@@ -50,7 +50,7 @@ public class CallActivity extends AppCompatActivity {
     }
 
     private void sendResult(){
-        /*String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
+        /*String access_token = SPHelpers.getString(SPHelpers.SP_ACCESS_TOKEN, getApplicationContext());
         String url = HTTP.SERVER_IP + "api/v1/calls/" + call_id + "?access_token=" + access_token;
         JSONObject json = new JSONObject();
 

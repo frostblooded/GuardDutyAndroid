@@ -1,11 +1,8 @@
 package net.mc21.attendancecheck.main;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
@@ -23,7 +20,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import net.mc21.attendancecheck.common.GPSHelpers;
-import net.mc21.attendancecheck.common.MiscellaneousHelpers;
+import net.mc21.attendancecheck.common.MiscHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +54,7 @@ public class GoogleMapFragment extends SupportMapFragment implements OnMapReadyC
 
         if(!GPSHelpers.GPSIsEnabled(getContext())) {
             GPSHelpers.enableGPS(getContext());
-            MiscellaneousHelpers.showToast("Please turn on the GPS. Otherwise the map won't work properly.", getActivity());
+            MiscHelpers.showToast("Please turn on the GPS. Otherwise the map won't work properly.", getActivity());
         }
     }
 
@@ -92,10 +89,10 @@ public class GoogleMapFragment extends SupportMapFragment implements OnMapReadyC
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                    MiscellaneousHelpers.showToast("Permission granted!", getActivity());
+                    MiscHelpers.showToast("Permission granted!", getActivity());
                     initMap();
                 } else {
-                    MiscellaneousHelpers.showToast("The map can't find your location! Please enter the map again and allow it to use GPS.", getActivity());
+                    MiscHelpers.showToast("The map can't find your location! Please enter the map again and allow it to use GPS.", getActivity());
                     getActivity().finish();
                 }
 
@@ -110,7 +107,7 @@ public class GoogleMapFragment extends SupportMapFragment implements OnMapReadyC
 
     private void requestLocationPermissions() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), PERMISSION_1))
-            MiscellaneousHelpers.showToast("GPS is required to get your location. Please allow it.", getActivity());
+            MiscHelpers.showToast("GPS is required to get your location. Please allow it.", getActivity());
 
         ActivityCompat.requestPermissions(getActivity(), new String[]{PERMISSION_1, PERMISSION_2}, ACCESS_LOCATION_REQUEST_CODE);
     }

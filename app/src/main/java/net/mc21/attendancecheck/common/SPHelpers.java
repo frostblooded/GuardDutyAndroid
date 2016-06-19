@@ -1,9 +1,9 @@
-package net.mc21.attendancecheck.main;
+package net.mc21.attendancecheck.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class SPManager {
+public class SPHelpers {
     public final static String SP_NAME = "AttendanceCheck";
     public final static String SP_ACCESS_TOKEN = "access_token";
     public final static String SP_COMPANY_ID = "company_id";

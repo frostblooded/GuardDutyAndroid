@@ -31,7 +31,7 @@ public class InternetHelpers {
                 response = "Error: " + json.getString("error");
             }
 
-            MiscellaneousHelpers.showToast(response, context);
+            MiscHelpers.showToast(response, context);
         } catch (UnsupportedEncodingException e) {
             Log.i(MainActivity.TAG, "Unsupported encoding: " + e.toString());
             e.printStackTrace();

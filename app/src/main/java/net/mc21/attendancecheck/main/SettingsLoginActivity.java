@@ -12,6 +12,7 @@ import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.common.InternetHelpers;
+import net.mc21.attendancecheck.common.SPHelpers;
 import net.mc21.attendancecheck.internet.requests.SettingsLoginRequest;
 import net.mc21.attendancecheck.internet.interfaces.SettingsLoginListener;
 
@@ -62,9 +63,9 @@ public class SettingsLoginActivity extends AppCompatActivity implements Settings
     @Override
     public void onSettingsLogin(JSONObject response) {
         try {
-            SPManager.saveString(SPManager.SP_ACCESS_TOKEN, response.getString("access_token"), getApplicationContext());
-            SPManager.saveString(SPManager.SP_COMPANY_ID, response.getString("company_id"), getApplicationContext());
-            SPManager.saveString(SPManager.SP_COMPANY_NAME, response.getString("company_name"), getApplicationContext());
+            SPHelpers.saveString(SPHelpers.SP_ACCESS_TOKEN, response.getString("access_token"), getApplicationContext());
+            SPHelpers.saveString(SPHelpers.SP_COMPANY_ID, response.getString("company_id"), getApplicationContext());
+            SPHelpers.saveString(SPHelpers.SP_COMPANY_NAME, response.getString("company_name"), getApplicationContext());
 
             boolean noError = response.isNull("error");
 

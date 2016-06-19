@@ -13,14 +13,14 @@ import android.widget.Spinner;
 import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.R;
-import net.mc21.attendancecheck.common.MiscellaneousHelpers;
+import net.mc21.attendancecheck.common.MiscHelpers;
 import net.mc21.attendancecheck.common.InternetHelpers;
+import net.mc21.attendancecheck.common.SPHelpers;
 import net.mc21.attendancecheck.internet.requests.AcquireSitesRequest;
 import net.mc21.attendancecheck.internet.interfaces.AcquireSitesListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,28 +44,12 @@ public class SettingsActivity extends AppCompatActivity implements AcquireSitesL
             progressDialog.dismiss();
     }
 
-    private int getElementIndex(JSONArray array, String key, int value) {
-        for(int i = 0; i < array.length(); i++) {
-            try {
-                JSONObject obj = array.getJSONObject(i);
-
-                if(obj.getInt(key) == value)
-                    return i;
-            } catch (JSONException e) {
-                Log.i(MainActivity.TAG, "JSON error: " + e.toString());
-                e.printStackTrace();
-            }
-        }
-
-        return -1;
-    }
-
     void setSpinnerDefault(Spinner spinner, JSONArray response) {
-        String siteId = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
+        String siteId = SPHelpers.getString(SPHelpers.SP_SITE_ID, getApplicationContext());
 
         if(siteId != null) {
             // Set default selection
-            int selectedIndex = getElementIndex(response, "id", Integer.parseInt(siteId));
+            int selectedIndex = MiscHelpers.getJsonArrayIndex(response, "id", Integer.parseInt(siteId));
             Log.i(MainActivity.TAG, "Default selection: " + selectedIndex);
             spinner.setSelection(selectedIndex);
         }
@@ -111,8 +95,8 @@ public class SettingsActivity extends AppCompatActivity implements AcquireSitesL
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String selectedSite = parent.getItemAtPosition(position).toString();
-        String site_id = MiscellaneousHelpers.getJsonArrayItem(sitesJsonArray, "name", selectedSite, "id");
-        SPManager.saveString(SPManager.SP_SITE_ID, site_id, getApplicationContext());
+        String site_id = MiscHelpers.getJsonArrayItem(sitesJsonArray, "name", selectedSite, "id");
+        SPHelpers.saveString(SPHelpers.SP_SITE_ID, site_id, getApplicationContext());
     }
 
     @Override

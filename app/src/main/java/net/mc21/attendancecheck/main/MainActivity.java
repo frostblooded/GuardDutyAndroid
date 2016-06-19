@@ -8,8 +8,9 @@ import android.view.View;
 import android.widget.Button;
 
 import net.mc21.attendancecheck.R;
-import net.mc21.attendancecheck.common.MiscellaneousHelpers;
-import net.mc21.attendancecheck.minutelywork.MinutelyService;
+import net.mc21.attendancecheck.common.MiscHelpers;
+import net.mc21.attendancecheck.common.SPHelpers;
+import net.mc21.attendancecheck.minutelyservice.MinutelyService;
 
 public class MainActivity extends AppCompatActivity {
     public static Context context;
@@ -47,11 +48,11 @@ public class MainActivity extends AppCompatActivity {
         startMinutelyHandler();
         setContentView(R.layout.activity_main);
 
-        String company_id = SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext());
-        String site_id = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
+        String company_id = SPHelpers.getString(SPHelpers.SP_COMPANY_ID, getApplicationContext());
+        String site_id = SPHelpers.getString(SPHelpers.SP_SITE_ID, getApplicationContext());
 
         if (company_id == null || site_id == null) {
-            MiscellaneousHelpers.showToast(getString(R.string.please_login_to_configure_application), getApplicationContext());
+            MiscHelpers.showToast(getString(R.string.please_login_to_configure_application), getApplicationContext());
             openSettingsLogin(null);
         }
     }
@@ -69,14 +70,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void signOutWorker() {
-        SPManager.saveString(SPManager.SP_WORKER_ID, null, getApplicationContext());
+        SPHelpers.saveString(SPHelpers.SP_WORKER_ID, null, getApplicationContext());
         toggleButtonStatus();
     }
 
     // Changes 'log in worker' button to 'sign out worker' button
     // based on if the device is already logged in
     private void initWorkerButton() {
-        String workerId = SPManager.getString(SPManager.SP_WORKER_ID, getApplicationContext());
+        String workerId = SPHelpers.getString(SPHelpers.SP_WORKER_ID, getApplicationContext());
         boolean loggedIn = workerId != null;
         Log.i(MainActivity.TAG, "Logged in: " + loggedIn);
 

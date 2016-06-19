@@ -12,7 +12,7 @@ import com.google.android.gms.maps.model.Marker;
 
 import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.common.GPSHelpers;
-import net.mc21.attendancecheck.common.MiscellaneousHelpers;
+import net.mc21.attendancecheck.common.MiscHelpers;
 import net.mc21.attendancecheck.common.InternetHelpers;
 import net.mc21.attendancecheck.internet.requests.RouteCreationRequest;
 import net.mc21.attendancecheck.internet.interfaces.RouteCreationListener;
@@ -49,7 +49,7 @@ public class RouteCreationActivity extends AppCompatActivity implements RouteCre
         }
 
         if(!mapFragment.isReady()) {
-            MiscellaneousHelpers.showToast("Map is not ready yet. Please wait a moment and try again!", getApplicationContext());
+            MiscHelpers.showToast("Map is not ready yet. Please wait a moment and try again!", getApplicationContext());
             return;
         }
 
@@ -60,7 +60,7 @@ public class RouteCreationActivity extends AppCompatActivity implements RouteCre
         List<Marker> markers = mapFragment.getMarkers();
 
         if(markers.size() == 0) {
-            MiscellaneousHelpers.showToast("There are no markers! Please put some first.", getApplicationContext());
+            MiscHelpers.showToast("There are no markers! Please put some first.", getApplicationContext());
             return;
         }
 
@@ -89,7 +89,7 @@ public class RouteCreationActivity extends AppCompatActivity implements RouteCre
     @Override
     public void onRouteCreated(JSONObject response) {
         Log.i(MainActivity.TAG, "Route creation response: " + response.toString());
-        MiscellaneousHelpers.showToast("Route created successfully!", getApplicationContext());
+        MiscHelpers.showToast("Route created successfully!", getApplicationContext());
         progressDialog.hide();
         finish();
     }

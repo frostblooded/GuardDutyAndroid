@@ -1,4 +1,4 @@
-package net.mc21.attendancecheck.minutelywork;
+package net.mc21.attendancecheck.minutelyservice;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
