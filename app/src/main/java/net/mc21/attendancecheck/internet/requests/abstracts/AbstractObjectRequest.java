@@ -14,6 +14,6 @@ public abstract class AbstractObjectRequest extends AbstractRequest<JSONObject> 
 
     @Override
     protected Request<JSONObject> getRequest() {
-        return new JsonObjectRequest(getMethod(), getUrl(), getData(), getListener(), getErrorListener());
+        return new JsonObjectRequest(getMethod(), getUrl(), data, getListener(), getErrorListener());
     }
 }

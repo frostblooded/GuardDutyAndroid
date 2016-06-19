@@ -17,11 +17,11 @@ public abstract class AbstractRequest<T> {
     protected abstract Request<T> getRequest();
     protected abstract int getMethod();
     protected abstract String getUrl();
-    protected abstract T getData();
     protected abstract void onSuccess(T response);
     protected abstract void onError(VolleyError error);
 
     protected Context context;
+    protected T data;
 
     protected AbstractRequest(Context context) {
         this.context = context;
@@ -43,6 +43,11 @@ public abstract class AbstractRequest<T> {
                 onError(error);
             }
         };
+    }
+
+    public AbstractRequest<T> setData(T data) {
+        this.data = data;
+        return this;
     }
 
     public void makeRequest() {

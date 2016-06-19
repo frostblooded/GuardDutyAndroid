@@ -34,11 +34,6 @@ public class UpdateSettingsRequest extends AbstractObjectRequest {
     }
 
     @Override
-    protected JSONObject getData() {
-        return null;
-    }
-
-    @Override
     protected void onSuccess(JSONObject response) {
         listener.onSettingsUpdated(response);
     }

@@ -13,6 +13,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 import net.mc21.attendancecheck.internet.HTTP;
+import net.mc21.attendancecheck.internet.requests.RouteCreationRequest;
+import net.mc21.attendancecheck.internet.requests.interfaces.RouteCreationListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +22,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class RouteCreationActivity extends AppCompatActivity {
+public class RouteCreationActivity extends AppCompatActivity implements RouteCreationListener {
     private GoogleMapFragment mapFragment;
     private ProgressDialog progressDialog;
 
@@ -80,25 +82,20 @@ public class RouteCreationActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String company_id = SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext());
-        String site_id = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
-        String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
+        new RouteCreationRequest(this, getApplicationContext()).setData(sentData).makeRequest();
+    }
 
-        String url = HTTP.SERVER_IP + "api/v1/companies/" + company_id + "/sites/" + site_id + "/routes?access_token=" + access_token;
-        HTTP.requestObject(Request.Method.POST, url, sentData, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.i(MainActivity.TAG, "Route creation response: " + response.toString());
-                MainActivity.showToast("Route created successfully!", getApplicationContext());
-                progressDialog.hide();
-                finish();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                HTTP.handleError(error, getApplicationContext());
-                progressDialog.hide();
-            }
-        }, getApplicationContext());
+    @Override
+    public void onRouteCreated(JSONObject response) {
+        Log.i(MainActivity.TAG, "Route creation response: " + response.toString());
+        MainActivity.showToast("Route created successfully!", getApplicationContext());
+        progressDialog.hide();
+        finish();
+    }
+
+    @Override
+    public void onRouteCreationError(VolleyError error) {
+        HTTP.handleError(error, getApplicationContext());
+        progressDialog.hide();
     }
 }

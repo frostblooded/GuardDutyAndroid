@@ -15,6 +15,6 @@ public abstract class AbstractArrayRequest extends AbstractRequest<JSONArray> {
 
     @Override
     protected Request<JSONArray> getRequest() {
-        return new JsonArrayRequest(getMethod(), getUrl(), getData(), getListener(), getErrorListener());
+        return new JsonArrayRequest(getMethod(), getUrl(), data, getListener(), getErrorListener());
     }
 }
