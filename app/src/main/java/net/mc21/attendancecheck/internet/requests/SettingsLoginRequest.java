@@ -5,9 +5,9 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 
-import net.mc21.attendancecheck.internet.HTTP;
-import net.mc21.attendancecheck.internet.requests.abstracts.AbstractObjectRequest;
-import net.mc21.attendancecheck.internet.requests.interfaces.SettingsLoginListener;
+import net.mc21.attendancecheck.common.InternetHelper;
+import net.mc21.attendancecheck.internet.abstracts.AbstractObjectRequest;
+import net.mc21.attendancecheck.internet.interfaces.SettingsLoginListener;
 
 import org.json.JSONObject;
 
@@ -26,7 +26,7 @@ public class SettingsLoginRequest extends AbstractObjectRequest {
 
     @Override
     protected String getUrl() {
-        return HTTP.SERVER_IP + "api/v1/access_tokens";
+        return InternetHelper.SERVER_IP + "api/v1/access_tokens";
     }
 
     @Override

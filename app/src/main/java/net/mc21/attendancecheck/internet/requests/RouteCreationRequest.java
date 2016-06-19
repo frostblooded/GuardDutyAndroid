@@ -5,10 +5,10 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 
+import net.mc21.attendancecheck.common.InternetHelper;
 import net.mc21.attendancecheck.main.SPManager;
-import net.mc21.attendancecheck.internet.HTTP;
-import net.mc21.attendancecheck.internet.requests.abstracts.AbstractObjectRequest;
-import net.mc21.attendancecheck.internet.requests.interfaces.RouteCreationListener;
+import net.mc21.attendancecheck.internet.abstracts.AbstractObjectRequest;
+import net.mc21.attendancecheck.internet.interfaces.RouteCreationListener;
 
 import org.json.JSONObject;
 
@@ -31,7 +31,7 @@ public class RouteCreationRequest extends AbstractObjectRequest {
         String site_id = SPManager.getString(SPManager.SP_SITE_ID, context);
         String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, context);
 
-        return HTTP.SERVER_IP + "api/v1/companies/" + company_id + "/sites/" + site_id + "/routes?access_token=" + access_token;
+        return InternetHelper.SERVER_IP + "api/v1/companies/" + company_id + "/sites/" + site_id + "/routes?access_token=" + access_token;
     }
 
     @Override

@@ -13,14 +13,14 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.calls.CallActivity;
+import net.mc21.attendancecheck.common.InternetHelper;
 import net.mc21.attendancecheck.main.MainActivity;
 import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.main.SPManager;
 import net.mc21.attendancecheck.main.WakeLockManager;
 import net.mc21.attendancecheck.calls.LoginRemindActivity;
-import net.mc21.attendancecheck.internet.HTTP;
 import net.mc21.attendancecheck.internet.requests.UpdateSettingsRequest;
-import net.mc21.attendancecheck.internet.requests.interfaces.UpdateSettingsListener;
+import net.mc21.attendancecheck.internet.interfaces.UpdateSettingsListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -163,7 +163,7 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
 
     @Override
     public void onSettingsUpdateError(VolleyError error) {
-        HTTP.handleError(error, getApplicationContext());
+        InternetHelper.handleError(error, getApplicationContext());
         startCall();
     }
 }

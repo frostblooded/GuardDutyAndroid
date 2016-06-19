@@ -11,9 +11,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 import net.mc21.attendancecheck.R;
-import net.mc21.attendancecheck.internet.HTTP;
+import net.mc21.attendancecheck.common.InternetHelper;
 import net.mc21.attendancecheck.internet.requests.RouteCreationRequest;
-import net.mc21.attendancecheck.internet.requests.interfaces.RouteCreationListener;
+import net.mc21.attendancecheck.internet.interfaces.RouteCreationListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,7 +94,7 @@ public class RouteCreationActivity extends AppCompatActivity implements RouteCre
 
     @Override
     public void onRouteCreationError(VolleyError error) {
-        HTTP.handleError(error, getApplicationContext());
+        InternetHelper.handleError(error, getApplicationContext());
         progressDialog.hide();
     }
 }

@@ -13,11 +13,11 @@ import android.widget.Spinner;
 import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.R;
-import net.mc21.attendancecheck.internet.HTTP;
+import net.mc21.attendancecheck.common.InternetHelper;
 import net.mc21.attendancecheck.internet.requests.AcquireWorkersRequest;
 import net.mc21.attendancecheck.internet.requests.WorkerLoginRequest;
-import net.mc21.attendancecheck.internet.requests.interfaces.AcquireWorkersListener;
-import net.mc21.attendancecheck.internet.requests.interfaces.WorkerLoginListener;
+import net.mc21.attendancecheck.internet.interfaces.AcquireWorkersListener;
+import net.mc21.attendancecheck.internet.interfaces.WorkerLoginListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -99,7 +99,7 @@ public class WorkerLoginActivity extends AppCompatActivity implements AcquireWor
 
     @Override
     public void onWorkersAcquireError(VolleyError error) {
-        HTTP.handleError(error, getApplicationContext());
+        InternetHelper.handleError(error, getApplicationContext());
         progressDialog.hide();
     }
 
@@ -114,7 +114,7 @@ public class WorkerLoginActivity extends AppCompatActivity implements AcquireWor
 
     @Override
     public void onWorkerLoginError(VolleyError error) {
-        HTTP.handleError(error, getApplicationContext());
+        InternetHelper.handleError(error, getApplicationContext());
         progressDialog.hide();
     }
 }

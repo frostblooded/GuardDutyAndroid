@@ -13,9 +13,9 @@ import android.widget.Spinner;
 import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.R;
-import net.mc21.attendancecheck.internet.HTTP;
+import net.mc21.attendancecheck.common.InternetHelper;
 import net.mc21.attendancecheck.internet.requests.AcquireSitesRequest;
-import net.mc21.attendancecheck.internet.requests.interfaces.AcquireSitesListener;
+import net.mc21.attendancecheck.internet.interfaces.AcquireSitesListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -103,7 +103,7 @@ public class SettingsActivity extends AppCompatActivity implements AcquireSitesL
 
     @Override
     public void onSitesAcquireError(VolleyError error) {
-        HTTP.handleError(error, getApplicationContext());
+        InternetHelper.handleError(error, getApplicationContext());
         progressDialog.hide();
     }
 

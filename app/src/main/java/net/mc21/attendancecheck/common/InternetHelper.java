@@ -1,4 +1,4 @@
-package net.mc21.attendancecheck.internet;
+package net.mc21.attendancecheck.common;
 
 import android.content.Context;
 import android.util.Log;
@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-public class HTTP {
+public class InternetHelper {
     public final static int REQUEST_TIMEOUT = 5000;
     public static String SERVER_IP = "https://hidden-shelf-43728.herokuapp.com/";
     //public static String SERVER_IP = "http://91.139.243.106:3000/";

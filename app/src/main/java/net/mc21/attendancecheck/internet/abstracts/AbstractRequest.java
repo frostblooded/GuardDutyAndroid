@@ -1,4 +1,4 @@
-package net.mc21.attendancecheck.internet.requests.abstracts;
+package net.mc21.attendancecheck.internet.abstracts;
 
 import android.content.Context;
 

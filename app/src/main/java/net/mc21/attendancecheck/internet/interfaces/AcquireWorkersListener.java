@@ -1,4 +1,4 @@
-package net.mc21.attendancecheck.internet.requests.interfaces;
+package net.mc21.attendancecheck.internet.interfaces;
 
 import com.android.volley.VolleyError;
 

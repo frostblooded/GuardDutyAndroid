@@ -11,9 +11,9 @@ import android.widget.EditText;
 import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.R;
-import net.mc21.attendancecheck.internet.HTTP;
+import net.mc21.attendancecheck.common.InternetHelper;
 import net.mc21.attendancecheck.internet.requests.SettingsLoginRequest;
-import net.mc21.attendancecheck.internet.requests.interfaces.SettingsLoginListener;
+import net.mc21.attendancecheck.internet.interfaces.SettingsLoginListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,7 +82,7 @@ public class SettingsLoginActivity extends AppCompatActivity implements Settings
 
     @Override
     public void onSettingsLoginError(VolleyError error) {
-        HTTP.handleError(error, getApplicationContext());
+        InternetHelper.handleError(error, getApplicationContext());
         progressDialog.hide();
     }
 }
