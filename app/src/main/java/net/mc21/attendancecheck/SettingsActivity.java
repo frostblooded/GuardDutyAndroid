@@ -15,6 +15,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.internet.HTTP;
+import net.mc21.attendancecheck.internet.requests.AcquireSitesRequest;
+import net.mc21.attendancecheck.internet.requests.interfaces.AcquireSitesListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +25,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements AcquireSitesListener, AdapterView.OnItemSelectedListener {
     private JSONArray sitesJsonArray;
     private ProgressDialog progressDialog;
 
@@ -71,55 +73,48 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void initSpinner() {
         progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Getting sites", true);
-
-        String company_id = SPManager.getString(SPManager.SP_COMPANY_ID, getApplicationContext());
-        String token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, getApplicationContext());
-        String url = HTTP.SERVER_IP + "api/v1/companies/" + company_id + "/sites?access_token=" + token;
-
-        HTTP.requestArray(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(final JSONArray response) {
-                try {
-                    sitesJsonArray = response;
-                    List<String> sites = new ArrayList<String>();
-
-                    for (int i = 0; i < sitesJsonArray.length(); i++) {
-                        sites.add(sitesJsonArray.getJSONObject(i).getString("name"));
-                    }
-
-                    Spinner spinner = (Spinner) findViewById(R.id.settings_site_spinner);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, sites);
-                    spinner.setAdapter(adapter);
-                    setSpinnerDefault(spinner, sitesJsonArray);
-
-                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            String selectedSite = parent.getItemAtPosition(position).toString();
-                            String site_id = MainActivity.getJsonArrayItem(sitesJsonArray, "name", selectedSite, "id");
-                            SPManager.saveString(SPManager.SP_SITE_ID, site_id, getApplicationContext());
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {}
-                    });
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } finally {
-                    progressDialog.hide();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                HTTP.handleError(error, getApplicationContext());
-                progressDialog.hide();
-            }
-        }, getApplicationContext());
+        new AcquireSitesRequest(this, getApplicationContext()).makeRequest();
     }
 
     public void openRouteCreation(View v) {
         Intent i = new Intent(getApplicationContext(), RouteCreationActivity.class);
         startActivity(i);
     }
+
+    @Override
+    public void onSitesAcquired(JSONArray response) {
+        try {
+            sitesJsonArray = response;
+            List<String> sites = new ArrayList<String>();
+
+            for (int i = 0; i < sitesJsonArray.length(); i++)
+                sites.add(sitesJsonArray.getJSONObject(i).getString("name"));
+
+            Spinner spinner = (Spinner) findViewById(R.id.settings_site_spinner);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, sites);
+            spinner.setAdapter(adapter);
+            setSpinnerDefault(spinner, sitesJsonArray);
+            spinner.setOnItemSelectedListener(this);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            progressDialog.hide();
+        }
+    }
+
+    @Override
+    public void onSitesAcquireError(VolleyError error) {
+        HTTP.handleError(error, getApplicationContext());
+        progressDialog.hide();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String selectedSite = parent.getItemAtPosition(position).toString();
+        String site_id = MainActivity.getJsonArrayItem(sitesJsonArray, "name", selectedSite, "id");
+        SPManager.saveString(SPManager.SP_SITE_ID, site_id, getApplicationContext());
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {}
 }
