@@ -1,4 +1,4 @@
-package net.mc21.internet.requests;
+package net.mc21.attendancecheck.internet.requests;
 
 import android.content.Context;
 
@@ -6,9 +6,9 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.SPManager;
-import net.mc21.internet.HTTP;
-import net.mc21.internet.requests.interfaces.UpdateSettingsListener;
-import net.mc21.internet.requests.abstracts.AbstractObjectRequest;
+import net.mc21.attendancecheck.internet.HTTP;
+import net.mc21.attendancecheck.internet.requests.interfaces.UpdateSettingsListener;
+import net.mc21.attendancecheck.internet.requests.abstracts.AbstractObjectRequest;
 
 import org.json.JSONObject;
 

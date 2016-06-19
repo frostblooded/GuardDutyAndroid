@@ -1,4 +1,4 @@
-package net.mc21.internet;
+package net.mc21.attendancecheck.internet;
 
 import android.content.Context;
 import android.util.Log;

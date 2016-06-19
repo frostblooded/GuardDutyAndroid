@@ -1,4 +1,4 @@
-package net.mc21.minutelywork;
+package net.mc21.attendancecheck.minutelywork;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -12,15 +12,15 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 
-import net.mc21.calls.CallActivity;
+import net.mc21.attendancecheck.calls.CallActivity;
 import net.mc21.attendancecheck.MainActivity;
 import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.SPManager;
 import net.mc21.attendancecheck.WakeLockManager;
-import net.mc21.calls.LoginRemindActivity;
-import net.mc21.internet.HTTP;
-import net.mc21.internet.requests.UpdateSettingsRequest;
-import net.mc21.internet.requests.interfaces.UpdateSettingsListener;
+import net.mc21.attendancecheck.calls.LoginRemindActivity;
+import net.mc21.attendancecheck.internet.HTTP;
+import net.mc21.attendancecheck.internet.requests.UpdateSettingsRequest;
+import net.mc21.attendancecheck.internet.requests.interfaces.UpdateSettingsListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;

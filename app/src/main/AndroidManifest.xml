@@ -33,14 +33,14 @@
 
         <activity android:name=".SettingsLoginActivity" />
         <activity android:name=".WorkerLoginActivity" />
-        <activity android:name="net.mc21.calls.CallActivity" />
+        <activity android:name=".calls.CallActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".RouteCreationActivity" />
-        <service android:name="net.mc21.minutelywork.MinutelyService" />
-        <activity android:name="net.mc21.calls.LoginRemindActivity" />
+        <service android:name=".minutelywork.MinutelyService" />
+        <activity android:name=".calls.LoginRemindActivity" />
 
         <receiver
-            android:name="net.mc21.minutelywork.BootServiceStarter"
+            android:name=".minutelywork.BootServiceStarter"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

@@ -12,7 +12,7 @@ import com.android.volley.VolleyError;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
-import net.mc21.internet.HTTP;
+import net.mc21.attendancecheck.internet.HTTP;
 
 import org.json.JSONArray;
 import org.json.JSONException;
