@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-public class InternetHelper {
+public class InternetHelpers {
     public final static int REQUEST_TIMEOUT = 5000;
     public static String SERVER_IP = "https://hidden-shelf-43728.herokuapp.com/";
     //public static String SERVER_IP = "http://91.139.243.106:3000/";
@@ -31,7 +31,7 @@ public class InternetHelper {
                 response = "Error: " + json.getString("error");
             }
 
-            MainActivity.showToast(response, context);
+            MiscellaneousHelpers.showToast(response, context);
         } catch (UnsupportedEncodingException e) {
             Log.i(MainActivity.TAG, "Unsupported encoding: " + e.toString());
             e.printStackTrace();

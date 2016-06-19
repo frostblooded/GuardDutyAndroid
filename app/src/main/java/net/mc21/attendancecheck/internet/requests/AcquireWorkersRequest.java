@@ -5,7 +5,7 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 
-import net.mc21.attendancecheck.common.InternetHelper;
+import net.mc21.attendancecheck.common.InternetHelpers;
 import net.mc21.attendancecheck.main.SPManager;
 import net.mc21.attendancecheck.internet.abstracts.AbstractArrayRequest;
 import net.mc21.attendancecheck.internet.interfaces.AcquireWorkersListener;
@@ -30,7 +30,7 @@ public class AcquireWorkersRequest extends AbstractArrayRequest {
         String company_id = SPManager.getString(SPManager.SP_COMPANY_ID, context);
         String token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, context);
         String site_id = SPManager.getString(SPManager.SP_SITE_ID, context);
-        return InternetHelper.SERVER_IP + "api/v1/companies/" + company_id + "/sites/" + site_id + "/workers?access_token=" + token;
+        return InternetHelpers.SERVER_IP + "api/v1/companies/" + company_id + "/sites/" + site_id + "/workers?access_token=" + token;
     }
 
     @Override

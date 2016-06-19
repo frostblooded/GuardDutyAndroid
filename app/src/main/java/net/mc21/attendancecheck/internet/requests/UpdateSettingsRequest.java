@@ -5,7 +5,7 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 
-import net.mc21.attendancecheck.common.InternetHelper;
+import net.mc21.attendancecheck.common.InternetHelpers;
 import net.mc21.attendancecheck.main.SPManager;
 import net.mc21.attendancecheck.internet.interfaces.UpdateSettingsListener;
 import net.mc21.attendancecheck.internet.abstracts.AbstractObjectRequest;
@@ -30,7 +30,7 @@ public class UpdateSettingsRequest extends AbstractObjectRequest {
         String companyId = SPManager.getString(SPManager.SP_COMPANY_ID, context);
         String siteId = SPManager.getString(SPManager.SP_SITE_ID, context);
         String accessToken = SPManager.getString(SPManager.SP_ACCESS_TOKEN, context);
-        return InternetHelper.SERVER_IP + "api/v1/companies/" + companyId + "/sites/" + siteId + "/settings?access_token=" + accessToken;
+        return InternetHelpers.SERVER_IP + "api/v1/companies/" + companyId + "/sites/" + siteId + "/settings?access_token=" + accessToken;
     }
 
     @Override

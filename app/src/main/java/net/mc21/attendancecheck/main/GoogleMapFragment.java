@@ -22,6 +22,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import net.mc21.attendancecheck.common.GPSHelpers;
+import net.mc21.attendancecheck.common.MiscellaneousHelpers;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,48 +47,17 @@ public class GoogleMapFragment extends SupportMapFragment implements OnMapReadyC
         return markers;
     }
 
-    public void enableGPS() {
-        Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        startActivity(i);
-    }
-
-    public boolean GPSIsEnabled() {
-        LocationManager manager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
-        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-    }
-
     public boolean isReady() {
         return mMap != null;
-    }
-
-    public Location getLastKnownLocation() {
-        LocationManager mLocationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
-        List<String> providers = mLocationManager.getProviders(true);
-        Location bestLocation = null;
-
-        for(String provider: providers) {
-            // It is okay if the bottom line is underlined... depending on how you use it
-            Location l = mLocationManager.getLastKnownLocation(provider);
-
-            if(l == null) {
-                continue;
-            }
-
-            if(bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
-                bestLocation = l;
-            }
-        }
-
-        return bestLocation;
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        if(!GPSIsEnabled()) {
-            enableGPS();
-            MainActivity.showToast("Please turn on the GPS. Otherwise the map won't work properly.", getActivity());
+        if(!GPSHelpers.GPSIsEnabled(getContext())) {
+            GPSHelpers.enableGPS(getContext());
+            MiscellaneousHelpers.showToast("Please turn on the GPS. Otherwise the map won't work properly.", getActivity());
         }
     }
 
@@ -104,7 +76,7 @@ public class GoogleMapFragment extends SupportMapFragment implements OnMapReadyC
                 && ActivityCompat.checkSelfPermission(getActivity(), PERMISSION_2) == PackageManager.PERMISSION_GRANTED;
 
         if (!hasPermissions) {
-            requestPermission();
+            requestLocationPermissions();
             return;
         }
 
@@ -120,10 +92,10 @@ public class GoogleMapFragment extends SupportMapFragment implements OnMapReadyC
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                    MainActivity.showToast("Permission granted!", getActivity());
+                    MiscellaneousHelpers.showToast("Permission granted!", getActivity());
                     initMap();
                 } else {
-                    MainActivity.showToast("The map can't find your location! Please enter the map again and allow it to use GPS.", getActivity());
+                    MiscellaneousHelpers.showToast("The map can't find your location! Please enter the map again and allow it to use GPS.", getActivity());
                     getActivity().finish();
                 }
 
@@ -136,10 +108,9 @@ public class GoogleMapFragment extends SupportMapFragment implements OnMapReadyC
         setCameraOnDevicePos();
     }
 
-    private void requestPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), PERMISSION_1)) {
-            MainActivity.showToast("GPS is required to get your location. Please allow it.", getActivity());
-        }
+    private void requestLocationPermissions() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), PERMISSION_1))
+            MiscellaneousHelpers.showToast("GPS is required to get your location. Please allow it.", getActivity());
 
         ActivityCompat.requestPermissions(getActivity(), new String[]{PERMISSION_1, PERMISSION_2}, ACCESS_LOCATION_REQUEST_CODE);
     }
@@ -157,7 +128,7 @@ public class GoogleMapFragment extends SupportMapFragment implements OnMapReadyC
     }
 
     private void setCameraOnDevicePos() {
-        Location location = getLastKnownLocation();
+        Location location = GPSHelpers.getLastKnownLocation(getContext());
 
         if(location == null) {
             Log.i(MainActivity.TAG, "Last known location is null");

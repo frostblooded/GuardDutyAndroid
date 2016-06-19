@@ -11,7 +11,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 import net.mc21.attendancecheck.R;
-import net.mc21.attendancecheck.common.InternetHelper;
+import net.mc21.attendancecheck.common.GPSHelpers;
+import net.mc21.attendancecheck.common.MiscellaneousHelpers;
+import net.mc21.attendancecheck.common.InternetHelpers;
 import net.mc21.attendancecheck.internet.requests.RouteCreationRequest;
 import net.mc21.attendancecheck.internet.interfaces.RouteCreationListener;
 
@@ -41,24 +43,24 @@ public class RouteCreationActivity extends AppCompatActivity implements RouteCre
     }
 
     public void createCheckpoint(View v) {
-        if(!mapFragment.GPSIsEnabled()) {
-            mapFragment.enableGPS();
+        if(!GPSHelpers.GPSIsEnabled(getApplicationContext())) {
+            GPSHelpers.enableGPS(getApplicationContext());
             return;
         }
 
         if(!mapFragment.isReady()) {
-            MainActivity.showToast("Map is not ready yet. Please wait a moment and try again!", getApplicationContext());
+            MiscellaneousHelpers.showToast("Map is not ready yet. Please wait a moment and try again!", getApplicationContext());
             return;
         }
 
-        mapFragment.createMarker(mapFragment.getLastKnownLocation());
+        mapFragment.createMarker(GPSHelpers.getLastKnownLocation(getApplicationContext()));
     }
 
     public void finishRoute(View v) {
         List<Marker> markers = mapFragment.getMarkers();
 
         if(markers.size() == 0) {
-            MainActivity.showToast("There are no markers! Please put some first.", getApplicationContext());
+            MiscellaneousHelpers.showToast("There are no markers! Please put some first.", getApplicationContext());
             return;
         }
 
@@ -87,14 +89,14 @@ public class RouteCreationActivity extends AppCompatActivity implements RouteCre
     @Override
     public void onRouteCreated(JSONObject response) {
         Log.i(MainActivity.TAG, "Route creation response: " + response.toString());
-        MainActivity.showToast("Route created successfully!", getApplicationContext());
+        MiscellaneousHelpers.showToast("Route created successfully!", getApplicationContext());
         progressDialog.hide();
         finish();
     }
 
     @Override
     public void onRouteCreationError(VolleyError error) {
-        InternetHelper.handleError(error, getApplicationContext());
+        InternetHelpers.handleError(error, getApplicationContext());
         progressDialog.hide();
     }
 }

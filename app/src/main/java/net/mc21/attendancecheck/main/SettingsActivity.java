@@ -13,7 +13,8 @@ import android.widget.Spinner;
 import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.R;
-import net.mc21.attendancecheck.common.InternetHelper;
+import net.mc21.attendancecheck.common.MiscellaneousHelpers;
+import net.mc21.attendancecheck.common.InternetHelpers;
 import net.mc21.attendancecheck.internet.requests.AcquireSitesRequest;
 import net.mc21.attendancecheck.internet.interfaces.AcquireSitesListener;
 
@@ -103,14 +104,14 @@ public class SettingsActivity extends AppCompatActivity implements AcquireSitesL
 
     @Override
     public void onSitesAcquireError(VolleyError error) {
-        InternetHelper.handleError(error, getApplicationContext());
+        InternetHelpers.handleError(error, getApplicationContext());
         progressDialog.hide();
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String selectedSite = parent.getItemAtPosition(position).toString();
-        String site_id = MainActivity.getJsonArrayItem(sitesJsonArray, "name", selectedSite, "id");
+        String site_id = MiscellaneousHelpers.getJsonArrayItem(sitesJsonArray, "name", selectedSite, "id");
         SPManager.saveString(SPManager.SP_SITE_ID, site_id, getApplicationContext());
     }
 

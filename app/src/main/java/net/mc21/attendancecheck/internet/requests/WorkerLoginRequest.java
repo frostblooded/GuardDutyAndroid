@@ -5,7 +5,7 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 
-import net.mc21.attendancecheck.common.InternetHelper;
+import net.mc21.attendancecheck.common.InternetHelpers;
 import net.mc21.attendancecheck.main.SPManager;
 import net.mc21.attendancecheck.internet.abstracts.AbstractObjectRequest;
 import net.mc21.attendancecheck.internet.interfaces.WorkerLoginListener;
@@ -33,7 +33,7 @@ public class WorkerLoginRequest extends AbstractObjectRequest {
     @Override
     protected String getUrl() {
         String access_token = SPManager.getString(SPManager.SP_ACCESS_TOKEN, context);
-        return InternetHelper.SERVER_IP + "api/v1/workers/" + workerId + "/check_login?access_token=" + access_token;
+        return InternetHelpers.SERVER_IP + "api/v1/workers/" + workerId + "/check_login?access_token=" + access_token;
     }
 
     @Override

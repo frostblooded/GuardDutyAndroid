@@ -13,7 +13,8 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.calls.CallActivity;
-import net.mc21.attendancecheck.common.InternetHelper;
+import net.mc21.attendancecheck.common.MiscellaneousHelpers;
+import net.mc21.attendancecheck.common.InternetHelpers;
 import net.mc21.attendancecheck.main.MainActivity;
 import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.main.SPManager;
@@ -81,7 +82,7 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
                 new UpdateSettingsRequest(this, getApplicationContext()).makeRequest();
             else {
                 Log.i(MainActivity.TAG, "Settings not configured!");
-                MainActivity.showToast("AttendanceCheck settings not configured!", getApplicationContext());
+                MiscellaneousHelpers.showToast("AttendanceCheck settings not configured!", getApplicationContext());
             }
 
             minutesSinceLastCall = 0;
@@ -163,7 +164,7 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
 
     @Override
     public void onSettingsUpdateError(VolleyError error) {
-        InternetHelper.handleError(error, getApplicationContext());
+        InternetHelpers.handleError(error, getApplicationContext());
         startCall();
     }
 }

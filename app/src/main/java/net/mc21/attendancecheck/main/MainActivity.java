@@ -6,38 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import net.mc21.attendancecheck.R;
+import net.mc21.attendancecheck.common.MiscellaneousHelpers;
 import net.mc21.attendancecheck.minutelywork.MinutelyService;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     public static Context context;
     public final static String TAG = "AttendanceCheck";
-
-    public static void showToast(String text, Context context) {
-        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
-    }
-
-    public static String getJsonArrayItem(JSONArray array, String key, String value, String returnKey) {
-        for(int i = 0; i < array.length(); i++) {
-            try {
-                JSONObject obj = array.getJSONObject(i);
-
-                if(obj.getString(key) == value)
-                    return obj.getString(returnKey);
-            } catch (JSONException e) {
-                Log.i(MainActivity.TAG, "JSON error: " + e.toString());
-                e.printStackTrace();
-            }
-        }
-
-        return null;
-    }
 
     public void toggleButtonStatus() {
         final String signout_worker_text = getString(R.string.sign_out_worker);
@@ -75,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         String site_id = SPManager.getString(SPManager.SP_SITE_ID, getApplicationContext());
 
         if (company_id == null || site_id == null) {
-            showToast(getString(R.string.please_login_to_configure_application), getApplicationContext());
+            MiscellaneousHelpers.showToast(getString(R.string.please_login_to_configure_application), getApplicationContext());
             openSettingsLogin(null);
         }
     }
