@@ -13,7 +13,7 @@ import net.mc21.attendancecheck.internet.requests.abstracts.AbstractObjectReques
 import org.json.JSONObject;
 
 public class UpdateSettingsRequest extends AbstractObjectRequest {
-    private UpdateSettingsListener listener;
+    protected UpdateSettingsListener listener;
 
     public UpdateSettingsRequest(UpdateSettingsListener listener, Context context) {
         super(context);

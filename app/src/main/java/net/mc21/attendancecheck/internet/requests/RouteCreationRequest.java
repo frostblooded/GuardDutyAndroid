@@ -13,7 +13,7 @@ import net.mc21.attendancecheck.internet.requests.interfaces.RouteCreationListen
 import org.json.JSONObject;
 
 public class RouteCreationRequest extends AbstractObjectRequest {
-    private RouteCreationListener listener;
+    protected RouteCreationListener listener;
 
     public RouteCreationRequest(RouteCreationListener listener, Context context) {
         super(context);

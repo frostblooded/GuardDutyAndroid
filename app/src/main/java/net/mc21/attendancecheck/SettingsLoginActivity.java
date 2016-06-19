@@ -14,11 +14,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.internet.HTTP;
+import net.mc21.attendancecheck.internet.requests.SettingsLoginRequest;
+import net.mc21.attendancecheck.internet.requests.interfaces.SettingsLoginListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SettingsLoginActivity extends AppCompatActivity {
+public class SettingsLoginActivity extends AppCompatActivity implements SettingsLoginListener {
     public static Context context;
     private ProgressDialog progressDialog;
 
@@ -56,44 +58,33 @@ public class SettingsLoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String url = HTTP.SERVER_IP + "api/v1/access_tokens";
+        new SettingsLoginRequest(this, getApplicationContext()).setData(json).makeRequest();
+    }
 
-        HTTP.requestObject(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    String token = "";
-                    String company_id = "";
-                    String company_name = "";
+    @Override
+    public void onSettingsLogin(JSONObject response) {
+        try {
+            SPManager.saveString(SPManager.SP_ACCESS_TOKEN, response.getString("access_token"), getApplicationContext());
+            SPManager.saveString(SPManager.SP_COMPANY_ID, response.getString("company_id"), getApplicationContext());
+            SPManager.saveString(SPManager.SP_COMPANY_NAME, response.getString("company_name"), getApplicationContext());
 
-                    token = response.getString("access_token");
-                    company_id = response.getString("company_id");
-                    company_name = response.getString("company_name");
+            boolean noError = response.isNull("error");
 
-                    Log.i(MainActivity.TAG, "Company login response token: " + token);
-                    SPManager.saveString(SPManager.SP_ACCESS_TOKEN, token, getApplicationContext());
-                    SPManager.saveString(SPManager.SP_COMPANY_ID, company_id, getApplicationContext());
-                    SPManager.saveString(SPManager.SP_COMPANY_NAME, company_name, getApplicationContext());
-
-                    boolean noError = response.isNull("error");
-
-                    if (noError) {
-                        Intent i = new Intent(MainActivity.context, SettingsActivity.class);
-                        startActivity(i);
-                        finish();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } finally {
-                    progressDialog.hide();
-                }
+            if (noError) {
+                Intent i = new Intent(MainActivity.context, SettingsActivity.class);
+                startActivity(i);
+                finish();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                HTTP.handleError(error, getApplicationContext());
-                progressDialog.hide();
-            }
-        }, getApplicationContext());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            progressDialog.hide();
+        }
+    }
+
+    @Override
+    public void onSettingsLoginError(VolleyError error) {
+        HTTP.handleError(error, getApplicationContext());
+        progressDialog.hide();
     }
 }

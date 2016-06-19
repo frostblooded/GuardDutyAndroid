@@ -13,7 +13,7 @@ import net.mc21.attendancecheck.internet.requests.interfaces.AcquireSitesListene
 import org.json.JSONArray;
 
 public class AcquireSitesRequest extends AbstractArrayRequest {
-    AcquireSitesListener listener;
+    protected AcquireSitesListener listener;
 
     public AcquireSitesRequest(AcquireSitesListener listener, Context context) {
         super(context);
