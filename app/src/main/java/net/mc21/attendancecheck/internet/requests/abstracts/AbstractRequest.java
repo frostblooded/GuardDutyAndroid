@@ -21,7 +21,7 @@ public abstract class AbstractRequest<T> {
     protected abstract void onError(VolleyError error);
 
     protected Context context;
-    protected T data;
+    protected T data = null;
 
     protected AbstractRequest(Context context) {
         this.context = context;
