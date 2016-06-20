@@ -18,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 
+import net.mc21.attendancecheck.common.MiscHelpers;
 import net.mc21.attendancecheck.main.MainActivity;
 import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.main.WorkerLoginActivity;
@@ -48,31 +49,6 @@ public class LoginRemindActivity extends AppCompatActivity {
         finish();
     }
 
-    protected void unlockScreen() {
-        Window w = getWindow();
-        w.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-        w.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-        w.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-    }
-
-    private void startSound() {
-        Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        if(alert == null){
-            // alert is null, using backup
-            alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-            if(alert == null){
-                // backup is null, using second backup
-                alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            }
-        }
-
-        ringtone = RingtoneManager.getRingtone(getApplicationContext(), alert);
-
-        if (ringtone != null) {
-            ringtone.play();
-        }
-    }
-
     private void setUpButton(){
         final Animation animation = new AlphaAnimation(1, 0);
         animation.setDuration(1000);
@@ -88,17 +64,6 @@ public class LoginRemindActivity extends AppCompatActivity {
                 exit();
             }
         });
-    }
-
-    private void startVibration(){
-        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        long[] pattern = { 200, 800 };
-        vibrator.vibrate(pattern, 0);
-    }
-
-    private void setVolume(){
-        final AudioManager mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-        mAudioManager.setStreamVolume(AudioManager.STREAM_RING, mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
     }
 
     private void startTimer(){
@@ -120,11 +85,11 @@ public class LoginRemindActivity extends AppCompatActivity {
 
         Log.i(MainActivity.TAG, "Starting login remind...");
         setContentView(R.layout.activity_login_remind);
-        unlockScreen();
-        setVolume();
-        startSound();
+        MiscHelpers.unlockScreen(this);
+        MiscHelpers.setVolume(getApplicationContext());
+        ringtone = MiscHelpers.startSound(getApplicationContext());
         startTimer();
         setUpButton();
-        startVibration();
+        vibrator = MiscHelpers.startVibration(getApplicationContext());
     }
 }
