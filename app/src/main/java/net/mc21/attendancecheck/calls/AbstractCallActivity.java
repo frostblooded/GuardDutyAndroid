@@ -18,17 +18,16 @@ import net.mc21.attendancecheck.common.MiscHelpers;
 import net.mc21.attendancecheck.main.MainActivity;
 
 public abstract class AbstractCallActivity extends AppCompatActivity {
-    private static final int SECOND = 1000;
-    private static final int DEFAULT_ALARM_TIME = 60 * SECOND;
-    private static final int TICK_INTERVAL = SECOND;
+    protected static final int SECOND = 1000;
+    protected static final int DEFAULT_ALARM_TIME = 60 * SECOND;
+    protected static final int TICK_INTERVAL = SECOND;
 
-    private Ringtone ringtone;
-    private CountDownTimer timer;
-    private Vibrator vibrator;
-    private boolean startedByApp;
+    protected Ringtone ringtone;
+    protected CountDownTimer timer;
+    protected Vibrator vibrator;
 
     protected abstract void runExitAction();
-    protected abstract void onTimerTick();
+    protected abstract void onTimerTick(long millisUntilFinish);
     protected abstract void onTimerFinish();
     protected abstract void initialize();
 
@@ -39,7 +38,7 @@ public abstract class AbstractCallActivity extends AppCompatActivity {
         context.startActivity(intent);
     }
 
-    private void exit(){
+    protected void exit() {
         ringtone.stop();
         timer.cancel();
         vibrator.cancel();
@@ -69,7 +68,7 @@ public abstract class AbstractCallActivity extends AppCompatActivity {
         timer = new CountDownTimer(DEFAULT_ALARM_TIME + 2, TICK_INTERVAL) {
             @Override
             public void onTick(long millisUntilFinished) {
-                onTimerTick();
+                onTimerTick(millisUntilFinished);
             }
 
             @Override
@@ -82,7 +81,7 @@ public abstract class AbstractCallActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        startedByApp = getIntent().getBooleanExtra("startedByApp", false);
+        boolean startedByApp = getIntent().getBooleanExtra("startedByApp", false);
 
         if(startedByApp) {
             initialize();

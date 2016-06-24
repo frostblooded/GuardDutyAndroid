@@ -23,32 +23,8 @@ import net.mc21.attendancecheck.common.MiscHelpers;
 import net.mc21.attendancecheck.main.MainActivity;
 import net.mc21.attendancecheck.R;
 
-public class CallActivity extends AppCompatActivity {
-    private static final int SECOND = 1000;
-    private static final int DEFAULT_ALARM_TIME = 60 * SECOND;
-    private static final int TICK_INTERVAL = SECOND;
-
-    public int remainingSeconds;
-    public static boolean startedFromService = false;
-    private Ringtone ringtone;
-    private CountDownTimer timer;
-    private Vibrator vibrator;
-
-    public static void makeCall(Context context) {
-        CallActivity.startedFromService = true;
-        Intent intent = new Intent(context, CallActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-    }
-
-    private void exit(){
-        ringtone.stop();
-        timer.cancel();
-        vibrator.cancel();
-        startedFromService = false;
-        //sendResult();
-        finish();
-    }
+public class CallActivity extends AbstractCallActivity {
+    private int remainingSeconds;
 
     private void sendResult(){
         /*String access_token = SPHelpers.getString(SPHelpers.SP_ACCESS_TOKEN, getApplicationContext());
@@ -71,57 +47,28 @@ public class CallActivity extends AppCompatActivity {
         }, null, this);*/
     }
 
-    private void setUpButton(){
-        final Animation animation = new AlphaAnimation(1, 0);
-        animation.setDuration(1000);
-        animation.setInterpolator(new LinearInterpolator());
-        animation.setRepeatCount(Animation.INFINITE);
-        animation.setRepeatMode(Animation.REVERSE);
-
-        Button button = (Button) findViewById(R.id.call_respond_button);
-        button.setAnimation(animation);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                exit();
-            }
-        });
-    }
-
-    private void startTimer(){
-        //                                            + 2 so that it actually starts counting from alarm_time
-        timer = new CountDownTimer(DEFAULT_ALARM_TIME + 2, TICK_INTERVAL) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                remainingSeconds = (int)(millisUntilFinished / 1000);
-                TextView remainingTime = (TextView) findViewById(R.id.call_remaining_time_value);
-                remainingTime.setText(String.valueOf(remainingSeconds) + " секунди");
-            }
-
-            @Override
-            public void onFinish() {
-                remainingSeconds = 0;
-                exit();
-            }
-        }.start();
+    @Override
+    protected void runExitAction() {
+        //sendResult();
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onTimerTick(long millisUntilFinished) {
+        remainingSeconds = (int)(millisUntilFinished / 1000);
+        TextView remainingTime = (TextView) findViewById(R.id.call_remaining_time_value);
+        remainingTime.setText(String.valueOf(remainingSeconds) + " секунди");
+    }
 
-        if(startedFromService){
-            Log.i(MainActivity.TAG, "Starting call...");
-            setContentView(R.layout.activity_call);
-            remainingSeconds = DEFAULT_ALARM_TIME;
-            MiscHelpers.unlockScreen(this);
-            MiscHelpers.setVolume(getApplicationContext());
-            ringtone = MiscHelpers.startSound(getApplicationContext());
-            startTimer();
-            setUpButton();
-            vibrator = MiscHelpers.startVibration(getApplicationContext());
-        } else {
-            Log.i(MainActivity.TAG, "Attempted to start call, but it seems to be started incorrectly");
-        }
+    @Override
+    protected void onTimerFinish() {
+        remainingSeconds = 0;
+        exit();
+    }
+
+    @Override
+    protected void initialize() {
+        Log.i(MainActivity.TAG, "Starting call...");
+        setContentView(R.layout.activity_call);
+        remainingSeconds = DEFAULT_ALARM_TIME;
     }
 }

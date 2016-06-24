@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 
+import net.mc21.attendancecheck.calls.AbstractCallActivity;
 import net.mc21.attendancecheck.calls.CallActivity;
 import net.mc21.attendancecheck.common.MiscHelpers;
 import net.mc21.attendancecheck.common.InternetHelpers;
@@ -116,9 +117,9 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
 
         if(isShift()) {
             if (isLoggedIn())
-                CallActivity.makeCall(getApplicationContext());
+                AbstractCallActivity.makeCall(CallActivity.class, getApplicationContext());
             else
-                LoginRemindActivity.makeRemind(getApplicationContext());
+                AbstractCallActivity.makeCall(LoginRemindActivity.class, getApplicationContext());
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
