@@ -32,11 +32,11 @@
 
         <activity android:name=".main.SettingsLoginActivity" />
         <activity android:name=".main.WorkerLoginActivity" />
-        <activity android:name=".calls.CallActivity" />
         <activity android:name=".main.SettingsActivity" />
         <activity android:name=".main.RouteCreationActivity" />
         <service android:name=".minutelyservice.MinutelyService" />
-        <activity android:name=".calls.LoginRemindActivity" />
+        <activity android:screenOrientation="portrait" android:name=".calls.CallActivity" />
+        <activity android:screenOrientation="portrait" android:name=".calls.LoginRemindActivity" />
 
         <receiver
             android:name=".minutelyservice.BootServiceStarter"
