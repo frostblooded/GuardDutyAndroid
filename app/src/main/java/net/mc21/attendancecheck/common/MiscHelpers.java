@@ -18,6 +18,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 public final class MiscHelpers {
     public static String getJsonArrayItem(JSONArray array, String key, String value, String returnKey) {
         for(int i = 0; i < array.length(); i++) {
@@ -92,5 +98,38 @@ public final class MiscHelpers {
     public static void setVolume(Context context){
         final AudioManager mAudioManager = (AudioManager) context.getSystemService(context.AUDIO_SERVICE);
         mAudioManager.setStreamVolume(AudioManager.STREAM_RING, mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+    }
+
+    public static int getHour(String timeString) {
+        // Most important part of function
+        // It handles PM and AM and gives hour of day(6 PM becomes 18)
+        SimpleDateFormat sdf = new SimpleDateFormat("K:mm aa");
+        Date date = null;
+
+        try {
+            date = sdf.parse(timeString);
+        } catch (ParseException e) {
+            Log.i(MainActivity.TAG, "Date parse error: " + e.toString());
+            e.printStackTrace();
+        }
+
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(date);
+
+        return calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    public static void saveSettings(JSONObject response, Context context) {
+        try {
+            int shiftStart = getHour(response.getString("shift_start"));
+            int shiftEnd = getHour(response.getString("shift_end"));
+            String callInterval = response.getString("call_interval");
+
+            SPHelpers.saveString(SPHelpers.SP_SHIFT_START, String.valueOf(shiftStart), context);
+            SPHelpers.saveString(SPHelpers.SP_SHIFT_END, String.valueOf(shiftEnd), context);
+            SPHelpers.saveString(SPHelpers.SP_CALL_INTERVAL, callInterval, context);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

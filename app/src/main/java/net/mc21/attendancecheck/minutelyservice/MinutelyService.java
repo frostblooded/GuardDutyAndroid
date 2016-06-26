@@ -38,14 +38,10 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
     private final static int MINUTE = 60 * SECOND;
     private final static int NOTIFICATION_ID = 19;
 
-    private final static int MINUTES_BETWEEN_CALLS = 15;
-
     private static Handler handler = new Handler();
     public static boolean isRunning = false;
 
     private int minutesSinceLastCall = 0;
-    private int shiftStart;
-    private int shiftEnd;
 
     private void runAsForeground() {
         Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
@@ -59,6 +55,9 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
     }
 
     private boolean isShift() {
+        int shiftStart = Integer.parseInt(SPHelpers.getString(SPHelpers.SP_SHIFT_START, getApplicationContext()));
+        int shiftEnd = Integer.parseInt(SPHelpers.getString(SPHelpers.SP_SHIFT_END, getApplicationContext()));
+
         Calendar cal = Calendar.getInstance();
         int currentHour = cal.get(Calendar.HOUR_OF_DAY);
 
@@ -73,40 +72,21 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
     }
 
     private void doMinutelyWork() {
-        minutesSinceLastCall++;
+        String callIntervalString = SPHelpers.getString(SPHelpers.SP_CALL_INTERVAL, getApplicationContext());
 
-        if(minutesSinceLastCall >= MINUTES_BETWEEN_CALLS) {
-            String siteId = SPHelpers.getString(SPHelpers.SP_SITE_ID, getApplicationContext());
+        // If settings have been set
+        if(callIntervalString != null) {
+            int callInterval = Integer.valueOf(callIntervalString);
+            minutesSinceLastCall++;
 
-            // If company has logged in
-            if(siteId != null)
+            if (minutesSinceLastCall % callInterval == 0) {
                 new UpdateSettingsRequest(this, getApplicationContext()).makeRequest();
-            else {
-                Log.i(MainActivity.TAG, "Settings not configured!");
-                MiscHelpers.showToast("AttendanceCheck settings not configured!", getApplicationContext());
+                minutesSinceLastCall = 0;
             }
-
-            minutesSinceLastCall = 0;
+        } else {
+            Log.i(MainActivity.TAG, "Settings not set");
+            MiscHelpers.showToast("AttendanceCheck settings not set!", getApplicationContext());
         }
-    }
-
-    private int getHour(String timeString) {
-        // Most important part of function
-        // It handles PM and AM and gives hour of day(6 PM becomes 18)
-        SimpleDateFormat sdf = new SimpleDateFormat("K:mm aa");
-        Date date = null;
-
-        try {
-            date = sdf.parse(timeString);
-        } catch (ParseException e) {
-            Log.i(MainActivity.TAG, "Date parse error: " + e.toString());
-            e.printStackTrace();
-        }
-
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.setTime(date);
-
-        return calendar.get(Calendar.HOUR_OF_DAY);
     }
 
     private void startCall() {
@@ -151,15 +131,7 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
 
     @Override
     public void onSettingsUpdated(JSONObject response) {
-        try {
-            shiftStart = getHour(response.getString("shift_start"));
-            shiftEnd = getHour(response.getString("shift_end"));
-            Log.i(MainActivity.TAG, "Shift start: " + shiftStart);
-        } catch (JSONException e) {
-            Log.i(MainActivity.TAG, "JSON parse error: " + e.toString());
-            e.printStackTrace();
-        }
-
+        MiscHelpers.saveSettings(response, getApplicationContext());
         startCall();
     }
 

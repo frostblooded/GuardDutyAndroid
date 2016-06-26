@@ -16,16 +16,19 @@ import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.common.MiscHelpers;
 import net.mc21.attendancecheck.common.InternetHelpers;
 import net.mc21.attendancecheck.common.SPHelpers;
+import net.mc21.attendancecheck.internet.interfaces.UpdateSettingsListener;
 import net.mc21.attendancecheck.internet.requests.AcquireSitesRequest;
 import net.mc21.attendancecheck.internet.interfaces.AcquireSitesListener;
+import net.mc21.attendancecheck.internet.requests.UpdateSettingsRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingsActivity extends AppCompatActivity implements AcquireSitesListener, AdapterView.OnItemSelectedListener {
+public class SettingsActivity extends AppCompatActivity implements AcquireSitesListener, AdapterView.OnItemSelectedListener, UpdateSettingsListener {
     private JSONArray sitesJsonArray;
     private ProgressDialog progressDialog;
 
@@ -97,8 +100,23 @@ public class SettingsActivity extends AppCompatActivity implements AcquireSitesL
         String selectedSite = parent.getItemAtPosition(position).toString();
         String site_id = MiscHelpers.getJsonArrayItem(sitesJsonArray, "name", selectedSite, "id");
         SPHelpers.saveString(SPHelpers.SP_SITE_ID, site_id, getApplicationContext());
+
+        progressDialog = ProgressDialog.show(this, getString(R.string.please_wait), "Getting site call interval");
+        new UpdateSettingsRequest(this, getApplicationContext()).makeRequest();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {}
+
+    @Override
+    public void onSettingsUpdated(JSONObject response) {
+        MiscHelpers.saveSettings(response, getApplicationContext());
+        progressDialog.hide();
+    }
+
+    @Override
+    public void onSettingsUpdateError(VolleyError error) {
+        InternetHelpers.handleError(error, getApplicationContext());
+        progressDialog.hide();
+    }
 }
