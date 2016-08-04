@@ -5,14 +5,14 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
-import net.mc21.attendancecheck.internet.interfaces.CreateCallListener;
+import net.mc21.attendancecheck.internet.interfaces.SubmitCallListener;
 import net.mc21.attendancecheck.main.MainActivity;
 import net.mc21.attendancecheck.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CallActivity extends AbstractCallActivity implements CreateCallListener {
+public class CallActivity extends AbstractCallActivity implements SubmitCallListener {
     private int remainingSeconds;
 
     private void sendResult(){
@@ -71,12 +71,12 @@ public class CallActivity extends AbstractCallActivity implements CreateCallList
     }
 
     @Override
-    public void onCallCreated(JSONObject response) {
+    public void onCallSubmitted(JSONObject response) {
         Log.i(MainActivity.TAG, "Call sent successfully!");
     }
 
     @Override
-    public void onCallCreateError(VolleyError error) {
+    public void onCallSubmitError(VolleyError error) {
         Log.i(MainActivity.TAG, "Call create error");
     }
 }
