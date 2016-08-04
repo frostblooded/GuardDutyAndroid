@@ -15,8 +15,8 @@ import java.io.UnsupportedEncodingException;
 
 public class InternetHelpers {
     public final static int REQUEST_TIMEOUT = 5000;
-    public static String SERVER_IP = "https://hidden-shelf-43728.herokuapp.com/";
-    //public static String SERVER_IP = "http://91.139.243.106:3000/";
+    //public static String SERVER_IP = "https://hidden-shelf-43728.herokuapp.com/";
+    public static String SERVER_IP = "http://91.139.243.106:3000/";
 
     public static void handleError(VolleyError error, Context context) {
         try {

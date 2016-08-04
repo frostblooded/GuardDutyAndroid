@@ -1,6 +1,7 @@
 package net.mc21.attendancecheck.internet.abstracts;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -8,6 +9,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+
+import net.mc21.attendancecheck.common.InternetHelpers;
 
 public abstract class AbstractRequest<T> {
     private final static int REQUEST_TIMEOUT = 5000;
@@ -40,6 +43,7 @@ public abstract class AbstractRequest<T> {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                InternetHelpers.handleError(error, context);
                 onError(error);
             }
         };

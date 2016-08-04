@@ -91,7 +91,6 @@ public class SettingsActivity extends AppCompatActivity implements AcquireSitesL
 
     @Override
     public void onSitesAcquireError(VolleyError error) {
-        InternetHelpers.handleError(error, getApplicationContext());
         progressDialog.hide();
     }
 
@@ -116,7 +115,6 @@ public class SettingsActivity extends AppCompatActivity implements AcquireSitesL
 
     @Override
     public void onSettingsUpdateError(VolleyError error) {
-        InternetHelpers.handleError(error, getApplicationContext());
         progressDialog.hide();
     }
 }

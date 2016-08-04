@@ -84,8 +84,8 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
                 minutesSinceLastCall = 0;
             }
         } else {
-            Log.i(MainActivity.TAG, "Settings not set");
-            MiscHelpers.showToast("AttendanceCheck settings not set!", getApplicationContext());
+            //Log.i(MainActivity.TAG, "Settings not set");
+            //MiscHelpers.showToast("AttendanceCheck settings not set!", getApplicationContext());
         }
     }
 
@@ -137,7 +137,6 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
 
     @Override
     public void onSettingsUpdateError(VolleyError error) {
-        InternetHelpers.handleError(error, getApplicationContext());
         startCall();
     }
 }

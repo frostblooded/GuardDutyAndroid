@@ -101,7 +101,6 @@ public class WorkerLoginActivity extends AppCompatActivity implements AcquireWor
 
     @Override
     public void onWorkersAcquireError(VolleyError error) {
-        InternetHelpers.handleError(error, getApplicationContext());
         progressDialog.hide();
     }
 
@@ -116,7 +115,6 @@ public class WorkerLoginActivity extends AppCompatActivity implements AcquireWor
 
     @Override
     public void onWorkerLoginError(VolleyError error) {
-        InternetHelpers.handleError(error, getApplicationContext());
         progressDialog.hide();
     }
 }

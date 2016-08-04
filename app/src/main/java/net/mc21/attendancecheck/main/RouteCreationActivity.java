@@ -96,7 +96,6 @@ public class RouteCreationActivity extends AppCompatActivity implements RouteCre
 
     @Override
     public void onRouteCreationError(VolleyError error) {
-        InternetHelpers.handleError(error, getApplicationContext());
         progressDialog.hide();
     }
 }

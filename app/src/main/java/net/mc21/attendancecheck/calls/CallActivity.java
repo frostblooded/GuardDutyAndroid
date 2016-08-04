@@ -1,29 +1,18 @@
 package net.mc21.attendancecheck.calls;
 
-import android.content.Context;
-import android.content.Intent;
-import android.media.AudioManager;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.CountDownTimer;
-import android.os.Vibrator;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.widget.Button;
 import android.widget.TextView;
 
-import net.mc21.attendancecheck.common.MiscHelpers;
+import com.android.volley.VolleyError;
+
+import net.mc21.attendancecheck.internet.interfaces.CreateCallListener;
 import net.mc21.attendancecheck.main.MainActivity;
 import net.mc21.attendancecheck.R;
 
-public class CallActivity extends AbstractCallActivity {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class CallActivity extends AbstractCallActivity implements CreateCallListener {
     private int remainingSeconds;
 
     private void sendResult(){
@@ -45,6 +34,15 @@ public class CallActivity extends AbstractCallActivity {
                 Log.i(MainActivity.TAG, "Token responding result: " + response.toString());
             }
         }, null, this);*/
+
+        JSONObject json = new JSONObject();
+
+        try {
+            json.put("time_left", remainingSeconds);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -70,5 +68,15 @@ public class CallActivity extends AbstractCallActivity {
         Log.i(MainActivity.TAG, "Starting call...");
         setContentView(R.layout.activity_call);
         remainingSeconds = DEFAULT_ALARM_TIME;
+    }
+
+    @Override
+    public void onCallCreated(JSONObject response) {
+        Log.i(MainActivity.TAG, "Call sent successfully!");
+    }
+
+    @Override
+    public void onCallCreateError(VolleyError error) {
+        Log.i(MainActivity.TAG, "Call create error");
     }
 }

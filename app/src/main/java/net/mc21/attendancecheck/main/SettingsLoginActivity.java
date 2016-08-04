@@ -51,7 +51,7 @@ public class SettingsLoginActivity extends AppCompatActivity implements Settings
         JSONObject json = new JSONObject();
 
         try {
-            json.put("company_name", company_name);
+            json.put("name", company_name);
             json.put("password", password);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -65,7 +65,7 @@ public class SettingsLoginActivity extends AppCompatActivity implements Settings
         try {
             SPHelpers.saveString(SPHelpers.SP_ACCESS_TOKEN, response.getString("access_token"), getApplicationContext());
             SPHelpers.saveString(SPHelpers.SP_COMPANY_ID, response.getString("company_id"), getApplicationContext());
-            SPHelpers.saveString(SPHelpers.SP_COMPANY_NAME, response.getString("company_name"), getApplicationContext());
+            SPHelpers.saveString(SPHelpers.SP_COMPANY_NAME, response.getString("name"), getApplicationContext());
 
             boolean noError = response.isNull("error");
 
@@ -83,7 +83,6 @@ public class SettingsLoginActivity extends AppCompatActivity implements Settings
 
     @Override
     public void onSettingsLoginError(VolleyError error) {
-        InternetHelpers.handleError(error, getApplicationContext());
         progressDialog.hide();
     }
 }
