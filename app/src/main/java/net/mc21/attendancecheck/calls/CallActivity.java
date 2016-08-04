@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.internet.interfaces.SubmitCallListener;
+import net.mc21.attendancecheck.internet.requests.SubmitCallRequest;
 import net.mc21.attendancecheck.main.MainActivity;
 import net.mc21.attendancecheck.R;
 
@@ -16,25 +17,6 @@ public class CallActivity extends AbstractCallActivity implements SubmitCallList
     private int remainingSeconds;
 
     private void sendResult(){
-        /*String access_token = SPHelpers.getString(SPHelpers.SP_ACCESS_TOKEN, getApplicationContext());
-        String url = HTTP.SERVER_IP + "api/v1/calls/" + call_id + "?access_token=" + access_token;
-        JSONObject json = new JSONObject();
-
-        try {
-            json.put("call_token", call_token);
-            json.put("time_left", remainingSeconds);
-            json.put("call_id", call_id);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        HTTP.PUT(url, json, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.i(MainActivity.TAG, "Token responding result: " + response.toString());
-            }
-        }, null, this);*/
-
         JSONObject json = new JSONObject();
 
         try {
@@ -43,11 +25,12 @@ public class CallActivity extends AbstractCallActivity implements SubmitCallList
             e.printStackTrace();
         }
 
+        new SubmitCallRequest(this, getApplicationContext()).setData(json).makeRequest();
     }
 
     @Override
     protected void runExitAction() {
-        //sendResult();
+        sendResult();
     }
 
     @Override
