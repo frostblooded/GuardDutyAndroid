@@ -14,6 +14,7 @@ import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.calls.AbstractCallActivity;
 import net.mc21.attendancecheck.calls.CallActivity;
+import net.mc21.attendancecheck.common.AttendanceCheckHelpers;
 import net.mc21.attendancecheck.common.MiscHelpers;
 import net.mc21.attendancecheck.common.InternetHelpers;
 import net.mc21.attendancecheck.common.SPHelpers;
@@ -54,23 +55,6 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
         startForeground(NOTIFICATION_ID, notification);
     }
 
-    private boolean isShift() {
-        int shiftStart = Integer.parseInt(SPHelpers.getString(SPHelpers.SP_SHIFT_START, getApplicationContext()));
-        int shiftEnd = Integer.parseInt(SPHelpers.getString(SPHelpers.SP_SHIFT_END, getApplicationContext()));
-
-        Calendar cal = Calendar.getInstance();
-        int currentHour = cal.get(Calendar.HOUR_OF_DAY);
-
-        if(shiftStart < shiftEnd)
-            return currentHour >= shiftStart && currentHour < shiftEnd;
-        else
-            return currentHour < shiftEnd || currentHour >= shiftStart;
-    }
-
-    private boolean isLoggedIn() {
-        return SPHelpers.getString(SPHelpers.SP_WORKER_ID, getApplicationContext()) != null;
-    }
-
     private void doMinutelyWork() {
         String callIntervalString = SPHelpers.getString(SPHelpers.SP_CALL_INTERVAL, getApplicationContext());
 
@@ -95,8 +79,8 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             WakeLockManager.acquire(getApplicationContext());
 
-        if(isShift()) {
-            if (isLoggedIn())
+        if(AttendanceCheckHelpers.isShift(getApplicationContext())) {
+            if (AttendanceCheckHelpers.isLoggedIn(getApplicationContext()))
                 AbstractCallActivity.makeCall(CallActivity.class, getApplicationContext());
             else
                 AbstractCallActivity.makeCall(LoginRemindActivity.class, getApplicationContext());
