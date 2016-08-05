@@ -1,5 +1,6 @@
 package net.mc21.attendancecheck.main;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements WorkerLogoutListe
     public static Context context;
     public final static String TAG = "AttendanceCheck";
 
+    private ProgressDialog progressDialog;
+
     public void toggleButtonStatus() {
         final String signoutWorkerText = getString(R.string.log_out_worker);
         final String loginWorkerText = getString(R.string.log_in_as_worker);
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements WorkerLogoutListe
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    progressDialog = ProgressDialog.show(MainActivity.this, getString(R.string.please_wait), "Logging out", true);
                     new WorkerLogoutRequest(MainActivity.this, getApplicationContext()).makeRequest();
                 }
             });
@@ -73,6 +77,9 @@ public class MainActivity extends AppCompatActivity implements WorkerLogoutListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        if(progressDialog != null)
+            progressDialog.dismiss();
     }
 
     private void logoutWorker() {
@@ -110,10 +117,11 @@ public class MainActivity extends AppCompatActivity implements WorkerLogoutListe
     @Override
     public void onWorkerLogout(JSONObject response) {
         logoutWorker();
+        progressDialog.hide();
     }
 
     @Override
     public void onWorkerLogoutError(VolleyError error) {
-
+        progressDialog.hide();
     }
 }

@@ -11,7 +11,6 @@ import android.widget.EditText;
 import com.android.volley.VolleyError;
 
 import net.mc21.attendancecheck.R;
-import net.mc21.attendancecheck.common.InternetHelpers;
 import net.mc21.attendancecheck.common.SPHelpers;
 import net.mc21.attendancecheck.internet.requests.SettingsLoginRequest;
 import net.mc21.attendancecheck.internet.interfaces.SettingsLoginListener;
