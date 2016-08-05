@@ -8,14 +8,16 @@ import com.android.volley.VolleyError;
 import net.mc21.attendancecheck.common.InternetHelpers;
 import net.mc21.attendancecheck.common.SPHelpers;
 import net.mc21.attendancecheck.internet.abstracts.AbstractObjectRequest;
-import net.mc21.attendancecheck.internet.interfaces.RouteCreationListener;
+import net.mc21.attendancecheck.internet.interfaces.WorkerLoginListener;
+import net.mc21.attendancecheck.internet.interfaces.WorkerLogoutListener;
 
 import org.json.JSONObject;
 
-public class RouteCreationRequest extends AbstractObjectRequest {
-    protected RouteCreationListener listener;
+public class WorkerLogoutRequest extends AbstractObjectRequest {
+    protected WorkerLogoutListener listener;
+    protected String workerId;
 
-    public RouteCreationRequest(RouteCreationListener listener, Context context) {
+    public WorkerLogoutRequest(WorkerLogoutListener listener, String workerId, Context context) {
         super(context);
         this.listener = listener;
     }
@@ -27,20 +29,18 @@ public class RouteCreationRequest extends AbstractObjectRequest {
 
     @Override
     protected String getUrl() {
-        String companyId = SPHelpers.getString(SPHelpers.SP_COMPANY_ID, context);
-        String siteId = SPHelpers.getString(SPHelpers.SP_SITE_ID, context);
         String accessToken = SPHelpers.getString(SPHelpers.SP_ACCESS_TOKEN, context);
-
-        return InternetHelpers.SERVER_IP + "api/v1/companies/" + companyId + "/sites/" + siteId + "/routes?access_token=" + accessToken;
+        String workerId = SPHelpers.getString(SPHelpers.SP_WORKER_ID, context);
+        return InternetHelpers.SERVER_IP + "api/v1/workers/" + workerId + "/logout?access_token=" + accessToken;
     }
 
     @Override
     protected void onSuccess(JSONObject response) {
-        listener.onRouteCreated(response);
+        listener.onWorkerLogout(response);
     }
 
     @Override
     protected void onError(VolleyError error) {
-        listener.onRouteCreationError(error);
+        listener.onWorkerLogoutError(error);
     }
 }
