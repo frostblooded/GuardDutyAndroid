@@ -103,7 +103,7 @@ public final class MiscHelpers {
     public static int getHour(String timeString) {
         // Most important part of function
         // It handles PM and AM and gives hour of day(6 PM becomes 18)
-        SimpleDateFormat sdf = new SimpleDateFormat("K:mm aa");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         Date date = null;
 
         try {
