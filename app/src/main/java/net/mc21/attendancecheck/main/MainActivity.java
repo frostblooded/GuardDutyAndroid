@@ -7,24 +7,30 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.android.volley.VolleyError;
+
 import net.mc21.attendancecheck.R;
 import net.mc21.attendancecheck.common.MiscHelpers;
 import net.mc21.attendancecheck.common.SPHelpers;
+import net.mc21.attendancecheck.internet.interfaces.WorkerLogoutListener;
+import net.mc21.attendancecheck.internet.requests.WorkerLogoutRequest;
 import net.mc21.attendancecheck.minutelyservice.MinutelyService;
 
-public class MainActivity extends AppCompatActivity {
+import org.json.JSONObject;
+
+public class MainActivity extends AppCompatActivity implements WorkerLogoutListener {
     public static Context context;
     public final static String TAG = "AttendanceCheck";
 
     public void toggleButtonStatus() {
-        final String signout_worker_text = getString(R.string.sign_out_worker);
-        final String login_worker_text = getString(R.string.log_in_as_worker);
+        final String signoutWorkerText = getString(R.string.log_out_worker);
+        final String loginWorkerText = getString(R.string.log_in_as_worker);
 
         Button b = (Button) findViewById(R.id.menu_worker_login_button);
         String buttonText = b.getText().toString();
 
-        if(buttonText == signout_worker_text) {
-            b.setText(login_worker_text);
+        if(buttonText == signoutWorkerText) {
+            b.setText(loginWorkerText);
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -32,11 +38,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         } else {
-            b.setText(signout_worker_text);
+            b.setText(signoutWorkerText);
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    signOutWorker();
+                    new WorkerLogoutRequest(MainActivity.this, getApplicationContext()).makeRequest();
                 }
             });
         }
@@ -69,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void signOutWorker() {
+    private void logoutWorker() {
         SPHelpers.saveString(SPHelpers.SP_WORKER_ID, null, getApplicationContext());
         toggleButtonStatus();
     }
@@ -99,5 +105,15 @@ public class MainActivity extends AppCompatActivity {
     public void openWorkerLogin(View v) {
         Intent i = new Intent(getApplicationContext(), WorkerLoginActivity.class);
         startActivity(i);
+    }
+
+    @Override
+    public void onWorkerLogout(JSONObject response) {
+        logoutWorker();
+    }
+
+    @Override
+    public void onWorkerLogoutError(VolleyError error) {
+
     }
 }

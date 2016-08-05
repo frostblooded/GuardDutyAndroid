@@ -2,7 +2,7 @@
     <string name="app_name">AttendanceCheck</string>
     <string name="settings">Settings</string>
     <string name="log_in_as_worker">Log in as worker</string>
-    <string name="sign_out_worker">Sign out worker</string>
+    <string name="log_out_worker">Log out worker</string>
     <string name="company_name">Company Name</string>
     <string name="password">Password</string>
     <string name="log_in">Log In</string>

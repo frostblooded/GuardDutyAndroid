@@ -17,7 +17,7 @@ public class WorkerLogoutRequest extends AbstractObjectRequest {
     protected WorkerLogoutListener listener;
     protected String workerId;
 
-    public WorkerLogoutRequest(WorkerLogoutListener listener, String workerId, Context context) {
+    public WorkerLogoutRequest(WorkerLogoutListener listener, Context context) {
         super(context);
         this.listener = listener;
     }
