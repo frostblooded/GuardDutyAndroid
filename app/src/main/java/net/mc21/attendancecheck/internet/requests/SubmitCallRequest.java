@@ -29,7 +29,8 @@ public class SubmitCallRequest extends AbstractObjectRequest {
     protected String getUrl() {
         String token = SPHelpers.getString(SPHelpers.SP_ACCESS_TOKEN, context);
         String worker_id = SPHelpers.getString(SPHelpers.SP_WORKER_ID, context);
-        return InternetHelpers.SERVER_IP + "api/v1/workers/" + worker_id + "/calls?access_token=" + token;
+        String site_id = SPHelpers.getString(SPHelpers.SP_SITE_ID, context);
+        return InternetHelpers.SERVER_IP + "api/v1/sites/" + site_id + "/workers/" + worker_id + "/calls?access_token=" + token;
     }
 
     @Override

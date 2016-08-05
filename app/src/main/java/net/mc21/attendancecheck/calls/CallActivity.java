@@ -60,6 +60,6 @@ public class CallActivity extends AbstractCallActivity implements SubmitCallList
 
     @Override
     public void onCallSubmitError(VolleyError error) {
-        Log.i(MainActivity.TAG, "Call create error");
+        Log.i(MainActivity.TAG, "Error while sending call!");
     }
 }
