@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.mc21.guardduty">
+    package="net.guardduty">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -21,7 +21,7 @@
         android:theme="@style/AppTheme.NoActionBar">
 
         <activity
-            android:name="net.mc21.guardduty.main.MainActivity"
+            android:name="net.guardduty.main.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,16 +30,16 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="net.mc21.guardduty.main.SettingsLoginActivity" />
-        <activity android:name="net.mc21.guardduty.main.WorkerLoginActivity" />
-        <activity android:name="net.mc21.guardduty.main.SettingsActivity" />
-        <activity android:name="net.mc21.guardduty.main.RouteCreationActivity" />
-        <service android:name="net.mc21.guardduty.minutelyservice.MinutelyService" />
-        <activity android:screenOrientation="portrait" android:name="net.mc21.guardduty.calls.CallActivity" />
-        <activity android:screenOrientation="portrait" android:name="net.mc21.guardduty.calls.LoginRemindActivity" />
+        <activity android:name="net.guardduty.main.SettingsLoginActivity" />
+        <activity android:name="net.guardduty.main.WorkerLoginActivity" />
+        <activity android:name="net.guardduty.main.SettingsActivity" />
+        <activity android:name="net.guardduty.main.RouteCreationActivity" />
+        <service android:name="net.guardduty.minutelyservice.MinutelyService" />
+        <activity android:screenOrientation="portrait" android:name="net.guardduty.calls.CallActivity" />
+        <activity android:screenOrientation="portrait" android:name="net.guardduty.calls.LoginRemindActivity" />
 
         <receiver
-            android:name="net.mc21.guardduty.minutelyservice.BootServiceStarter"
+            android:name="net.guardduty.minutelyservice.BootServiceStarter"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

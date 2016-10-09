@@ -12,7 +12,7 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="426dp"
-        android:name="net.mc21.guardduty.main.GoogleMapFragment"
+        android:name="net.guardduty.main.GoogleMapFragment"
         android:id="@+id/route_creation_map"
         android:layout_gravity="center_horizontal|top" />
 
