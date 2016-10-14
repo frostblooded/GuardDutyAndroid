@@ -13,7 +13,7 @@ import com.android.volley.VolleyError;
 
 import net.guardduty.calls.AbstractCallActivity;
 import net.guardduty.calls.CallActivity;
-import net.guardduty.common.AttendanceCheckHelpers;
+import net.guardduty.common.GuardDutyHelpers;
 import net.guardduty.common.MiscHelpers;
 import net.guardduty.common.SPHelpers;
 import net.guardduty.main.MainActivity;
@@ -60,7 +60,7 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
             }
         } else {
             //Log.i(MainActivity.TAG, "Settings not set");
-            //MiscHelpers.showToast("AttendanceCheck settings not set!", getApplicationContext());
+            //MiscHelpers.showToast("App's settings not set!", getApplicationContext());
         }
     }
 
@@ -70,8 +70,8 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             WakeLockManager.acquire(getApplicationContext());
 
-        if(AttendanceCheckHelpers.isShift(getApplicationContext())) {
-            if (AttendanceCheckHelpers.isLoggedIn(getApplicationContext()))
+        if(GuardDutyHelpers.isShift(getApplicationContext())) {
+            if (GuardDutyHelpers.isLoggedIn(getApplicationContext()))
                 AbstractCallActivity.makeCall(CallActivity.class, getApplicationContext());
             else
                 AbstractCallActivity.makeCall(LoginRemindActivity.class, getApplicationContext());

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.util.Calendar;
 
-public class AttendanceCheckHelpers {
+public class GuardDutyHelpers {
     public static boolean isShift(Context context) {
         int shiftStart = Integer.parseInt(SPHelpers.getString(SPHelpers.SP_SHIFT_START, context));
         int shiftEnd = Integer.parseInt(SPHelpers.getString(SPHelpers.SP_SHIFT_END, context));

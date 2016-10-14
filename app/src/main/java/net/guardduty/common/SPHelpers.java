@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SPHelpers {
-    public final static String SP_NAME = "AttendanceCheck";
+    public final static String SP_NAME = "GuardDuty";
     public final static String SP_ACCESS_TOKEN = "access_token";
     public final static String SP_COMPANY_ID = "company_id";
     public final static String SP_COMPANY_NAME = "company_name";

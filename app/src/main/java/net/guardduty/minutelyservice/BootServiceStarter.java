@@ -14,6 +14,6 @@ public class BootServiceStarter extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Intent i = new Intent(context, MinutelyService.class);
         context.startService(i);
-        Log.i(MainActivity.TAG, "Starting AttendanceCheck service on boot");
+        Log.i(MainActivity.TAG, "Starting service on boot");
     }
 }
