@@ -27,10 +27,9 @@ public class AcquireWorkersRequest extends AbstractArrayRequest {
 
     @Override
     protected String getUrl() {
-        String company_id = SPHelpers.getString(SPHelpers.SP_COMPANY_ID, context);
         String token = SPHelpers.getString(SPHelpers.SP_ACCESS_TOKEN, context);
         String site_id = SPHelpers.getString(SPHelpers.SP_SITE_ID, context);
-        return InternetHelpers.SERVER_IP + "api/v1/companies/" + company_id + "/sites/" + site_id + "/workers?access_token=" + token;
+        return InternetHelpers.SERVER_IP + "api/v1/sites/" + site_id + "/workers?access_token=" + token;
     }
 
     @Override

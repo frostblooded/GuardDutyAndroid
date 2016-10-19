@@ -32,8 +32,9 @@ public class WorkerLoginRequest extends AbstractObjectRequest {
 
     @Override
     protected String getUrl() {
-        String access_token = SPHelpers.getString(SPHelpers.SP_ACCESS_TOKEN, context);
-        return InternetHelpers.SERVER_IP + "api/v1/workers/" + workerId + "/login?access_token=" + access_token;
+        String accessToken = SPHelpers.getString(SPHelpers.SP_ACCESS_TOKEN, context);
+        String siteId = SPHelpers.getString(SPHelpers.SP_SITE_ID, context);
+        return InternetHelpers.SERVER_IP + "api/v1/sites/" + siteId + "/workers/" + workerId + "/login?access_token=" + accessToken;
     }
 
     @Override

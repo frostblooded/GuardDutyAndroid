@@ -29,8 +29,9 @@ public class WorkerLogoutRequest extends AbstractObjectRequest {
     @Override
     protected String getUrl() {
         String accessToken = SPHelpers.getString(SPHelpers.SP_ACCESS_TOKEN, context);
+        String siteId = SPHelpers.getString(SPHelpers.SP_SITE_ID, context);
         String workerId = SPHelpers.getString(SPHelpers.SP_WORKER_ID, context);
-        return InternetHelpers.SERVER_IP + "api/v1/workers/" + workerId + "/logout?access_token=" + accessToken;
+        return InternetHelpers.SERVER_IP + "api/v1/sites/" + siteId + "/workers/" + workerId + "/logout?access_token=" + accessToken;
     }
 
     @Override

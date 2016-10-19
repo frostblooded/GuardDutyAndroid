@@ -27,11 +27,10 @@ public class RouteCreationRequest extends AbstractObjectRequest {
 
     @Override
     protected String getUrl() {
-        String companyId = SPHelpers.getString(SPHelpers.SP_COMPANY_ID, context);
         String siteId = SPHelpers.getString(SPHelpers.SP_SITE_ID, context);
         String accessToken = SPHelpers.getString(SPHelpers.SP_ACCESS_TOKEN, context);
 
-        return InternetHelpers.SERVER_IP + "api/v1/companies/" + companyId + "/sites/" + siteId + "/routes?access_token=" + accessToken;
+        return InternetHelpers.SERVER_IP + "api/v1/sites/" + siteId + "/routes?access_token=" + accessToken;
     }
 
     @Override

@@ -27,9 +27,8 @@ public class AcquireSitesRequest extends AbstractArrayRequest {
 
     @Override
     protected String getUrl() {
-        String company_id = SPHelpers.getString(SPHelpers.SP_COMPANY_ID, context);
         String token = SPHelpers.getString(SPHelpers.SP_ACCESS_TOKEN, context);
-        return InternetHelpers.SERVER_IP + "api/v1/companies/" + company_id + "/sites?access_token=" + token;
+        return InternetHelpers.SERVER_IP + "api/v1/sites?access_token=" + token;
     }
 
     @Override
