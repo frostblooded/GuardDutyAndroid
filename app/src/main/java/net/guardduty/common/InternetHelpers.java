@@ -30,6 +30,8 @@ public class InternetHelpers {
                 response = new String(error.networkResponse.data, "UTF-8");
                 JSONObject json = new JSONObject(response);
                 response = "Error: " + json.getString("error");
+            } else {
+                Log.i(MainActivity.TAG, "Network error: " + error.getLocalizedMessage());
             }
 
             MiscHelpers.showToast(response, context);
