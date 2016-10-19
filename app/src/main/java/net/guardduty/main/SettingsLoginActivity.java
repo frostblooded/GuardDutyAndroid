@@ -63,7 +63,6 @@ public class SettingsLoginActivity extends AppCompatActivity implements Settings
     public void onSettingsLogin(JSONObject response) {
         try {
             SPHelpers.saveString(SPHelpers.SP_ACCESS_TOKEN, response.getString("access_token"), getApplicationContext());
-            SPHelpers.saveString(SPHelpers.SP_COMPANY_ID, response.getString("company_id"), getApplicationContext());
             SPHelpers.saveString(SPHelpers.SP_COMPANY_NAME, response.getString("name"), getApplicationContext());
 
             boolean noError = response.isNull("error");

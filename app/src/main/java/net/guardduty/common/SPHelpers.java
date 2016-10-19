@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 public class SPHelpers {
     public final static String SP_NAME = "GuardDuty";
     public final static String SP_ACCESS_TOKEN = "access_token";
-    public final static String SP_COMPANY_ID = "company_id";
     public final static String SP_COMPANY_NAME = "company_name";
     public final static String SP_SITE_ID = "site_id";
     public final static String SP_WORKER_ID = "worker_id";

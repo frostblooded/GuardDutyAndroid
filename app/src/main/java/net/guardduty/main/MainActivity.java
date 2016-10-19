@@ -58,11 +58,10 @@ public class MainActivity extends AppCompatActivity implements WorkerLogoutListe
         startMinutelyHandler();
         setContentView(R.layout.activity_main);
 
-        String company_id = SPHelpers.getString(SPHelpers.SP_COMPANY_ID, getApplicationContext());
         String site_id = SPHelpers.getString(SPHelpers.SP_SITE_ID, getApplicationContext());
 
-        if (company_id == null || site_id == null) {
-            MiscHelpers.showToast(getString(R.string.please_login_to_configure_application), getApplicationContext());
+        if (site_id == null) {
+            MiscHelpers.showToast(getString(R.string.please_login_to_select_site), getApplicationContext());
             openSettingsLogin(null);
         }
     }
