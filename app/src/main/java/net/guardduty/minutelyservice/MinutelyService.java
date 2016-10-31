@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 
 import com.android.volley.VolleyError;
 
@@ -59,8 +60,8 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
                 minutesSinceLastCall = 0;
             }
         } else {
-            //Log.i(MainActivity.TAG, "Settings not set");
-            //MiscHelpers.showToast("App's settings not set!", getApplicationContext());
+            Log.i(MainActivity.TAG, "Settings not set");
+            MiscHelpers.showToast("App's settings not set!", getApplicationContext());
         }
     }
 
