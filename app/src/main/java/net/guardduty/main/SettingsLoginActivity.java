@@ -65,13 +65,9 @@ public class SettingsLoginActivity extends AppCompatActivity implements Settings
             SPHelpers.saveString(SPHelpers.SP_ACCESS_TOKEN, response.getString("access_token"), getApplicationContext());
             SPHelpers.saveString(SPHelpers.SP_COMPANY_NAME, response.getString("name"), getApplicationContext());
 
-            boolean noError = response.isNull("error");
-
-            if (noError) {
-                Intent i = new Intent(MainActivity.context, SettingsActivity.class);
-                startActivity(i);
-                finish();
-            }
+            Intent i = new Intent(MainActivity.context, SettingsActivity.class);
+            startActivity(i);
+            finish();
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {
