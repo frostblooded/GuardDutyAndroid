@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.android.volley.VolleyError;
 
 import net.guardduty.R;
+import net.guardduty.common.GuardDutyHelpers;
 import net.guardduty.common.MiscHelpers;
 import net.guardduty.common.SPHelpers;
 import net.guardduty.internet.interfaces.WorkerLogoutListener;
@@ -26,13 +27,13 @@ public class MainActivity extends AppCompatActivity implements WorkerLogoutListe
     private ProgressDialog progressDialog;
 
     public void toggleButtonStatus() {
-        final String signoutWorkerText = getString(R.string.log_out_worker);
-        final String loginWorkerText = getString(R.string.log_in_as_worker);
+        String signoutWorkerText = getString(R.string.log_out_worker);
+        String loginWorkerText = getString(R.string.log_in_as_worker);
 
         Button b = (Button) findViewById(R.id.menu_worker_login_button);
         String buttonText = b.getText().toString();
 
-        if(buttonText == signoutWorkerText) {
+        if(buttonText.startsWith(signoutWorkerText)) {
             b.setText(loginWorkerText);
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -41,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements WorkerLogoutListe
                 }
             });
         } else {
+            String workerName = SPHelpers.getString(SPHelpers.SP_WORKER_NAME, getApplicationContext());
+            signoutWorkerText += " " + workerName;
+
             b.setText(signoutWorkerText);
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -83,17 +87,14 @@ public class MainActivity extends AppCompatActivity implements WorkerLogoutListe
 
     private void logoutWorker() {
         SPHelpers.saveString(SPHelpers.SP_WORKER_ID, null, getApplicationContext());
+        SPHelpers.saveString(SPHelpers.SP_WORKER_NAME, null, getApplicationContext());
         toggleButtonStatus();
     }
 
     // Changes 'log in worker' button to 'sign out worker' button
     // based on if the device is already logged in
     private void initWorkerButton() {
-        String workerId = SPHelpers.getString(SPHelpers.SP_WORKER_ID, getApplicationContext());
-        boolean loggedIn = workerId != null;
-        Log.i(MainActivity.TAG, "Logged in: " + loggedIn);
-
-        if(loggedIn) {
+        if(GuardDutyHelpers.isLoggedIn(getApplicationContext())) {
             toggleButtonStatus();
         }
     }

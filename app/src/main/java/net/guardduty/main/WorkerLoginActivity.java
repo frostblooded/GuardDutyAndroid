@@ -105,9 +105,14 @@ public class WorkerLoginActivity extends AppCompatActivity implements AcquireWor
 
     @Override
     public void onWorkerLogin(JSONObject response) {
-        // If this code gets executed, login is successful
         Log.i(MainActivity.TAG, "Worker logged in");
+
+        Spinner spinner = (Spinner) findViewById(R.id.worker_login_spinner);
+        String workerName = spinner.getSelectedItem().toString();
+
         SPHelpers.saveString(SPHelpers.SP_WORKER_ID, workerId, getApplicationContext());
+        SPHelpers.saveString(SPHelpers.SP_WORKER_NAME, workerName, getApplicationContext());
+
         progressDialog.hide();
         finish();
     }

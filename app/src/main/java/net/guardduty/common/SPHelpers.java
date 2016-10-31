@@ -9,6 +9,7 @@ public class SPHelpers {
     public final static String SP_COMPANY_NAME = "company_name";
     public final static String SP_SITE_ID = "site_id";
     public final static String SP_WORKER_ID = "worker_id";
+    public final static String SP_WORKER_NAME = "worker_name";
     public final static String SP_SHIFT_START = "shift_start";
     public final static String SP_SHIFT_END = "shift_end";
     public final static String SP_CALL_INTERVAL = "call_interval";
