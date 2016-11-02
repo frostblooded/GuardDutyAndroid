@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.vision.barcode.Barcode;
 
 import net.guardduty.common.GuardDutyHelpers;
 import net.guardduty.common.SPHelpers;
@@ -15,6 +16,10 @@ import net.guardduty.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class CallActivity extends AbstractCallActivity implements SubmitCallListener {
     private int remainingSeconds;
@@ -65,10 +70,15 @@ public class CallActivity extends AbstractCallActivity implements SubmitCallList
     public void onCallSubmitError(VolleyError error) {
         Log.i(MainActivity.TAG, "Call submission failed!");
 
+        // Get current time in ISO8601
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ", Locale.UK);
+        String formattedDate = sdf.format(new Date());
+
         Bundle extras = new Bundle();
         extras.putInt("time_left", remainingSeconds);
         extras.putString("worker_id", SPHelpers.getString(SPHelpers.SP_WORKER_ID, getApplicationContext()));
         extras.putString("site_id", SPHelpers.getString(SPHelpers.SP_SITE_ID, getApplicationContext()));
+        extras.putString("created_at", formattedDate);
 
         GuardDutyHelpers.createRetryCallNotification(getApplicationContext(), extras);
     }

@@ -35,6 +35,7 @@ public class RetryCallService extends Service implements SubmitCallListener {
 
             try {
                 json.put("time_left", extras.getInt("time_left"));
+                json.put("created_at", extras.getString("created_at"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
