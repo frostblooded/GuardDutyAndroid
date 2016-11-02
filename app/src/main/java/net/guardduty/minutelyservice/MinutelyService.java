@@ -29,7 +29,7 @@ import org.json.JSONObject;
 public class MinutelyService extends Service implements UpdateSettingsListener {
     private final static int SECOND = 1000;
     private final static int MINUTE = 60 * SECOND;
-    private final static int NOTIFICATION_ID = 19;
+    private final static int NOTIFICATION_ID = 1;
 
     private static Handler handler = new Handler();
     public static boolean isRunning = false;

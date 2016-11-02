@@ -1,5 +1,10 @@
 package net.guardduty.calls;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -15,6 +20,7 @@ import org.json.JSONObject;
 
 public class CallActivity extends AbstractCallActivity implements SubmitCallListener {
     private int remainingSeconds;
+    private final static int CALL_RETRY_NOTIFICATION_ID = 2;
 
     private void sendResult(){
         JSONObject json = new JSONObject();
@@ -61,5 +67,20 @@ public class CallActivity extends AbstractCallActivity implements SubmitCallList
     @Override
     public void onCallSubmitError(VolleyError error) {
         Log.i(MainActivity.TAG, "Error while sending call!");
+
+        Intent notificationIntent = new Intent(getApplicationContext(), CallActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
+
+        Notification notification = new NotificationCompat.Builder(getApplicationContext())
+                .setContentText(getString(R.string.call_failed))
+                .setContentTitle(getString(R.string.app_name))
+                .setSmallIcon(R.drawable.cast_ic_notification_0)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .build();
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(CALL_RETRY_NOTIFICATION_ID, notification);
     }
 }
