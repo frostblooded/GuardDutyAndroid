@@ -14,10 +14,32 @@ import org.json.JSONObject;
 
 public class SubmitCallRequest extends AbstractObjectRequest {
     protected SubmitCallListener listener;
+    protected String workerId;
+    protected String siteId;
 
-    public SubmitCallRequest(SubmitCallListener listener, Context context) {
+    public SubmitCallRequest(SubmitCallListener listener, String siteId, String workerId, Context context) {
         super(context);
         this.listener = listener;
+        this.siteId = siteId;
+        this.workerId = workerId;
+    }
+
+    public SubmitCallRequest(SubmitCallListener listener, Context context) {
+        this(listener, null, null, context);
+    }
+
+    public String getSiteId() {
+        if(siteId != null)
+            return siteId;
+
+        return SPHelpers.getString(SPHelpers.SP_SITE_ID, context);
+    }
+
+    public String getWorkerId() {
+        if(workerId != null)
+            return workerId;
+
+        return SPHelpers.getString(SPHelpers.SP_WORKER_ID, context);
     }
 
     @Override
@@ -28,9 +50,8 @@ public class SubmitCallRequest extends AbstractObjectRequest {
     @Override
     protected String getUrl() {
         String token = SPHelpers.getString(SPHelpers.SP_ACCESS_TOKEN, context);
-        String worker_id = SPHelpers.getString(SPHelpers.SP_WORKER_ID, context);
-        String site_id = SPHelpers.getString(SPHelpers.SP_SITE_ID, context);
-        return InternetHelpers.SERVER_IP + "api/v1/sites/" + site_id + "/workers/" + worker_id + "/calls?access_token=" + token;
+        return InternetHelpers.SERVER_IP + "api/v1/sites/" + getSiteId() +
+                "/workers/" + getWorkerId() + "/calls?access_token=" + token;
     }
 
     @Override

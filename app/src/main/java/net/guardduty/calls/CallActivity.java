@@ -1,16 +1,13 @@
 package net.guardduty.calls;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
 import net.guardduty.common.GuardDutyHelpers;
+import net.guardduty.common.SPHelpers;
 import net.guardduty.internet.interfaces.SubmitCallListener;
 import net.guardduty.internet.requests.SubmitCallRequest;
 import net.guardduty.main.MainActivity;
@@ -67,6 +64,12 @@ public class CallActivity extends AbstractCallActivity implements SubmitCallList
     @Override
     public void onCallSubmitError(VolleyError error) {
         Log.i(MainActivity.TAG, "Call submission failed!");
-        GuardDutyHelpers.createRetryCallNotification(getApplicationContext());
+
+        Bundle extras = new Bundle();
+        extras.putInt("time_left", remainingSeconds);
+        extras.putString("worker_id", SPHelpers.getString(SPHelpers.SP_WORKER_ID, getApplicationContext()));
+        extras.putString("site_id", SPHelpers.getString(SPHelpers.SP_SITE_ID, getApplicationContext()));
+
+        GuardDutyHelpers.createRetryCallNotification(getApplicationContext(), extras);
     }
 }

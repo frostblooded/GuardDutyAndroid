@@ -1,9 +1,8 @@
 package net.guardduty.calls;
 
-import android.app.IntentService;
 import android.app.Service;
 import android.content.Intent;
-import android.content.Context;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -19,6 +18,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RetryCallService extends Service implements SubmitCallListener {
+    protected Bundle extras;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -27,15 +28,25 @@ public class RetryCallService extends Service implements SubmitCallListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        JSONObject json = new JSONObject();
+        extras = intent.getExtras();
 
-        try {
-            json.put("time_left", 0);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if(extras != null) {
+            JSONObject json = new JSONObject();
+
+            try {
+                json.put("time_left", extras.getInt("time_left"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            String workerId = extras.getString("worker_id");
+            String siteId = extras.getString("site_id");
+
+            new SubmitCallRequest(this, siteId, workerId, getApplicationContext())
+                    .setData(json)
+                    .makeRequest();
         }
 
-        new SubmitCallRequest(this, getApplicationContext()).setData(json).makeRequest();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -47,6 +58,6 @@ public class RetryCallService extends Service implements SubmitCallListener {
     @Override
     public void onCallSubmitError(VolleyError error) {
         Log.i(MainActivity.TAG, "Call retry failed!");
-        GuardDutyHelpers.createRetryCallNotification(getApplicationContext());
+        GuardDutyHelpers.createRetryCallNotification(getApplicationContext(), extras);
     }
 }
