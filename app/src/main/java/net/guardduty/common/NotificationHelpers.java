@@ -12,16 +12,20 @@ import net.guardduty.R;
 import net.guardduty.calls.RetryCallService;
 
 public class NotificationHelpers {
-    public static void createRetryCallNotification(Context context, Bundle extras) {
-        // Create a unique id. Used so that you can
-        // have many notifications of the same type
-        int uniqueId = (int)System.currentTimeMillis();
+    private static int uniqueId = 0;
 
+    // Get a unique id. Used to differentiate
+    // notifications and pending intents
+    public static int getUniqueId() {
+        return uniqueId++;
+    }
+
+    public static void createRetryCallNotification(Context context, Bundle extras) {
         Intent notificationIntent = new Intent(context, RetryCallService.class);
         notificationIntent.putExtras(extras);
 
         PendingIntent pendingIntent = PendingIntent.getService(context,
-                uniqueId,
+                getUniqueId(),
                 notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -34,6 +38,6 @@ public class NotificationHelpers {
                 .build();
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
-        notificationManager.notify(uniqueId, notification);
+        notificationManager.notify(getUniqueId(), notification);
     }
 }
