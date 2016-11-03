@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 
-import net.guardduty.common.GuardDutyHelpers;
+import net.guardduty.common.NotificationHelpers;
 import net.guardduty.internet.interfaces.SubmitCallListener;
 import net.guardduty.internet.requests.SubmitCallRequest;
 import net.guardduty.main.MainActivity;
@@ -59,6 +59,6 @@ public class RetryCallService extends Service implements SubmitCallListener {
     @Override
     public void onCallSubmitError(VolleyError error) {
         Log.i(MainActivity.TAG, "Call retry failed!");
-        GuardDutyHelpers.createRetryCallNotification(getApplicationContext(), extras);
+        NotificationHelpers.createRetryCallNotification(getApplicationContext(), extras);
     }
 }

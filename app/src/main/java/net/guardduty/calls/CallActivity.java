@@ -5,9 +5,8 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.google.android.gms.vision.barcode.Barcode;
 
-import net.guardduty.common.GuardDutyHelpers;
+import net.guardduty.common.NotificationHelpers;
 import net.guardduty.common.SPHelpers;
 import net.guardduty.internet.interfaces.SubmitCallListener;
 import net.guardduty.internet.requests.SubmitCallRequest;
@@ -80,6 +79,6 @@ public class CallActivity extends AbstractCallActivity implements SubmitCallList
         extras.putString("site_id", SPHelpers.getString(SPHelpers.SP_SITE_ID, getApplicationContext()));
         extras.putString("created_at", formattedDate);
 
-        GuardDutyHelpers.createRetryCallNotification(getApplicationContext(), extras);
+        NotificationHelpers.createRetryCallNotification(getApplicationContext(), extras);
     }
 }
