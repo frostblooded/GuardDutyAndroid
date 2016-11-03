@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public final class MiscHelpers {
     public static String getJsonArrayItem(JSONArray array, String key, String value, String returnKey) {
@@ -131,5 +132,10 @@ public final class MiscHelpers {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String toISO8601(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ", Locale.UK);
+        return sdf.format(date);
     }
 }

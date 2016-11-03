@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
+import net.guardduty.common.MiscHelpers;
 import net.guardduty.common.NotificationHelpers;
 import net.guardduty.common.SPHelpers;
 import net.guardduty.internet.interfaces.SubmitCallListener;
@@ -68,10 +69,7 @@ public class CallActivity extends AbstractCallActivity implements SubmitCallList
     @Override
     public void onCallSubmitError(VolleyError error) {
         Log.i(MainActivity.TAG, "Call submission failed!");
-
-        // Get current time in ISO8601
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ", Locale.UK);
-        String formattedDate = sdf.format(new Date());
+        String formattedDate = MiscHelpers.toISO8601(new Date());
 
         Bundle extras = new Bundle();
         extras.putInt("time_left", remainingSeconds);
