@@ -16,6 +16,7 @@ import net.guardduty.calls.AbstractCallActivity;
 import net.guardduty.calls.CallActivity;
 import net.guardduty.common.GuardDutyHelpers;
 import net.guardduty.common.MiscHelpers;
+import net.guardduty.common.NotificationHelpers;
 import net.guardduty.common.SPHelpers;
 import net.guardduty.main.MainActivity;
 import net.guardduty.R;
@@ -29,7 +30,6 @@ import org.json.JSONObject;
 public class MinutelyService extends Service implements UpdateSettingsListener {
     private final static int SECOND = 1000;
     private final static int MINUTE = 60 * SECOND;
-    private final static int NOTIFICATION_ID = 1;
 
     private static Handler handler = new Handler();
     public static boolean isRunning = false;
@@ -38,13 +38,19 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
 
     private void runAsForeground() {
         Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
+                                                                NotificationHelpers.getUniqueId(),
+                                                                notificationIntent,
+                                                                0);
+
         Notification notification = new NotificationCompat.Builder(getApplicationContext())
                 .setContentText(getString(R.string.app_name) + " " + getString(R.string.is_running))
                 .setContentTitle(getString(R.string.app_name))
                 .setSmallIcon(R.drawable.cast_ic_notification_0)
                 .setContentIntent(pendingIntent).build();
-        startForeground(NOTIFICATION_ID, notification);
+
+        startForeground(NotificationHelpers.getUniqueId(), notification);
     }
 
     private void doMinutelyWork() {
