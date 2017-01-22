@@ -103,9 +103,9 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
                 @Override
                 public void run() {
                     doMinutelyWork();
-                    handler.postDelayed(this, SECOND);
+                    handler.postDelayed(this, MINUTE);
                 }
-            }, SECOND);
+            }, MINUTE);
         }
 
         return START_STICKY;
