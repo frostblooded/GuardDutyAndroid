@@ -27,7 +27,6 @@
         <activity android:name=".main.SettingsLoginActivity" />
         <activity android:name=".main.WorkerLoginActivity" />
         <activity android:name=".main.SettingsActivity" />
-        <activity android:name=".main.RouteCreationActivity" />
 
         <service android:name=".minutelyservice.MinutelyService" />
 
@@ -46,10 +45,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
 
         <service
             android:name=".calls.RetryCallService"

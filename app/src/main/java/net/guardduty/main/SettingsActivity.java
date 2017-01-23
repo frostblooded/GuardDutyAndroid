@@ -62,11 +62,6 @@ public class SettingsActivity extends AppCompatActivity implements AcquireSitesL
         new AcquireSitesRequest(this, getApplicationContext()).makeRequest();
     }
 
-    public void openRouteCreation(View v) {
-        Intent i = new Intent(getApplicationContext(), RouteCreationActivity.class);
-        startActivity(i);
-    }
-
     @Override
     public void onSitesAcquired(JSONArray response) {
         try {
