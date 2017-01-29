@@ -18,7 +18,7 @@ import net.guardduty.common.GuardDutyHelpers;
 import net.guardduty.common.MiscHelpers;
 import net.guardduty.common.NotificationHelpers;
 import net.guardduty.common.SPHelpers;
-import net.guardduty.main.MainActivity;
+import net.guardduty.mainactivities.MainActivity;
 import net.guardduty.R;
 import net.guardduty.common.WakeLockManager;
 import net.guardduty.calls.LoginRemindActivity;

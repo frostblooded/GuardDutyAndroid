@@ -12,7 +12,7 @@ import com.android.volley.VolleyError;
 import net.guardduty.common.NotificationHelpers;
 import net.guardduty.internet.interfaces.SubmitCallListener;
 import net.guardduty.internet.requests.SubmitCallRequest;
-import net.guardduty.main.MainActivity;
+import net.guardduty.mainactivities.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

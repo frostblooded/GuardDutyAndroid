@@ -12,7 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import net.guardduty.main.MainActivity;
+import net.guardduty.mainactivities.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

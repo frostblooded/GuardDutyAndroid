@@ -15,7 +15,7 @@ import android.widget.Button;
 
 import net.guardduty.R;
 import net.guardduty.common.MiscHelpers;
-import net.guardduty.main.MainActivity;
+import net.guardduty.mainactivities.MainActivity;
 
 public abstract class AbstractCallActivity extends AppCompatActivity {
     protected static final int SECOND = 1000;

@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".main.MainActivity"
+            android:name=".mainactivities.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,9 +24,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.SettingsLoginActivity" />
-        <activity android:name=".main.WorkerLoginActivity" />
-        <activity android:name=".main.SettingsActivity" />
+        <activity android:name=".mainactivities.SettingsLoginActivity" />
+        <activity android:name=".mainactivities.WorkerLoginActivity" />
+        <activity android:name=".mainactivities.SettingsActivity" />
 
         <service android:name=".minutelyservice.MinutelyService" />
 

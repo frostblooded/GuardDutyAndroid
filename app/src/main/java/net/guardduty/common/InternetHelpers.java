@@ -6,7 +6,7 @@ import android.util.Log;
 import com.android.volley.NoConnectionError;
 import com.android.volley.VolleyError;
 
-import net.guardduty.main.MainActivity;
+import net.guardduty.mainactivities.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

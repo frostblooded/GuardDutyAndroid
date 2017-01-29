@@ -11,15 +11,13 @@ import net.guardduty.common.NotificationHelpers;
 import net.guardduty.common.SPHelpers;
 import net.guardduty.internet.interfaces.SubmitCallListener;
 import net.guardduty.internet.requests.SubmitCallRequest;
-import net.guardduty.main.MainActivity;
+import net.guardduty.mainactivities.MainActivity;
 import net.guardduty.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 public class CallActivity extends AbstractCallActivity implements SubmitCallListener {
     private int remainingSeconds;

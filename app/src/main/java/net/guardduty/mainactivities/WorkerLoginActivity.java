@@ -1,4 +1,4 @@
-package net.guardduty.main;
+package net.guardduty.mainactivities;
 
 import android.app.ProgressDialog;
 import android.content.Context;

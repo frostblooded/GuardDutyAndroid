@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import net.guardduty.main.MainActivity;
+import net.guardduty.mainactivities.MainActivity;
 
 public class BootServiceStarter extends BroadcastReceiver {
     public BootServiceStarter() {};

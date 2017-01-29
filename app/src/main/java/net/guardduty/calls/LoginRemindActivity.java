@@ -3,9 +3,9 @@ package net.guardduty.calls;
 import android.content.Intent;
 import android.util.Log;
 
-import net.guardduty.main.MainActivity;
+import net.guardduty.mainactivities.MainActivity;
 import net.guardduty.R;
-import net.guardduty.main.WorkerLoginActivity;
+import net.guardduty.mainactivities.WorkerLoginActivity;
 
 public class LoginRemindActivity extends AbstractCallActivity {
     @Override
