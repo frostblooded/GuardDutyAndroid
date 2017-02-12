@@ -60,6 +60,7 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
         if(callIntervalString != null) {
             int callInterval = Integer.valueOf(callIntervalString);
             minutesSinceLastCall++;
+            Log.i(MainActivity.TAG, String.valueOf(callInterval - minutesSinceLastCall) + " minutes left to call");
 
             if (minutesSinceLastCall % callInterval == 0) {
                 new UpdateSettingsRequest(this, getApplicationContext()).makeRequest();
@@ -82,6 +83,9 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
                 AbstractCallActivity.makeCall(CallActivity.class, getApplicationContext());
             else
                 AbstractCallActivity.makeCall(LoginRemindActivity.class, getApplicationContext());
+        }
+        else {
+            Log.i(MainActivity.TAG, "Interval passed, but it isn't shift yet");
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
