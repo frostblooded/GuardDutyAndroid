@@ -3,8 +3,10 @@ package net.guardduty.calls;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Ringtone;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -79,8 +81,8 @@ public abstract class AbstractCallActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         boolean startedByApp = getIntent().getBooleanExtra("startedByApp", false);
 
         if(startedByApp) {
