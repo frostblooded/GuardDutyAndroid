@@ -88,7 +88,7 @@ public abstract class AbstractCallActivity extends AppCompatActivity {
         if(startedByApp) {
             initialize();
             MiscHelpers.unlockScreen(this);
-            MiscHelpers.setVolume(getApplicationContext());
+//            MiscHelpers.setVolume(getApplicationContext());
             ringtone = MiscHelpers.startSound(getApplicationContext());
             startTimer();
             setUpButton();
