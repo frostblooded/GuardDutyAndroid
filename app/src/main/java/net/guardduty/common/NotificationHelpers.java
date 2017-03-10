@@ -12,7 +12,10 @@ import net.guardduty.R;
 import net.guardduty.calls.RetryCallService;
 
 public class NotificationHelpers {
-    private static int uniqueId = 0;
+    public static final int MINUTELY_SERVICE_ID = 1;
+
+    // Starts from integer after the one for the minutely service
+    private static int uniqueId = 2;
 
     // Get a unique id. Used to differentiate
     // notifications and pending intents

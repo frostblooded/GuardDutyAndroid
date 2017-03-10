@@ -1,6 +1,7 @@
 package net.guardduty.minutelyservice;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
@@ -31,6 +32,8 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
     private final static int SECOND = 1000;
     private final static int MINUTE = 60 * SECOND;
 
+    private final static String ACTION_STOP_SERVICE = "STOP_SERVICE";
+
     private static Handler handler = new Handler();
     public static boolean isRunning = false;
 
@@ -44,13 +47,29 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
                                                                 notificationIntent,
                                                                 0);
 
+        Intent stopServiceIntent = new Intent(getApplicationContext(), MinutelyService.class);
+        stopServiceIntent.setAction(ACTION_STOP_SERVICE);
+
+        PendingIntent stopServicePendingIntent = PendingIntent.getService(getApplicationContext(),
+                                                                          NotificationHelpers.getUniqueId(),
+                                                                          stopServiceIntent,
+                                                                          0);
+
         Notification notification = new NotificationCompat.Builder(getApplicationContext())
                 .setContentText(getString(R.string.app_name) + " " + getString(R.string.is_running))
                 .setContentTitle(getString(R.string.app_name))
                 .setSmallIcon(R.drawable.cast_ic_notification_0)
+                .addAction(R.drawable.cast_ic_expanded_controller_stop, "Stop service", stopServicePendingIntent)
                 .setContentIntent(pendingIntent).build();
 
-        startForeground(NotificationHelpers.getUniqueId(), notification);
+        startForeground(NotificationHelpers.MINUTELY_SERVICE_ID, notification);
+    }
+
+    private void stopService() {
+        Log.i(MainActivity.TAG, "Stopping minutely service.");
+        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+        notificationManager.cancel(NotificationHelpers.MINUTELY_SERVICE_ID);
+        stopSelf();
     }
 
     private void doMinutelyWork() {
@@ -99,7 +118,16 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if(intent != null) {
+            Log.i(MainActivity.TAG, "test");
+
+            if (ACTION_STOP_SERVICE.equals(intent.getAction())) {
+                stopService();
+            }
+        }
+
         if(!isRunning) {
+            Log.i(MainActivity.TAG, "Starting service");
             runAsForeground();
             isRunning = true;
 
@@ -107,9 +135,9 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
                 @Override
                 public void run() {
                     doMinutelyWork();
-                    handler.postDelayed(this, MINUTE);
+                    handler.postDelayed(this, SECOND);
                 }
-            }, MINUTE);
+            }, SECOND);
         }
 
         return START_STICKY;
