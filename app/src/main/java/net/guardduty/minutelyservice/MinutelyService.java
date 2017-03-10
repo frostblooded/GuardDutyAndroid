@@ -31,7 +31,7 @@ import org.json.JSONObject;
 public class MinutelyService extends Service implements UpdateSettingsListener {
     private final static int SECOND = 1000;
     private final static int MINUTE = 60 * SECOND;
-    private final static int HANDLER_DELAY = SECOND;
+    private final static int HANDLER_DELAY = MINUTE;
 
     private final static String ACTION_STOP_SERVICE = "STOP_SERVICE";
 
