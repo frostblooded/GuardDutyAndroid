@@ -35,7 +35,7 @@ public class NotificationHelpers {
         Notification notification = new NotificationCompat.Builder(context)
                 .setContentText(context.getString(R.string.call_failed))
                 .setContentTitle(context.getString(R.string.app_name))
-                .setSmallIcon(R.drawable.cast_ic_notification_0)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .build();

@@ -60,7 +60,7 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
         Notification notification = new NotificationCompat.Builder(getApplicationContext())
                 .setContentText(getString(R.string.app_name) + " " + getString(R.string.is_running))
                 .setContentTitle(getString(R.string.app_name))
-                .setSmallIcon(R.drawable.cast_ic_notification_0)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .addAction(R.drawable.cast_ic_expanded_controller_stop, "Stop service", stopServicePendingIntent)
                 .setContentIntent(pendingIntent).build();
 
