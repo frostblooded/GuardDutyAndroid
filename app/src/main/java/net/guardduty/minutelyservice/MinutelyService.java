@@ -31,10 +31,12 @@ import org.json.JSONObject;
 public class MinutelyService extends Service implements UpdateSettingsListener {
     private final static int SECOND = 1000;
     private final static int MINUTE = 60 * SECOND;
+    private final static int HANDLER_DELAY = SECOND;
 
     private final static String ACTION_STOP_SERVICE = "STOP_SERVICE";
 
     private static Handler handler = new Handler();
+    private static Runnable runnable;
     public static boolean isRunning = false;
 
     private int minutesSinceLastCall = 0;
@@ -62,13 +64,11 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
                 .addAction(R.drawable.cast_ic_expanded_controller_stop, "Stop service", stopServicePendingIntent)
                 .setContentIntent(pendingIntent).build();
 
-        startForeground(NotificationHelpers.MINUTELY_SERVICE_ID, notification);
+        startForeground(NotificationHelpers.getUniqueId(), notification);
     }
 
     private void stopService() {
         Log.i(MainActivity.TAG, "Stopping minutely service.");
-        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
-        notificationManager.cancel(NotificationHelpers.MINUTELY_SERVICE_ID);
         stopSelf();
     }
 
@@ -131,16 +131,24 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
             runAsForeground();
             isRunning = true;
 
-            handler.postDelayed(new Runnable() {
+            runnable = new Runnable() {
                 @Override
                 public void run() {
                     doMinutelyWork();
-                    handler.postDelayed(this, SECOND);
+                    handler.postDelayed(this, HANDLER_DELAY);
                 }
-            }, SECOND);
+            };
+
+            handler.postDelayed(runnable, HANDLER_DELAY);
         }
 
         return START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(runnable);
     }
 
     @Override
