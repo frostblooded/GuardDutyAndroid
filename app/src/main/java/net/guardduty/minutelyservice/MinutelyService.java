@@ -31,7 +31,7 @@ import org.json.JSONObject;
 public class MinutelyService extends Service implements UpdateSettingsListener {
     private final static int SECOND = 1000;
     private final static int MINUTE = 60 * SECOND;
-    private final static int HANDLER_DELAY = MINUTE;
+    private final static int HANDLER_DELAY = SECOND;
 
     private final static String ACTION_STOP_SERVICE = "STOP_SERVICE";
 
@@ -118,13 +118,8 @@ public class MinutelyService extends Service implements UpdateSettingsListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if(intent != null) {
-            Log.i(MainActivity.TAG, "test");
-
-            if (ACTION_STOP_SERVICE.equals(intent.getAction())) {
-                stopService();
-            }
-        }
+        if(intent != null && ACTION_STOP_SERVICE.equals(intent.getAction()))
+            stopService();
 
         if(!isRunning) {
             Log.i(MainActivity.TAG, "Starting service");
